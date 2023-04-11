@@ -10,8 +10,8 @@ redirect_from:
 
 # Test 1:
 
-<a class="twitter-timeline" data-lang="en" data-theme="dark" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a class="twitter-timeline" data-height="400" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 # Test 2:
 
-<a class="twitter-timeline" data-lang="en" data-theme="light" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a class="twitter-timeline" data-height="600" data-theme="dark" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
