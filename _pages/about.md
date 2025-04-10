@@ -8,12 +8,10 @@ redirect_from:
   - /about.html
 ---
 
-# Test 1:
+I have a deep passion for exploring and understanding the world—whether it's the history of cities, political systems, or the latest advancements in technology.
 
-<a class="twitter-timeline" data-height="500" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+One of my key interests lies in the concept of Democratizing Systems Engineering. I am particularly focused on leveraging and developing open-source tools to make the design and development of complex systems more accessible. My mission is to ensure that systems engineering remains inclusive, avoiding unnecessary specialization or exclusivity.
 
-# Test 2:
+Beyond my professional pursuits, I enjoy applying systems thinking to both personal life and broader societal challenges. I believe this approach can bring clarity and innovative solutions to complex problems.
 
-<a class="twitter-timeline" data-height="600" data-theme="dark" href="https://twitter.com/ClimateLisa?ref_src=twsrc%5Etfw">Tweets by ClimateLisa</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-# Test 4
+In my free time, I channel my creativity into developing games for my family — a fun way to combine learning, problem-solving, and connection.
