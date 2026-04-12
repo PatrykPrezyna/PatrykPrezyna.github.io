@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patryk Prężyna — Systems Engineer & Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F6F4EF;
+      --bg-card: #FFFFFF;
+      --fg: #1C1C27;
+      --fg-muted: #66687A;
+      --accent: #2A5C8A;
+      --accent-lt: #E8F0F8;
+      --border: #E3E0D8;
+
+      --radius: 12px;
+      --shadow-sm: 0 4px 18px rgba(10,20,30,0.06);
+      --shadow-md: 0 10px 34px rgba(10,20,30,0.12);
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F141C;
+      --bg-card: #161D28;
+      --fg: #EDF2FA;
+      --fg-muted: #A9B6C8;
+      --accent: #7BA6D9;
+      --accent-lt: #1D2C40;
+      --border: #2B3646;
+    }
+
+    html { scroll-behavior: smooth; }
+    section[id] { scroll-margin-top: 90px; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color .25s ease, color .25s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20% -10%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(40% 30% at 10% 10%, rgba(42,92,138,0.07), transparent 70%),
+        radial-gradient(35% 25% at 90% 20%, rgba(42,92,138,0.05), transparent 70%);
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1200;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: rgba(246,244,239,0.84);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    html[data-theme="dark"] nav { background: rgba(15,20,28,0.85); }
+
+    nav.scrolled {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+      background: rgba(246,244,239,0.96);
+    }
+    html[data-theme="dark"] nav.scrolled { background: rgba(15,20,28,0.96); }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.16rem;
+      font-weight: 600;
+      color: var(--fg);
+      text-decoration: none;
+      letter-spacing: .01em;
+      z-index: 1202;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1202;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s ease;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute; left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+
+    .theme-toggle, .nav-toggle {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--fg);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+    }
+    .theme-toggle:hover, .nav-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-toggle span {
+      width: 16px; height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    body.menu-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    body.menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    body.menu-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 128px clamp(20px, 4vw, 48px) 86px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(28px, 7vw, 72px);
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6.5vw, 5.4rem);
+      font-weight: 600;
+      line-height: 1.02;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .hero-name em { font-style: italic; color: var(--accent); }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      max-width: 560px;
+      line-height: 1.85;
+      margin-bottom: 34px;
+    }
+
+    .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+    .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      border: 1px solid #d6e5f3;
+      background: var(--accent-lt);
+      color: var(--accent);
+    }
+
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: .84rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+      box-shadow: 0 8px 22px rgba(42,92,138,.24);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(.94);
+    }
+
+    .btn-outline {
+      background: var(--bg-card);
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Headshot frame */
+    .hero-photo-frame {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      border-radius: 22px;
+      padding: 6px;
+      background: conic-gradient(from 180deg, var(--accent), #9cc0df, var(--accent));
+      box-shadow: var(--shadow-md);
+      animation: frameSpin 12s linear infinite;
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+      display: block;
+      background: var(--accent-lt);
+    }
+
+    .hero-photo-fallback {
+      position: absolute;
+      inset: 6px;
+      display: none;
+      align-items: center; justify-content: center;
+      border-radius: 16px;
+      font-family: var(--serif);
+      font-size: 3.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: linear-gradient(135deg, var(--accent-lt), #fff);
+    }
+
+    .hero-photo-frame.no-photo .hero-photo { display: none; }
+    .hero-photo-frame.no-photo .hero-photo-fallback { display: flex; }
+
+    /* ── SECTIONS ── */
+    .section {
+      position: relative;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 94px clamp(20px, 4vw, 48px);
+      border-top: none;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: clamp(20px, 4vw, 48px);
+      right: clamp(20px, 4vw, 48px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: clamp(20px, 4vw, 48px);
+      right: clamp(20px, 4vw, 48px);
+      height: 1px;
+      opacity: .45;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      background-size: 200% 100%;
+      animation: separatorFlow 7s linear infinite;
+    }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 14px;
+      margin-bottom: 52px;
+    }
+
+    .section-label {
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    /* shared cards */
+    .stat-card, .edu-card, .pub-card, .proj-card, .cert-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .25s ease;
+    }
+
+    .stat-card:hover, .edu-card:hover, .pub-card:hover, .proj-card:hover, .cert-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: color-mix(in oklab, var(--accent) 26%, var(--border));
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: clamp(28px, 6vw, 64px);
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--fg-muted);
+      margin-bottom: 16px;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-card { padding: 22px; text-align: center; }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.35rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: .78rem;
+      color: var(--fg-muted);
+      font-weight: 600;
+    }
+
+    .skills-list {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 600;
+      background: var(--accent-lt);
+      color: var(--accent);
+      border: 1px solid rgba(42,92,138,.18);
+    }
+
+    /* EXPERIENCE */
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px; top: 6px; bottom: 0;
+      width: 2px;
+      background: linear-gradient(var(--accent-lt), var(--border));
+    }
+
+    .timeline-item { position: relative; padding-bottom: 44px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -31px; top: 7px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+    }
+
+    .timeline-date {
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--fg);
+    }
+
+    .timeline-company {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .timeline-bullets { list-style: none; }
+    .timeline-bullets li {
+      font-size: .9rem;
+      color: var(--fg-muted);
+      padding: 3px 0 3px 18px;
+      position: relative;
+      line-height: 1.65;
+    }
+    .timeline-bullets li::before {
+      content: "▸";
+      position: absolute; left: 0;
+      color: var(--accent);
+    }
+
+    /* EDUCATION */
+    .edu-grid { display: flex; flex-direction: column; gap: 16px; }
+    .edu-card {
+      padding: 26px 30px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .edu-badge {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: var(--accent-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .edu-degree {
+      font-family: var(--serif);
+      font-size: 1.14rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 3px;
+    }
+
+    .edu-school {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .edu-year { font-size: .78rem; color: var(--fg-muted); font-weight: 500; }
+
+    /* PUBS */
+    .pub-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .pub-card {
+      padding: 22px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .pub-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .pub-type {
+      font-size: .71rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .pub-title {
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: var(--fg);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .pub-meta {
+      font-size: .82rem;
+      color: var(--fg-muted);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .proj-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .proj-category {
+      font-size: .71rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .proj-title {
+      font-family: var(--serif);
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .proj-desc {
+      font-size: .88rem;
+      color: var(--fg-muted);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    /* CERTS */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .cert-item {
+      padding: 16px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .cert-icon { font-size: 1.08rem; }
+
+    /* CONTACT */
+    #contact {
+      background: linear-gradient(135deg, #1c1c27 0%, #252535 100%);
+      color: #fff;
+      text-align: center;
+      padding: 96px clamp(20px, 4vw, 48px);
+      transition: background .25s ease;
+    }
+
+    html[data-theme="dark"] #contact {
+      background: linear-gradient(135deg, #111823 0%, #1B2636 100%);
+    }
+
+    #contact .section-label { color: rgba(255,255,255,.55); }
+    #contact .section-title { color: #fff; margin-bottom: 16px; }
+    #contact .section-header {
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-sub {
+      color: rgba(255,255,255,.72);
+      font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-size: .86rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.24);
+      color: #fff;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.45);
+    }
+
+    .contact-link.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .contact-link.primary:hover { filter: brightness(.93); }
+
+    footer {
+      background: #181823;
+      color: rgba(255,255,255,.45);
+      text-align: center;
+      padding: 22px 16px;
+      font-size: .78rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      transition: background .25s ease;
+    }
+    html[data-theme="dark"] footer { background: #0A0F16; }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes separatorFlow {
+      from { background-position: 180% 0; }
+      to   { background-position: -180% 0; }
+    }
+/* 
+    @keyframes frameSpin {
+      from { filter: hue-rotate(0deg); }
+      to   { filter: hue-rotate(360deg); }
+    } */
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 980px) {
+      .nav-toggle { display: inline-flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 74px;
+        left: 16px; right: 16px;
+        display: grid;
+        gap: 4px;
+        background: rgba(255,255,255,.96);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: var(--shadow-md);
+
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity .2s ease, transform .2s ease;
+      }
+
+      html[data-theme="dark"] .nav-links {
+        background: rgba(20, 28, 39, .96);
+      }
+
+      body.menu-open .nav-links {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+
+      .nav-links a::after { display: none; }
+
+      .nav-links a:hover, .nav-links a.active {
+        background: var(--accent-lt);
+      }
+
+      #hero { padding-top: 108px; }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-photo-frame {
+        position: relative;
+        width: 520px;
+        height: 520px;
+        border-radius: 22px;
+        padding: 6px;
+        background: var(--accent-lt); /* static background */
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+        animation: none; /* remove animation */
+      }
+      .hero-photo, .hero-photo-fallback { border-radius: 12px; }
+
+      .hero-tags, .hero-cta { justify-content: center; }
+      .hero-desc { margin-inline: auto; }
+
+      .about-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .section { padding-top: 74px; padding-bottom: 74px; }
+    }
+
+    @media (max-width: 640px) {
+      .about-stats { grid-template-columns: 1fr; }
+      .timeline { padding-left: 22px; }
+      .timeline-dot { left: -24px; }
+      .edu-card { grid-template-columns: 1fr; gap: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Patryk Prężyna</a>
+
+    <div class="nav-right">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon" aria-hidden="true">🌙</span>
+      </button>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="siteMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <ul class="nav-links" id="siteMenu">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">Systems Engineer &amp; Researcher · MIT</p>
+        <h1 class="hero-name">Patryk Prężyna</h1>
+        <p class="hero-desc">
+          Building pragmatic pathways for Model-Based Systems Engineering adoption.
+          Teaching digital thread at MIT. Making complex systems engineering
+          accessible for small and medium-sized organizations.
+        </p>
+        <div class="hero-tags">
+          <span class="tag">Lightweight MBSE</span>
+          <span class="tag">Digital Thread</span>
+          <span class="tag">Medical Devices</span>
+          <span class="tag">Robotics</span>
+          <span class="tag">Manufacturing</span>
+        </div>
+        <div class="hero-cta">
+          <a href="mailto:patrykprezyna@gmail.com" class="btn btn-primary">Get in Touch</a>
+          <a href="#experience" class="btn btn-outline">View My Work</a>
+        </div>
+      </div>
+
+      <div class="hero-photo-frame">
+        <img src="assets/patryk.jpg" alt="Portrait of Patryk Prężyna" class="hero-photo">
+        <div class="hero-photo-fallback">P</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="section-header">
+      <span class="section-label">01 /</span>
+      <h2 class="section-title">About Me</h2>
+    </div>
+
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p>
+          I am a Systems Engineer and Researcher pursuing a Master of Science at the
+          Massachusetts Institute of Technology (MIT), where I also serve as a Teaching
+          Assistant for the graduate course <em>Model-Based Engineering in the Product
+          Development Lifecycle</em>.
+        </p>
+        <p>
+          My research focuses on <strong>MBSE Adoption Pathways for Small and
+          Medium-Sized Organizations</strong> — a topic I'm passionate about because I
+          believe the most powerful engineering tools should be accessible beyond large
+          enterprises. I'm also currently teaching a graduate-level class on the
+          <strong>Digital Thread</strong> at MIT.
+        </p>
+        <p>
+          With over a decade of hands-on industry experience at Rommelag — spanning
+          automation engineering, software development, and senior engineering leadership
+          — I bring a deeply pragmatic view to systems thinking. I'm fluent in Polish,
+          English, and German.
+        </p>
+
+        <div class="skills-list">
+          <span class="skill-chip">CAMEO / SysML</span>
+          <span class="skill-chip">AI for Engineering</span>
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">Vue.js</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">PLC (B&amp;R, S7)</span>
+          <span class="skill-chip">LabVIEW</span>
+          <span class="skill-chip">Agile / Scrum</span>
+          <span class="skill-chip">Domain-Driven Design</span>
+        </div>
+      </div>
+
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Years of Industry Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Patents</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Languages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">MIT</div>
+          <div class="stat-label">Current Institution</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <div class="section-header">
+      <span class="section-label">02 /</span>
+      <h2 class="section-title">Experience</h2>
+    </div>
+
+    <div class="timeline fade-in">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Sep 2025 — Present</div>
+        <div class="timeline-role">Teaching Assistant</div>
+        <div class="timeline-company">Massachusetts Institute of Technology</div>
+        <ul class="timeline-bullets">
+          <li>Develop curriculum and problem sets aligned with industry-standard MBSE tools and product development processes.</li>
+          <li>Lead weekly recitations guiding students in applying model-based methods and digital thread tools to real-world projects.</li>
+          <li>Support student teams through product lifecycle phases, facilitating design reviews, artifact traceability, and validation of engineering models.</li>
+          <li>Teach a graduate-level course on the Digital Thread at MIT.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Mar 2022 — Oct 2025 · 3 yrs 8 mos</div>
+        <div class="timeline-role">Senior Software Engineer</div>
+        <div class="timeline-company">Rommelag</div>
+        <ul class="timeline-bullets">
+          <li>Led development of a state-of-the-art human-machine interaction system for pharmaceutical manufacturing equipment.</li>
+          <li>Established a Domain-Driven Design approach across the engineering team.</li>
+          <li>Served as focal point for the mechatronic team, bridging software and mechanical disciplines.</li>
+          <li>Technologies: Python, Vue.js, Docker.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Sep 2018 — Mar 2022 · 3 yrs 7 mos</div>
+        <div class="timeline-role">Software Engineer</div>
+        <div class="timeline-company">Rommelag</div>
+        <ul class="timeline-bullets">
+          <li>Modularized an established software stack and created a new product development process.</li>
+          <li>Introduced wiki, project management system, and software versioning across the organization.</li>
+          <li>Served as Agile Coach for 4 multidisciplinary Scrum teams.</li>
+          <li>Co-led an effort to develop a new machine platform (Dec 2020).</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Sep 2015 — Sep 2018 · 3 yrs</div>
+        <div class="timeline-role">Automation Engineer</div>
+        <div class="timeline-company">Rommelag</div>
+        <ul class="timeline-bullets">
+          <li>Software development for PLCs (B&amp;R, S7, S5) and proprietary HMI systems.</li>
+          <li>Responsible for machine commissioning on production lines.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Jul 2014 — Aug 2014</div>
+        <div class="timeline-role">Software Developer — LabVIEW</div>
+        <div class="timeline-company">Veritech Sp. z o.o.</div>
+        <ul class="timeline-bullets">
+          <li>Developed visual inspection machines for the automotive and food industry.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="section">
+    <div class="section-header">
+      <span class="section-label">03 /</span>
+      <h2 class="section-title">Education</h2>
+    </div>
+
+    <div class="edu-grid fade-in">
+      <div class="edu-card">
+        <div class="edu-badge">MIT</div>
+        <div>
+          <div class="edu-degree">Master of Science — Systems Engineering</div>
+          <div class="edu-school">Massachusetts Institute of Technology</div>
+          <div class="edu-year">2024 — 2026 (expected)</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-badge">MIT</div>
+        <div>
+          <div class="edu-degree">Certificate — Architecture and Systems Engineering</div>
+          <div class="edu-school">MIT Professional Education · Models and Methods to Manage Complex Systems</div>
+          <div class="edu-year">2021 — 2022</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-badge">B&amp;R</div>
+        <div>
+          <div class="edu-degree">Professional Certificate — Automation Technology</div>
+          <div class="edu-school">B&amp;R Engineering Camp · Visualization, Motion Control</div>
+          <div class="edu-year">2015 — 2016</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-badge">PŚ</div>
+        <div>
+          <div class="edu-degree">Bachelor of Science — Information Technologies in Automatic Control &amp; Robotics</div>
+          <div class="edu-school">Silesian University of Technology (Politechnika Śląska)</div>
+          <div class="edu-year">2011 — 2015</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--fg); margin: 48px 0 20px;">
+      Certifications
+    </h3>
+
+    <div class="certs-grid fade-in">
+      <div class="cert-item"><span class="cert-icon">🏅</span> Python Object-Oriented Programming</div>
+      <div class="cert-item"><span class="cert-icon">🏅</span> Architecture &amp; Systems Engineering (MIT)</div>
+      <div class="cert-item"><span class="cert-icon">🏅</span> Goethe Zertifikat C1 (German)</div>
+      <div class="cert-item"><span class="cert-icon">🏅</span> Autodesk Inventor Essentials</div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications" class="section">
+    <div class="section-header">
+      <span class="section-label">04 /</span>
+      <h2 class="section-title">Publications &amp; Patents</h2>
+    </div>
+
+    <div class="pub-list fade-in">
+      <div class="pub-card">
+        <div class="pub-icon">📄</div>
+        <div>
+          <div class="pub-type">Research — MIT</div>
+          <div class="pub-title">MBSE Adoption Pathways for Small and Medium-Sized Organizations</div>
+          <div class="pub-meta">Ongoing research at MIT · Model-Based Systems Engineering · Digital Thread</div>
+        </div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-icon">⚙️</div>
+        <div>
+          <div class="pub-type">Patent</div>
+          <div class="pub-title">Device for Producing Container Products</div>
+          <div class="pub-meta">Rommelag · Pharmaceutical packaging technology</div>
+        </div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-icon">⚙️</div>
+        <div>
+          <div class="pub-type">Patent</div>
+          <div class="pub-title">Method for Producing a Container Product and Device for Implementing the Method</div>
+          <div class="pub-meta">Rommelag · Pharmaceutical packaging technology</div>
+        </div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-icon">⚙️</div>
+        <div>
+          <div class="pub-type">Patent</div>
+          <div class="pub-title">Device with Associated Molding Tools and System Consisting of a Set of Molding Tools</div>
+          <div class="pub-meta">Rommelag · Pharmaceutical manufacturing equipment</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="section-header">
+      <span class="section-label">05 /</span>
+      <h2 class="section-title">Projects &amp; Research</h2>
+    </div>
+
+    <div class="projects-grid fade-in">
+      <div class="proj-card">
+        <div class="proj-category">MBSE Research · MIT</div>
+        <div class="proj-title">Lightweight MBSE for SMEs</div>
+        <div class="proj-desc">
+          Investigating pragmatic adoption pathways that make Model-Based Systems Engineering accessible to small and medium-sized organizations without large-enterprise overhead.
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-category">Graduate Education · MIT</div>
+        <div class="proj-title">Digital Thread Curriculum</div>
+        <div class="proj-desc">
+          Designing and delivering a graduate-level course on the Digital Thread — bridging academic MBSE theory with real-world product lifecycle tooling and traceability.
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-category">Industry · Rommelag</div>
+        <div class="proj-title">Next-Gen HMI System</div>
+        <div class="proj-desc">
+          Led development of a state-of-the-art human-machine interaction platform for pharmaceutical Blow-Fill-Seal manufacturing equipment using Python, Vue.js and Docker.
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-category">Industry · Rommelag</div>
+        <div class="proj-title">Domain-Driven Engineering Platform</div>
+        <div class="proj-desc">
+          Established a domain-driven design framework and modular software architecture across a mechatronic product line, improving maintainability and cross-team collaboration.
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-category">Industry · Veritech</div>
+        <div class="proj-title">Visual Inspection Systems</div>
+        <div class="proj-desc">
+          Developed LabVIEW-based visual inspection machines for quality control in automotive and food industry production environments.
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-category">Academic · Silesian University</div>
+        <div class="proj-title">Robotics &amp; Automation Control</div>
+        <div class="proj-desc">
+          Bachelor's research in information technologies applied to automatic control and robotics, with a focus on industrial PLC programming and motion control systems.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-label" style="color:rgba(255,255,255,0.45)">06 /</span>
+      <h2 class="section-title" style="color:#fff; font-family: var(--serif);">Let's Connect</h2>
+    </div>
+    <p class="contact-sub">
+      Open to collaboration, speaking opportunities, and research discussions on MBSE &amp; digital thread.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:patrykprezyna@gmail.com" class="contact-link primary">✉ patrykprezyna@gmail.com</a>
+      <a href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer" class="contact-link">in LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>© 2026 Patryk Prężyna · Systems Engineer &amp; Researcher</footer>
+
+  <script>
+    // ---------- Theme ----------
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.querySelector('.theme-icon');
+
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+
+    root.setAttribute('data-theme', initialTheme);
+    updateThemeIcon(initialTheme);
+
+    themeToggle?.addEventListener('click', () => {
+      const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('theme', nextTheme);
+      updateThemeIcon(nextTheme);
+    });
+
+    function updateThemeIcon(theme) {
+      if (!themeIcon) return;
+      themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // ---------- Nav shadow ----------
+    const nav = document.querySelector('nav');
+    function handleNavScroll() {
+      nav.classList.toggle('scrolled', window.scrollY > 8);
+    }
+    window.addEventListener('scroll', handleNavScroll);
+    handleNavScroll();
+
+    // ---------- Mobile nav ----------
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('siteMenu');
+    const navLinkItems = document.querySelectorAll('.nav-links a');
+
+    navToggle?.addEventListener('click', () => {
+      const isOpen = document.body.classList.toggle('menu-open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    navLinkItems.forEach(link => {
+      link.addEventListener('click', () => {
+        document.body.classList.remove('menu-open');
+        navToggle?.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980) {
+        document.body.classList.remove('menu-open');
+        navToggle?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // ---------- Fade-in ----------
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ---------- Active nav link ----------
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    function setActiveLink() {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 110) current = section.id;
+      });
+
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', setActiveLink);
+    setActiveLink();
+
+    // ---------- Headshot fallback ----------
+    const heroPhoto = document.querySelector('.hero-photo');
+    const heroFrame = document.querySelector('.hero-photo-frame');
+
+    if (heroPhoto && heroFrame) {
+      const showFallback = () => heroFrame.classList.add('no-photo');
+      heroPhoto.addEventListener('error', showFallback);
+
+      const src = heroPhoto.getAttribute('src');
+      if (!src || !src.trim()) showFallback();
+    }
+  </script>
+</body>
+</html>
