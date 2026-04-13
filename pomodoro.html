@@ -520,6 +520,20 @@
       border-color: var(--current-color);
     }
 
+    select.setting-input {
+      text-align: left;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2366687A' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    html[data-theme="dark"] select.setting-input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A9B6C8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    }
+
     .toggle-switch {
       position: relative;
       width: 52px;
@@ -719,6 +733,376 @@
       white-space: nowrap;
       border-width: 0;
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       PROJECT & TASK TRACKING STYLES
+       ═══════════════════════════════════════════════════════════ */
+
+    /* View Tabs */
+    .view-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      justify-content: center;
+    }
+
+    .view-tab {
+      padding: 10px 20px;
+      background: transparent;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--fg);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-tab:hover {
+      background: var(--current-color);
+      color: white;
+      border-color: var(--current-color);
+    }
+
+    .view-tab.active {
+      background: var(--current-color);
+      color: white;
+      border-color: var(--current-color);
+    }
+
+    /* Task Selector */
+    .task-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+    }
+
+    .task-selector-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg-muted);
+    }
+
+    .task-selector-dropdown {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--fg);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Projects View */
+    .projects-view {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .projects-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .project-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .project-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .project-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-secondary);
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+    }
+
+    .task-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .task-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .task-completed {
+      text-decoration: line-through;
+      color: var(--fg-muted);
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .empty-tasks {
+      padding: 20px;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    /* Summary View */
+    .summary-view {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .summary-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .summary-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .summary-total {
+      background: var(--current-color);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .summary-total h3 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .summary-time {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .summary-pomodoros {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .summary-project {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .summary-project-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-project-header h4 {
+      flex: 1;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .summary-project-header .summary-time {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--current-color);
+    }
+
+    .summary-tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--bg-secondary);
+      border-radius: 6px;
+    }
+
+    .task-name {
+      color: var(--fg);
+      font-size: 14px;
+    }
+
+    .summary-task .summary-time {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg-muted);
+    }
+
+    /* Morning Confirmation */
+    .morning-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+    }
+
+    .morning-entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background: var(--bg-card);
+      border-radius: 6px;
+    }
+
+    /* Textarea styling */
+    textarea.setting-input {
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 640px) {
+      .view-tabs {
+        gap: 4px;
+      }
+
+      .view-tab {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .task-selector {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .projects-header,
+      .summary-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .task-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .task-actions {
+        justify-content: flex-end;
+      }
+
+      .summary-time {
+        font-size: 24px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -734,8 +1118,60 @@
 
   <!-- Main App Container -->
   <div id="app" class="container">
-    <!-- Mode Selector -->
-    <div class="mode-selector">
+    <!-- View Tabs -->
+    <div class="view-tabs">
+      <button
+        class="view-tab"
+        :class="{ active: currentView === 'timer' }"
+        @click="switchView('timer')"
+      >
+        ⏱️ Timer
+      </button>
+      <button
+        class="view-tab"
+        :class="{ active: currentView === 'projects' }"
+        @click="switchView('projects')"
+      >
+        📁 Projects
+      </button>
+      <button
+        class="view-tab"
+        :class="{ active: currentView === 'summary' }"
+        @click="switchView('summary')"
+      >
+        📊 Summary
+      </button>
+    </div>
+
+    <!-- Timer View -->
+    <div v-show="currentView === 'timer'">
+      <!-- Task Selector -->
+      <div class="task-selector" v-if="projects.length > 0">
+        <label class="task-selector-label">Working on:</label>
+        <select
+          v-model="activeTaskId"
+          @change="saveActiveTask"
+          class="task-selector-dropdown"
+        >
+          <option :value="null">No task selected</option>
+          <optgroup
+            v-for="project in projects"
+            :key="project.id"
+            :label="project.name"
+          >
+            <option
+              v-for="task in tasksByProject[project.id]"
+              :key="task.id"
+              :value="task.id"
+            >
+              {{ task.name }}
+            </option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="mode-selector">
       <button 
         v-for="mode in modes" 
         :key="mode.id"
@@ -784,14 +1220,104 @@
       </button>
     </div>
 
-    <!-- Progress Tracker -->
-    <div class="progress-section fade-in">
-      <div class="progress-header">
-        <span class="progress-title">Today's Progress</span>
-        <span class="progress-count">{{ completedPomodoros }}/{{ dailyGoal }}</span>
+      <!-- Progress Tracker -->
+      <div class="progress-section fade-in">
+        <div class="progress-header">
+          <span class="progress-title">Today's Progress</span>
+          <span class="progress-count">{{ completedPomodoros }}/{{ dailyGoal }}</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+        </div>
       </div>
-      <div class="progress-bar-container">
-        <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+    </div>
+
+    <!-- Projects View -->
+    <div v-show="currentView === 'projects'" class="projects-view">
+      <div class="projects-header">
+        <h2>Projects & Tasks</h2>
+        <button class="btn btn-primary" @click="openNewProjectModal">+ New Project</button>
+      </div>
+
+      <div v-if="projects.length === 0" class="empty-state">
+        <p>No projects yet. Create your first project to get started!</p>
+      </div>
+
+      <div v-for="project in projects" :key="project.id" class="project-card">
+        <div class="project-header">
+          <div class="project-info">
+            <span class="project-color" :style="{ backgroundColor: project.color }"></span>
+            <h3>{{ project.name }}</h3>
+          </div>
+          <div class="project-actions">
+            <button class="btn-icon" @click="openEditProjectModal(project)" title="Edit project">✏️</button>
+            <button class="btn-icon" @click="openNewTaskModal(project.id)" title="Add task">➕</button>
+            <button class="btn-icon" @click="deleteProject(project.id)" title="Delete project">🗑️</button>
+          </div>
+        </div>
+
+        <div v-if="tasksByProject[project.id] && tasksByProject[project.id].length > 0" class="task-list">
+          <div v-for="task in tasksByProject[project.id]" :key="task.id" class="task-item">
+            <div class="task-info">
+              <input
+                type="checkbox"
+                :checked="task.completed"
+                @change="toggleTaskComplete(task.id)"
+                class="task-checkbox"
+              >
+              <span :class="{ 'task-completed': task.completed }">{{ task.name }}</span>
+            </div>
+            <div class="task-actions">
+              <button
+                class="btn btn-secondary btn-sm"
+                @click="selectTask(task.id)"
+                :disabled="task.completed"
+              >
+                {{ activeTaskId === task.id ? '✓ Active' : 'Select' }}
+              </button>
+              <button class="btn-icon" @click="openEditTaskModal(task)" title="Edit task">✏️</button>
+              <button class="btn-icon" @click="deleteTask(task.id)" title="Delete task">🗑️</button>
+            </div>
+          </div>
+        </div>
+        <div v-else class="empty-tasks">
+          <p>No tasks yet. Click ➕ to add a task.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary View -->
+    <div v-show="currentView === 'summary'" class="summary-view">
+      <div class="summary-header">
+        <h2>Time Summary - Today</h2>
+        <button class="btn btn-secondary" @click="openTimeEditModal()">+ Add Time</button>
+      </div>
+
+      <div v-if="todaySummary.totalTime === 0" class="empty-state">
+        <p>No time tracked today. Start a pomodoro with a task selected!</p>
+      </div>
+
+      <div v-else class="summary-content">
+        <div class="summary-total">
+          <h3>Total Today</h3>
+          <p class="summary-time">{{ formatDuration(todaySummary.totalTime) }}</p>
+          <p class="summary-pomodoros">{{ todaySummary.totalPomodoros }} pomodoros</p>
+        </div>
+
+        <div v-for="(projectData, projectId) in todaySummary.byProject" :key="projectId" class="summary-project">
+          <div class="summary-project-header">
+            <span class="project-color" :style="{ backgroundColor: projectData.project.color }"></span>
+            <h4>{{ projectData.project.name }}</h4>
+            <span class="summary-time">{{ formatDuration(projectData.time) }}</span>
+          </div>
+
+          <div class="summary-tasks">
+            <div v-for="(taskData, taskId) in projectData.tasks" :key="taskId" class="summary-task">
+              <span class="task-name">{{ taskData.task.name }}</span>
+              <span class="summary-time">{{ formatDuration(taskData.time) }} ({{ taskData.pomodoros }}🍅)</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -931,15 +1457,59 @@
           </div>
         </div>
 
+        <!-- Ambient Sounds -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Ambient Sounds (During Pomodoro)</h3>
+          <div class="setting-item">
+            <label class="setting-label">Enable Ambient Sound</label>
+            <div
+              class="toggle-switch"
+              :class="{ active: settings.ambientSoundEnabled }"
+              @click="settings.ambientSoundEnabled = !settings.ambientSoundEnabled"
+              role="switch"
+              :aria-checked="settings.ambientSoundEnabled"
+              tabindex="0"
+            >
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+          <div class="setting-item" v-if="settings.ambientSoundEnabled">
+            <label for="ambient-sound-type" class="setting-label">Sound Type</label>
+            <select
+              id="ambient-sound-type"
+              class="setting-input"
+              v-model="settings.ambientSoundType"
+              style="width: 140px; cursor: pointer;"
+            >
+              <option value="none">None</option>
+              <option value="white">White Noise</option>
+              <option value="brown">Brown Noise</option>
+            </select>
+          </div>
+          <div class="setting-item" v-if="settings.ambientSoundEnabled" style="flex-direction: column; align-items: flex-start;">
+            <label class="setting-label" style="margin-bottom: 8px;">Ambient Volume: {{ settings.ambientSoundVolume }}%</label>
+            <input
+              type="range"
+              class="volume-slider"
+              v-model.number="settings.ambientSoundVolume"
+              @input="updateAmbientVolume"
+              min="0"
+              max="100"
+              step="5"
+              aria-label="Ambient sound volume control"
+            />
+          </div>
+        </div>
+
         <!-- Daily Goal -->
         <div class="settings-section">
           <h3 class="settings-section-title">Daily Goal</h3>
           <div class="setting-item">
             <label for="daily-goal" class="setting-label">Pomodoros per Day</label>
-            <input 
+            <input
               id="daily-goal"
-              type="number" 
-              class="setting-input" 
+              type="number"
+              class="setting-input"
               v-model.number="settings.dailyGoal"
               min="1"
               max="20"
@@ -953,12 +1523,183 @@
     </div>
   </div>
 
-  <!-- Notification Toast -->
-  <div class="notification" :class="{ show: showNotification }">
-    <div class="notification-title">{{ notificationTitle }}</div>
-    <div class="notification-message">{{ notificationMessage }}</div>
+    <!-- Project Modal -->
+    <div class="modal-overlay" :class="{ active: showProjectModal }" @click.self="closeProjectModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">{{ editingProject ? 'Edit Project' : 'New Project' }}</h2>
+          <button class="modal-close" @click="closeProjectModal">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-item">
+            <label class="setting-label">Project Name</label>
+            <input
+              v-model="projectForm.name"
+              type="text"
+              class="setting-input"
+              placeholder="Enter project name"
+              @keyup.enter="saveProject"
+            >
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Color</label>
+            <input
+              v-model="projectForm.color"
+              type="color"
+              class="setting-input"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" @click="closeProjectModal">Cancel</button>
+          <button class="btn btn-primary" @click="saveProject">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay" :class="{ active: showTaskModal }" @click.self="closeTaskModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">{{ editingTask ? 'Edit Task' : 'New Task' }}</h2>
+          <button class="modal-close" @click="closeTaskModal">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-item">
+            <label class="setting-label">Task Name</label>
+            <input
+              v-model="taskForm.name"
+              type="text"
+              class="setting-input"
+              placeholder="Enter task name"
+              @keyup.enter="saveTask"
+            >
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Description (optional)</label>
+            <textarea
+              v-model="taskForm.description"
+              class="setting-input"
+              placeholder="Enter task description"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Estimated Pomodoros</label>
+            <input
+              v-model.number="taskForm.estimatedPomodoros"
+              type="number"
+              class="setting-input"
+              min="1"
+              max="20"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" @click="closeTaskModal">Cancel</button>
+          <button class="btn btn-primary" @click="saveTask">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Edit Modal -->
+    <div class="modal-overlay" :class="{ active: showTimeEditModal }" @click.self="closeTimeEditModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">{{ editingTimeEntry ? 'Edit Time Entry' : 'Add Time Entry' }}</h2>
+          <button class="modal-close" @click="closeTimeEditModal">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-item">
+            <label class="setting-label">Task</label>
+            <select v-model="timeEditForm.taskId" class="setting-input">
+              <option :value="null">Select a task</option>
+              <optgroup
+                v-for="project in projects"
+                :key="project.id"
+                :label="project.name"
+              >
+                <option
+                  v-for="task in tasks.filter(t => t.projectId === project.id)"
+                  :key="task.id"
+                  :value="task.id"
+                >
+                  {{ task.name }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Date</label>
+            <input
+              v-model="timeEditForm.date"
+              type="date"
+              class="setting-input"
+            >
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Start Time</label>
+            <input
+              v-model="timeEditForm.startTime"
+              type="time"
+              class="setting-input"
+            >
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">End Time</label>
+            <input
+              v-model="timeEditForm.endTime"
+              type="time"
+              class="setting-input"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" @click="closeTimeEditModal">Cancel</button>
+          <button class="btn btn-primary" @click="saveTimeEdit">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Morning Confirmation Modal -->
+    <div class="modal-overlay" :class="{ active: showMorningConfirmation }">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">Good morning! 🌅</h2>
+          <button class="modal-close" @click="confirmMorningReview">×</button>
+        </div>
+        <div class="modal-body">
+          <p style="margin-bottom: 16px;">Here's what you worked on yesterday:</p>
+          <div class="morning-summary">
+            <div
+              v-for="entry in timeEntries.filter(e => {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                return e.date === yesterday.toISOString().split('T')[0];
+              })"
+              :key="entry.id"
+              class="morning-entry"
+            >
+              <span>{{ tasks.find(t => t.id === entry.taskId)?.name || 'Unknown Task' }}</span>
+              <span>{{ formatDuration(entry.duration) }}</span>
+            </div>
+          </div>
+          <p style="margin-top: 16px; font-size: 14px; color: var(--fg-muted);">
+            Need to make changes? Go to the Summary tab to edit time entries.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" @click="confirmMorningReview">Got it!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification" :class="{ show: showNotification }">
+      <div class="notification-title">{{ notificationTitle }}</div>
+      <div class="notification-message">{{ notificationMessage }}</div>
+    </div>
   </div>
-</div>
 
   <!-- Vue.js 3 from CDN -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
