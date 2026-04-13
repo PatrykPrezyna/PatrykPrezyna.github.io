@@ -464,7 +464,7 @@ createApp({
       // Form data
       projectForm: { name: '', color: '#D95550' },
       taskForm: { name: '', description: '', projectId: null, estimatedPomodoros: 4 },
-      timeEditForm: { taskId: null, date: '', startTime: '', endTime: '' }
+      timeEditForm: { taskId: null, date: '', hours: 0, minutes: 25 }
     };
   },
 
@@ -1467,22 +1467,23 @@ createApp({
     openTimeEditModal(entry = null) {
       if (entry) {
         this.editingTimeEntry = entry;
-        const startDate = new Date(entry.startTime);
-        const endDate = new Date(entry.endTime);
+        // Convert duration (seconds) to hours and minutes
+        const totalMinutes = Math.floor(entry.duration / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
         this.timeEditForm = {
           taskId: entry.taskId,
           date: entry.date,
-          startTime: startDate.toTimeString().slice(0, 5),
-          endTime: endDate.toTimeString().slice(0, 5)
+          hours: hours,
+          minutes: minutes
         };
       } else {
         this.editingTimeEntry = null;
-        const now = new Date();
         this.timeEditForm = {
           taskId: this.activeTaskId,
           date: getTodayString(),
-          startTime: new Date(now.getTime() - 25 * 60000).toTimeString().slice(0, 5),
-          endTime: now.toTimeString().slice(0, 5)
+          hours: 0,
+          minutes: 25
         };
       }
       this.showTimeEditModal = true;
@@ -1508,21 +1509,32 @@ createApp({
       const task = this.tasks.find(t => t.id === this.timeEditForm.taskId);
       if (!task) return;
 
-      // Parse times
-      const [startHour, startMin] = this.timeEditForm.startTime.split(':').map(Number);
-      const [endHour, endMin] = this.timeEditForm.endTime.split(':').map(Number);
+      // Convert hours and minutes to duration in seconds
+      const hours = parseInt(this.timeEditForm.hours) || 0;
+      const minutes = parseInt(this.timeEditForm.minutes) || 0;
       
-      const dateObj = new Date(this.timeEditForm.date);
-      const startTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), startHour, startMin).getTime();
-      const endTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), endHour, endMin).getTime();
-      
-      if (endTime <= startTime) {
-        alert('End time must be after start time');
+      if (hours === 0 && minutes === 0) {
+        alert('Please enter a duration greater than 0');
         return;
       }
 
-      const duration = Math.floor((endTime - startTime) / 1000);
+      const duration = (hours * 3600) + (minutes * 60);
       const pomodoros = Math.round(duration / (25 * 60));
+
+      // Create start and end times based on current time or end of day
+      const dateObj = new Date(this.timeEditForm.date);
+      const now = new Date();
+      
+      // If the date is today, use current time as end time
+      // Otherwise, use end of work day (5 PM) as end time
+      let endTime;
+      if (dateObj.toDateString() === now.toDateString()) {
+        endTime = now.getTime();
+      } else {
+        endTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), 17, 0).getTime();
+      }
+      
+      const startTime = endTime - (duration * 1000);
 
       if (this.editingTimeEntry) {
         // Update existing entry

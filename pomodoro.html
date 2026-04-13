@@ -1718,20 +1718,31 @@
             >
           </div>
           <div class="setting-item">
-            <label class="setting-label">Start Time</label>
-            <input
-              v-model="timeEditForm.startTime"
-              type="time"
-              class="setting-input"
-            >
-          </div>
-          <div class="setting-item">
-            <label class="setting-label">End Time</label>
-            <input
-              v-model="timeEditForm.endTime"
-              type="time"
-              class="setting-input"
-            >
+            <label class="setting-label">Duration</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div style="flex: 1;">
+                <input
+                  v-model.number="timeEditForm.hours"
+                  type="number"
+                  min="0"
+                  max="23"
+                  class="setting-input"
+                  placeholder="Hours"
+                >
+                <small style="display: block; margin-top: 4px; color: #666;">Hours</small>
+              </div>
+              <div style="flex: 1;">
+                <input
+                  v-model.number="timeEditForm.minutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  class="setting-input"
+                  placeholder="Minutes"
+                >
+                <small style="display: block; margin-top: 4px; color: #666;">Minutes</small>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
