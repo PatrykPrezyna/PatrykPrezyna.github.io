@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pomodoro Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       1. CSS VARIABLES & RESET
+       ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    :root {
+      /* Base Colors */
+      --bg: #F6F4EF;
+      --bg-card: #FFFFFF;
+      --fg: #1C1C27;
+      --fg-muted: #66687A;
+      --border: #E3E0D8;
+      
+      /* Mode Colors */
+      --pomodoro: #D95550;
+      --pomodoro-dark: #C44742;
+      --short-break: #4C9F70;
+      --short-break-dark: #3D8A5C;
+      --long-break: #457CA3;
+      --long-break-dark: #366A8C;
+      
+      /* UI Elements */
+      --radius: 12px;
+      --shadow-sm: 0 4px 18px rgba(10,20,30,0.06);
+      --shadow-md: 0 10px 34px rgba(10,20,30,0.12);
+      --shadow-lg: 0 20px 50px rgba(10,20,30,0.18);
+      
+      /* Typography */
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      
+      /* Current Mode (default to pomodoro) */
+      --current-color: var(--pomodoro);
+      --current-color-dark: var(--pomodoro-dark);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F141C;
+      --bg-card: #161D28;
+      --fg: #EDF2FA;
+      --fg-muted: #A9B6C8;
+      --border: #2B3646;
+    }
+
+    html { 
+      scroll-behavior: smooth; 
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color .3s ease, color .3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       2. NAVIGATION
+       ═══════════════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: rgba(246,244,239,0.84);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    html[data-theme="dark"] nav { 
+      background: rgba(15,20,28,0.85); 
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--fg);
+      text-decoration: none;
+      letter-spacing: .01em;
+      transition: color .2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--current-color);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--fg);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s ease;
+      font-size: 1.2rem;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--current-color);
+      color: var(--current-color);
+      transform: scale(1.05);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       3. MAIN CONTAINER
+       ═══════════════════════════════════════════════════════════ */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       4. MODE SELECTOR
+       ═══════════════════════════════════════════════════════════ */
+    .mode-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 48px;
+      background: var(--bg-card);
+      padding: 8px;
+      border-radius: 50px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      background: transparent;
+      color: var(--fg-muted);
+      white-space: nowrap;
+    }
+
+    .mode-btn:hover {
+      color: var(--fg);
+      transform: translateY(-1px);
+    }
+
+    .mode-btn.active {
+      background: var(--current-color);
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       5. TIMER DISPLAY
+       ═══════════════════════════════════════════════════════════ */
+    .timer-container {
+      position: relative;
+      margin-bottom: 48px;
+    }
+
+    .timer-circle {
+      width: 320px;
+      height: 320px;
+      position: relative;
+    }
+
+    .timer-svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .timer-circle-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 8;
+    }
+
+    .timer-circle-progress {
+      fill: none;
+      stroke: var(--current-color);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear, stroke .3s ease;
+    }
+
+    .timer-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .timer-time {
+      font-size: clamp(4rem, 12vw, 6rem);
+      font-weight: 700;
+      color: var(--fg);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      transition: color .2s ease;
+    }
+
+    .timer-display:hover .timer-time {
+      color: var(--current-color);
+    }
+
+    .timer-label {
+      font-size: 0.95rem;
+      color: var(--fg-muted);
+      margin-top: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       6. CONTROLS
+       ═══════════════════════════════════════════════════════════ */
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-primary {
+      background: var(--current-color);
+      color: white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .btn-primary:hover {
+      background: var(--current-color-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--fg);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--current-color);
+      color: var(--current-color);
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       7. PROGRESS TRACKER
+       ═══════════════════════════════════════════════════════════ */
+    .progress-section {
+      background: var(--bg-card);
+      padding: 24px 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .progress-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .progress-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--current-color);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--current-color);
+      border-radius: 999px;
+      transition: width .3s ease, background .3s ease;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       8. SETTINGS BUTTON & MODAL
+       ═══════════════════════════════════════════════════════════ */
+    .settings-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--fg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-md);
+      transition: all .2s ease;
+      z-index: 100;
+    }
+
+    .settings-btn:hover {
+      background: var(--current-color);
+      color: white;
+      border-color: var(--current-color);
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9);
+      transition: transform .3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--fg-muted);
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all .2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--fg);
+    }
+
+    .modal-body {
+      padding: 32px;
+    }
+
+    .settings-section {
+      margin-bottom: 32px;
+    }
+
+    .settings-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .settings-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-label {
+      font-size: 0.95rem;
+      color: var(--fg);
+      font-weight: 500;
+    }
+
+    .setting-input {
+      width: 80px;
+      padding: 8px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      transition: border-color .2s ease;
+    }
+
+    .setting-input:focus {
+      outline: none;
+      border-color: var(--current-color);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      background: var(--border);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+
+    .toggle-switch.active {
+      background: var(--current-color);
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: transform .2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(24px);
+    }
+
+    .volume-slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--border);
+      outline: none;
+      -webkit-appearance: none;
+      margin-top: 8px;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--current-color);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--current-color);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .modal-footer {
+      padding: 24px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       9. NOTIFICATIONS
+       ═══════════════════════════════════════════════════════════ */
+    .notification {
+      position: fixed;
+      top: 88px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 2px solid var(--current-color);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      box-shadow: var(--shadow-lg);
+      z-index: 3000;
+      transform: translateX(400px);
+      transition: transform .3s ease;
+      max-width: 320px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+
+    .notification-message {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       10. RESPONSIVE DESIGN
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .container {
+        padding: 80px 16px 32px;
+      }
+
+      .mode-selector {
+        flex-direction: column;
+        width: 100%;
+        max-width: 280px;
+        border-radius: var(--radius);
+      }
+
+      .mode-btn {
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 8px;
+      }
+
+      .timer-circle {
+        width: 280px;
+        height: 280px;
+      }
+
+      .timer-time {
+        font-size: 4.5rem;
+      }
+
+      .controls {
+        flex-direction: column;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .progress-section {
+        padding: 20px 24px;
+      }
+
+      .settings-btn {
+        bottom: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+      }
+
+      .modal-header,
+      .modal-body,
+      .modal-footer {
+        padding: 20px 24px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       11. ANIMATIONS
+       ═══════════════════════════════════════════════════════════ */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       12. UTILITY CLASSES
+       ═══════════════════════════════════════════════════════════ */
+    .hidden {
+      display: none !important;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html" class="nav-logo">🍅 Pomodoro Timer</a>
+    <div class="nav-right">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon" aria-hidden="true">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main App Container -->
+  <div id="app" class="container">
+    <!-- Mode Selector -->
+    <div class="mode-selector">
+      <button 
+        v-for="mode in modes" 
+        :key="mode.id"
+        class="mode-btn"
+        :class="{ active: currentMode === mode.id }"
+        @click="switchMode(mode.id)"
+        :aria-label="`Switch to ${mode.name}`"
+      >
+        {{ mode.name }}
+      </button>
+    </div>
+
+    <!-- Timer Display -->
+    <div class="timer-container">
+      <svg class="timer-svg" viewBox="0 0 320 320">
+        <circle 
+          class="timer-circle-bg" 
+          cx="160" 
+          cy="160" 
+          r="152"
+        />
+        <circle 
+          class="timer-circle-progress" 
+          cx="160" 
+          cy="160" 
+          r="152"
+          :style="progressStyle"
+        />
+      </svg>
+      <div class="timer-display" @click="toggleTimer" role="button" tabindex="0" @keypress.space="toggleTimer">
+        <div class="timer-time" aria-live="polite">{{ formattedTime }}</div>
+        <div class="timer-label">{{ timerLabel }}</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-primary" @click="toggleTimer" :aria-label="isRunning ? 'Pause timer' : 'Start timer'">
+        {{ isRunning ? 'Pause' : 'Start' }}
+      </button>
+      <button class="btn btn-secondary" @click="resetTimer" aria-label="Reset timer">
+        Reset
+      </button>
+      <button class="btn btn-secondary" @click="skipTimer" aria-label="Skip to next session">
+        Skip
+      </button>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-section fade-in">
+      <div class="progress-header">
+        <span class="progress-title">Today's Progress</span>
+        <span class="progress-count">{{ completedPomodoros }}/{{ dailyGoal }}</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+      </div>
+    </div>
+
+    <!-- Settings Button -->
+    <button class="settings-btn" @click="openSettings" aria-label="Open settings">
+      ⚙️
+    </button>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" :class="{ active: showSettings }" @click.self="closeSettings">
+    <div class="modal" role="dialog" aria-labelledby="settings-title" aria-modal="true">
+      <div class="modal-header">
+        <h2 id="settings-title" class="modal-title">Settings</h2>
+        <button class="modal-close" @click="closeSettings" aria-label="Close settings">×</button>
+      </div>
+      <div class="modal-body">
+        <!-- Timer Durations -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Timer Durations (minutes)</h3>
+          <div class="setting-item">
+            <label for="pomodoro-duration" class="setting-label">Pomodoro</label>
+            <input 
+              id="pomodoro-duration"
+              type="number" 
+              class="setting-input" 
+              v-model.number="settings.pomodoroDuration"
+              min="1"
+              max="60"
+            />
+          </div>
+          <div class="setting-item">
+            <label for="short-break-duration" class="setting-label">Short Break</label>
+            <input 
+              id="short-break-duration"
+              type="number" 
+              class="setting-input" 
+              v-model.number="settings.shortBreakDuration"
+              min="1"
+              max="30"
+            />
+          </div>
+          <div class="setting-item">
+            <label for="long-break-duration" class="setting-label">Long Break</label>
+            <input 
+              id="long-break-duration"
+              type="number" 
+              class="setting-input" 
+              v-model.number="settings.longBreakDuration"
+              min="1"
+              max="60"
+            />
+          </div>
+          <div class="setting-item">
+            <label for="long-break-interval" class="setting-label">Long Break Interval</label>
+            <input 
+              id="long-break-interval"
+              type="number" 
+              class="setting-input" 
+              v-model.number="settings.longBreakInterval"
+              min="2"
+              max="10"
+            />
+          </div>
+        </div>
+
+        <!-- Automation -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Automation</h3>
+          <div class="setting-item">
+            <label class="setting-label">Auto-start Breaks</label>
+            <div 
+              class="toggle-switch" 
+              :class="{ active: settings.autoStartBreaks }"
+              @click="settings.autoStartBreaks = !settings.autoStartBreaks"
+              role="switch"
+              :aria-checked="settings.autoStartBreaks"
+              tabindex="0"
+            >
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Auto-start Pomodoros</label>
+            <div 
+              class="toggle-switch" 
+              :class="{ active: settings.autoStartPomodoros }"
+              @click="settings.autoStartPomodoros = !settings.autoStartPomodoros"
+              role="switch"
+              :aria-checked="settings.autoStartPomodoros"
+              tabindex="0"
+            >
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Notifications</h3>
+          <div class="setting-item">
+            <label class="setting-label">Browser Notifications</label>
+            <div 
+              class="toggle-switch" 
+              :class="{ active: settings.notificationsEnabled }"
+              @click="toggleNotifications"
+              role="switch"
+              :aria-checked="settings.notificationsEnabled"
+              tabindex="0"
+            >
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Sound</label>
+            <div 
+              class="toggle-switch" 
+              :class="{ active: settings.soundEnabled }"
+              @click="settings.soundEnabled = !settings.soundEnabled"
+              role="switch"
+              :aria-checked="settings.soundEnabled"
+              tabindex="0"
+            >
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+          <div class="setting-item" style="flex-direction: column; align-items: flex-start;">
+            <label class="setting-label" style="margin-bottom: 8px;">Volume: {{ settings.volume }}%</label>
+            <input 
+              type="range" 
+              class="volume-slider" 
+              v-model.number="settings.volume"
+              min="0"
+              max="100"
+              step="5"
+              aria-label="Volume control"
+            />
+          </div>
+        </div>
+
+        <!-- Daily Goal -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Daily Goal</h3>
+          <div class="setting-item">
+            <label for="daily-goal" class="setting-label">Pomodoros per Day</label>
+            <input 
+              id="daily-goal"
+              type="number" 
+              class="setting-input" 
+              v-model.number="settings.dailyGoal"
+              min="1"
+              max="20"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" @click="closeSettings">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="notification" :class="{ show: showNotification }">
+    <div class="notification-title">{{ notificationTitle }}</div>
+    <div class="notification-message">{{ notificationMessage }}</div>
+  </div>
+</div>
+
+  <!-- Vue.js 3 from CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <!-- Pomodoro App Script -->
+  <script src="js/pomodoro-app.js"></script>
+</body>
+</html>
