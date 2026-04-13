@@ -502,7 +502,8 @@
     }
 
     .setting-input {
-      width: 80px;
+      width: 100%;
+      min-width: 300px;
       padding: 8px 12px;
       border: 2px solid var(--border);
       border-radius: 8px;
@@ -511,13 +512,27 @@
       font-family: var(--sans);
       font-size: 0.95rem;
       font-weight: 600;
-      text-align: center;
+      text-align: left;
       transition: border-color .2s ease;
     }
 
     .setting-input:focus {
       outline: none;
       border-color: var(--current-color);
+    }
+
+    input[type="number"].setting-input {
+      width: 80px;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    input[type="color"].setting-input {
+      width: 80px;
+      min-width: 80px;
+      height: 40px;
+      padding: 4px;
+      cursor: pointer;
     }
 
     select.setting-input {
@@ -939,12 +954,46 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
     .summary-header h2 {
       font-size: 24px;
       font-weight: 600;
       color: var(--fg);
+    }
+
+    .summary-period-selector {
+      display: flex;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+    }
+
+    .period-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--fg-muted);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--sans);
+    }
+
+    .period-btn:hover {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    .period-btn.active {
+      background: var(--current-color);
+      color: white;
     }
 
     .summary-content {
@@ -1081,6 +1130,19 @@
         flex-direction: column;
         gap: 12px;
         align-items: stretch;
+      }
+
+      .summary-header > div {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .summary-period-selector {
+        width: 100%;
+      }
+
+      .period-btn {
+        flex: 1;
       }
 
       .project-header {
@@ -1289,22 +1351,40 @@
     <!-- Summary View -->
     <div v-show="currentView === 'summary'" class="summary-view">
       <div class="summary-header">
-        <h2>Time Summary - Today</h2>
-        <button class="btn btn-secondary" @click="openTimeEditModal()">+ Add Time</button>
+        <h2>Time Summary - {{ summaryPeriod === 'week' ? 'This Week' : 'Today' }}</h2>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="summary-period-selector">
+            <button
+              class="period-btn"
+              :class="{ active: summaryPeriod === 'day' }"
+              @click="summaryPeriod = 'day'"
+            >
+              Day
+            </button>
+            <button
+              class="period-btn"
+              :class="{ active: summaryPeriod === 'week' }"
+              @click="summaryPeriod = 'week'"
+            >
+              Week
+            </button>
+          </div>
+          <button class="btn btn-secondary" @click="openTimeEditModal()">+ Add Time</button>
+        </div>
       </div>
 
-      <div v-if="todaySummary.totalTime === 0" class="empty-state">
-        <p>No time tracked today. Start a pomodoro with a task selected!</p>
+      <div v-if="currentSummary.totalTime === 0" class="empty-state">
+        <p>No time tracked {{ summaryPeriod === 'week' ? 'this week' : 'today' }}. Start a pomodoro with a task selected!</p>
       </div>
 
       <div v-else class="summary-content">
         <div class="summary-total">
-          <h3>Total Today</h3>
-          <p class="summary-time">{{ formatDuration(todaySummary.totalTime) }}</p>
-          <p class="summary-pomodoros">{{ todaySummary.totalPomodoros }} pomodoros</p>
+          <h3>Total {{ summaryPeriod === 'week' ? 'This Week' : 'Today' }}</h3>
+          <p class="summary-time">{{ formatDuration(currentSummary.totalTime) }}</p>
+          <p class="summary-pomodoros">{{ currentSummary.totalPomodoros }} pomodoros</p>
         </div>
 
-        <div v-for="(projectData, projectId) in todaySummary.byProject" :key="projectId" class="summary-project">
+        <div v-for="(projectData, projectId) in currentSummary.byProject" :key="projectId" class="summary-project">
           <div class="summary-project-header">
             <span class="project-color" :style="{ backgroundColor: projectData.project.color }"></span>
             <h4>{{ projectData.project.name }}</h4>

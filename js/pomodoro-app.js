@@ -450,6 +450,7 @@ createApp({
       activeTaskId: null,
       sessionStartTime: null, // Track when current pomodoro started
       currentView: 'timer', // 'timer', 'projects', 'summary'
+      summaryPeriod: 'day', // 'day' or 'week'
       
       // Project/Task UI state
       showProjectModal: false,
@@ -587,6 +588,71 @@ createApp({
       });
       
       return summary;
+    },
+    
+    /**
+     * Calculate week's time summary
+     */
+    weekSummary() {
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      monday.setHours(0, 0, 0, 0);
+      
+      const weekEntries = this.timeEntries.filter(e => {
+        const entryDate = new Date(e.date);
+        return entryDate >= monday;
+      });
+      
+      const summary = {
+        totalTime: 0,
+        totalPomodoros: 0,
+        byProject: {}
+      };
+      
+      weekEntries.forEach(entry => {
+        summary.totalTime += entry.duration;
+        summary.totalPomodoros += entry.pomodorosCompleted;
+        
+        const project = this.projects.find(p => p.id === entry.projectId);
+        const task = this.tasks.find(t => t.id === entry.taskId);
+        
+        if (project) {
+          if (!summary.byProject[project.id]) {
+            summary.byProject[project.id] = {
+              project,
+              time: 0,
+              pomodoros: 0,
+              tasks: {}
+            };
+          }
+          
+          summary.byProject[project.id].time += entry.duration;
+          summary.byProject[project.id].pomodoros += entry.pomodorosCompleted;
+          
+          if (task) {
+            if (!summary.byProject[project.id].tasks[task.id]) {
+              summary.byProject[project.id].tasks[task.id] = {
+                task,
+                time: 0,
+                pomodoros: 0
+              };
+            }
+            summary.byProject[project.id].tasks[task.id].time += entry.duration;
+            summary.byProject[project.id].tasks[task.id].pomodoros += entry.pomodorosCompleted;
+          }
+        }
+      });
+      
+      return summary;
+    },
+    
+    /**
+     * Get current summary based on selected period
+     */
+    currentSummary() {
+      return this.summaryPeriod === 'week' ? this.weekSummary : this.todaySummary;
     }
   },
 
