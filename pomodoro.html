@@ -1083,6 +1083,146 @@
       font-weight: 500;
       color: var(--fg-muted);
     }
+    /* Time Log View */
+    .timelog-view {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timelog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .timelog-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .date-picker {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    .date-picker:hover {
+      border-color: var(--current-color);
+    }
+
+    .date-picker:focus {
+      outline: none;
+      border-color: var(--current-color);
+      box-shadow: 0 0 0 3px rgba(217, 85, 80, 0.1);
+    }
+
+    .timelog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .time-entry-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .time-entry-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .entry-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .entry-info {
+      flex: 1;
+    }
+
+    .entry-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg);
+      margin: 0 0 4px 0;
+    }
+
+    .entry-info p {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin: 0;
+    }
+
+    .entry-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 6px;
+    }
+
+    .time-range {
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    .duration {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--current-color);
+    }
+
+    .entry-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .timelog-total {
+      margin-top: 8px;
+      padding: 16px;
+      background: var(--bg-card);
+      border: 2px solid var(--current-color);
+      border-radius: var(--radius);
+      text-align: center;
+      font-size: 16px;
+      color: var(--fg);
+    }
+
 
     /* Morning Confirmation */
     .morning-summary {
@@ -1164,6 +1304,29 @@
       .summary-time {
         font-size: 24px;
       }
+
+      .timelog-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .date-picker {
+        width: 100%;
+      }
+      
+      .entry-details {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      
+      .entry-actions {
+        width: 100%;
+      }
+      
+      .entry-actions button {
+        flex: 1;
+      }
     }
   </style>
 </head>
@@ -1202,6 +1365,13 @@
         @click="switchView('summary')"
       >
         📊 Summary
+      </button>
+      <button
+        class="view-tab"
+        :class="{ active: currentView === 'timelog' }"
+        @click="switchView('timelog')"
+      >
+        📋 Time Log
       </button>
     </div>
 
@@ -1399,6 +1569,73 @@
           </div>
         </div>
       </div>
+    <!-- Time Log View -->
+    <div v-show="currentView === 'timelog'" class="timelog-view">
+      <div class="timelog-header">
+        <h2>Time Log</h2>
+        <input 
+          type="date" 
+          v-model="timeLogDate"
+          class="date-picker"
+          :max="getTodayString()"
+        />
+      </div>
+
+      <!-- Empty State -->
+      <div v-if="filteredTimeEntries.length === 0" class="empty-state">
+        <p>No time entries for this date. Start tracking time by selecting a task and starting a pomodoro!</p>
+      </div>
+
+      <!-- Time Entries List -->
+      <div v-else class="timelog-content">
+        <div 
+          v-for="entry in filteredTimeEntries" 
+          :key="entry.id"
+          class="time-entry-card"
+        >
+          <div class="entry-header">
+            <span 
+              class="project-color" 
+              :style="{ backgroundColor: getProjectForEntry(entry)?.color || '#D95550' }"
+            ></span>
+            <div class="entry-info">
+              <h4>{{ getProjectForEntry(entry)?.name || 'Unknown Project' }}</h4>
+              <p>{{ getTaskForEntry(entry)?.name || 'Unknown Task' }}</p>
+            </div>
+          </div>
+          <div class="entry-details">
+            <span class="time-range">
+              {{ formatTimeRange(entry.startTime, entry.endTime) }}
+            </span>
+            <span class="duration">
+              {{ formatDuration(entry.duration) }}
+            </span>
+          </div>
+          <div class="entry-actions">
+            <button 
+              class="btn btn-secondary btn-sm"
+              @click="openTimeEditModal(entry)"
+            >
+              Edit
+            </button>
+            <button 
+              class="btn btn-danger btn-sm"
+              @click="deleteTimeEntry(entry.id)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Daily Total -->
+        <div class="timelog-total">
+          <strong>Total:</strong>
+          {{ formatDuration(filteredTimeEntries.reduce((sum, e) => sum + e.duration, 0)) }}
+          ({{ filteredTimeEntries.reduce((sum, e) => sum + e.pomodorosCompleted, 0) }} pomodoros)
+        </div>
+      </div>
+    </div>
+
     </div>
 
     <!-- Settings Button -->

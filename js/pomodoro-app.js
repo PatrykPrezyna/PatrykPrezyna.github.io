@@ -449,8 +449,9 @@ createApp({
       timeEntries: [],
       activeTaskId: null,
       sessionStartTime: null, // Track when current pomodoro started
-      currentView: 'timer', // 'timer', 'projects', 'summary'
+      currentView: 'timer', // 'timer', 'projects', 'summary', 'timelog'
       summaryPeriod: 'day', // 'day' or 'week'
+      timeLogDate: getTodayString(), // Date for time log view
       
       // Project/Task UI state
       showProjectModal: false,
@@ -653,6 +654,15 @@ createApp({
      */
     currentSummary() {
       return this.summaryPeriod === 'week' ? this.weekSummary : this.todaySummary;
+    },
+    
+    /**
+     * Get filtered time entries for selected date in time log view
+     */
+    filteredTimeEntries() {
+      return this.timeEntries
+        .filter(e => e.date === this.timeLogDate)
+        .sort((a, b) => a.startTime - b.startTime);
     }
   },
 
@@ -1619,6 +1629,30 @@ createApp({
         return `${hours}h ${minutes}m`;
       }
       return `${minutes}m`;
+    },
+
+    /**
+     * Format time range for time log entries
+     */
+    formatTimeRange(startTime, endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      const options = { hour: 'numeric', minute: '2-digit' };
+      return `${start.toLocaleTimeString('en-US', options)} - ${end.toLocaleTimeString('en-US', options)}`;
+    },
+
+    /**
+     * Get project for a time entry
+     */
+    getProjectForEntry(entry) {
+      return this.projects.find(p => p.id === entry.projectId);
+    },
+
+    /**
+     * Get task for a time entry
+     */
+    getTaskForEntry(entry) {
+      return this.tasks.find(t => t.id === entry.taskId);
     }
   }
 }).mount('#app');
