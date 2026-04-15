@@ -1833,6 +1833,31 @@
             />
           </div>
         </div>
+
+        <!-- Data Management -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">Data Management</h3>
+          <div class="setting-item" style="flex-direction: column; align-items: stretch; gap: 12px;">
+            <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.5;">
+              Export your data to create a backup file, or import previously exported data to restore your projects, tasks, and time entries.
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn btn-primary" @click="exportData" style="flex: 1; min-width: 140px;">
+                <span style="margin-right: 6px;">📥</span> Export Data
+              </button>
+              <button class="btn btn-secondary" @click="triggerImport" style="flex: 1; min-width: 140px;">
+                <span style="margin-right: 6px;">📤</span> Import Data
+              </button>
+            </div>
+            <input
+              type="file"
+              ref="importInput"
+              @change="importData"
+              accept=".json"
+              style="display: none;"
+            />
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" @click="closeSettings">Close</button>

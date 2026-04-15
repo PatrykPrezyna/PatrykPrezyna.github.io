@@ -18,6 +18,7 @@ Visit: [https://patrykprezyna.github.io](https://patrykprezyna.github.io)
 - ♿ Accessible with keyboard shortcuts
 - 🎯 Project and task tracking
 - 🔊 Ambient sounds (White/Brown noise)
+- 💾 **Export/Import data** - Backup and restore your projects, tasks, and time entries
 
 ### Portfolio
 - Clean, modern design
@@ -52,6 +53,18 @@ This project is deployed using **GitHub Pages**.
 - `1/2/3` - Switch modes
 - `,` - Open settings
 - `Esc` - Close modals
+
+## 💾 Data Export/Import
+
+The Pomodoro Timer includes a complete backup and restore system. You can export all your data (projects, tasks, time entries, and settings) to a JSON file and import it back whenever needed.
+
+**Quick Start:**
+1. Open Settings (⚙️)
+2. Scroll to "Data Management"
+3. Click "Export Data" to create a backup
+4. Click "Import Data" to restore from a backup
+
+📖 **[Read the complete Export/Import Guide](EXPORT_IMPORT_GUIDE.md)** for detailed instructions, troubleshooting, and best practices.
 
 ## 📄 License
 

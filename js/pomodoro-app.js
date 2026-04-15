@@ -451,7 +451,7 @@ createApp({
       sessionStartTime: null, // Track when current pomodoro started
       currentView: 'timer', // 'timer', 'projects', 'summary', 'timelog'
       summaryPeriod: 'day', // 'day' or 'week'
-      timeLogDate: getTodayString(), // Date for time log view
+      timeLogDate: null, // Date for time log view (initialized in mounted)
       
       // Project/Task UI state
       showProjectModal: false,
@@ -545,7 +545,7 @@ createApp({
      * Calculate today's time summary
      */
     todaySummary() {
-      const today = getTodayString();
+      const today = this.getTodayString();
       const todayEntries = this.timeEntries.filter(e => e.date === today);
       
       const summary = {
@@ -672,6 +672,9 @@ createApp({
    * ─────────────────────────────────────────────────────────────────────
    */
   mounted() {
+    // Initialize time log date
+    this.timeLogDate = this.getTodayString();
+    
     // Initialize ambient sound generator
     this.ambientSound = new AmbientSoundGenerator();
     
@@ -725,6 +728,14 @@ createApp({
    * ─────────────────────────────────────────────────────────────────────
    */
   methods: {
+    /**
+     * Get today's date as a string (YYYY-MM-DD)
+     * @returns {string} Today's date
+     */
+    getTodayString() {
+      return new Date().toISOString().split('T')[0];
+    },
+
     /**
      * Switch between timer modes (Pomodoro, Short Break, Long Break)
      * @param {string} mode - Mode identifier
@@ -1043,15 +1054,15 @@ createApp({
         pomodorosUntilLongBreak: this.pomodorosUntilLongBreak
       };
       saveToStorage(STORAGE_KEYS.PROGRESS, progress);
-      saveToStorage(STORAGE_KEYS.LAST_DATE, getTodayString());
+      saveToStorage(STORAGE_KEYS.LAST_DATE, this.getTodayString());
     },
 
     /**
      * Check if we need to reset daily progress
      */
     checkDailyReset() {
-      const lastDate = loadFromStorage(STORAGE_KEYS.LAST_DATE, getTodayString());
-      const today = getTodayString();
+      const lastDate = loadFromStorage(STORAGE_KEYS.LAST_DATE, this.getTodayString());
+      const today = this.getTodayString();
       
       if (lastDate !== today) {
         // New day - reset progress
@@ -1462,7 +1473,7 @@ createApp({
         startTime: this.sessionStartTime,
         endTime: endTime,
         duration: duration,
-        date: getTodayString(),
+        date: this.getTodayString(),
         pomodorosCompleted: 1
       };
 
@@ -1491,7 +1502,7 @@ createApp({
         this.editingTimeEntry = null;
         this.timeEditForm = {
           taskId: this.activeTaskId,
-          date: getTodayString(),
+          date: this.getTodayString(),
           hours: 0,
           minutes: 25
         };
@@ -1591,7 +1602,7 @@ createApp({
      */
     checkMorningConfirmation() {
       const lastConfirmation = loadFromStorage(STORAGE_KEYS.LAST_CONFIRMATION, null);
-      const today = getTodayString();
+      const today = this.getTodayString();
       
       if (lastConfirmation === today) return;
 
@@ -1614,7 +1625,7 @@ createApp({
      * Confirm morning review
      */
     confirmMorningReview() {
-      saveToStorage(STORAGE_KEYS.LAST_CONFIRMATION, getTodayString());
+      saveToStorage(STORAGE_KEYS.LAST_CONFIRMATION, this.getTodayString());
       this.showMorningConfirmation = false;
     },
 
@@ -1653,6 +1664,144 @@ createApp({
      */
     getTaskForEntry(entry) {
       return this.tasks.find(t => t.id === entry.taskId);
+    },
+
+    /**
+     * Export all data to JSON file
+     */
+    exportData() {
+      const exportData = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        appName: 'Pomodoro Timer',
+        data: {
+          projects: this.projects,
+          tasks: this.tasks,
+          timeEntries: this.timeEntries,
+          settings: this.settings
+        }
+      };
+      
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `pomodoro-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      // Show success message
+      this.showNotification = true;
+      this.notificationTitle = 'Export Successful';
+      this.notificationMessage = 'Your data has been exported successfully!';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
+    },
+
+    /**
+     * Trigger file input for import
+     */
+    triggerImport() {
+      this.$refs.importInput.click();
+    },
+
+    /**
+     * Import data from JSON file
+     */
+    importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          
+          // Validate structure
+          if (!importedData.version || !importedData.data) {
+            throw new Error('Invalid file format. Please select a valid Pomodoro backup file.');
+          }
+          
+          // Validate data types
+          if (importedData.data.projects && !Array.isArray(importedData.data.projects)) {
+            throw new Error('Invalid projects data format.');
+          }
+          if (importedData.data.tasks && !Array.isArray(importedData.data.tasks)) {
+            throw new Error('Invalid tasks data format.');
+          }
+          if (importedData.data.timeEntries && !Array.isArray(importedData.data.timeEntries)) {
+            throw new Error('Invalid time entries data format.');
+          }
+          
+          // Confirm with user
+          const projectCount = importedData.data.projects?.length || 0;
+          const taskCount = importedData.data.tasks?.length || 0;
+          const entryCount = importedData.data.timeEntries?.length || 0;
+          
+          const message = `This will replace all current data with:\n\n` +
+            `• ${projectCount} project(s)\n` +
+            `• ${taskCount} task(s)\n` +
+            `• ${entryCount} time entry(ies)\n\n` +
+            `Continue?`;
+          
+          if (!confirm(message)) {
+            // Reset file input
+            event.target.value = '';
+            return;
+          }
+          
+          // Import data
+          if (importedData.data.projects) {
+            this.projects = importedData.data.projects;
+            this.saveProjects();
+          }
+          if (importedData.data.tasks) {
+            this.tasks = importedData.data.tasks;
+            this.saveTasks();
+          }
+          if (importedData.data.timeEntries) {
+            this.timeEntries = importedData.data.timeEntries;
+            this.saveTimeEntries();
+          }
+          if (importedData.data.settings) {
+            this.settings = { ...DEFAULT_SETTINGS, ...importedData.data.settings };
+            this.saveSettings();
+            // Update timer with new settings
+            this.timeRemaining = this.settings.pomodoroDuration * 60;
+            this.totalTime = this.settings.pomodoroDuration * 60;
+          }
+          
+          // Reset file input
+          event.target.value = '';
+          
+          // Show success message
+          this.showNotification = true;
+          this.notificationTitle = 'Import Successful';
+          this.notificationMessage = 'Your data has been imported successfully!';
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+          
+          // Close settings modal
+          this.closeSettings();
+        } catch (error) {
+          console.error('Import error:', error);
+          alert('Error importing data: ' + error.message);
+          // Reset file input
+          event.target.value = '';
+        }
+      };
+      
+      reader.onerror = () => {
+        alert('Error reading file. Please try again.');
+        event.target.value = '';
+      };
+      
+      reader.readAsText(file);
     }
   }
 }).mount('#app');

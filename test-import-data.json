@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-04-14T19:00:00.000Z",
+  "appName": "Pomodoro Timer",
+  "data": {
+    "projects": [
+      {
+        "id": "test-project-1",
+        "name": "Test Project Alpha",
+        "color": "#D95550"
+      },
+      {
+        "id": "test-project-2",
+        "name": "Test Project Beta",
+        "color": "#4A90E2"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "test-task-1",
+        "name": "Test Task 1",
+        "description": "This is a test task for project Alpha",
+        "projectId": "test-project-1",
+        "estimatedPomodoros": 4,
+        "completed": false
+      },
+      {
+        "id": "test-task-2",
+        "name": "Test Task 2",
+        "description": "This is a test task for project Beta",
+        "projectId": "test-project-2",
+        "estimatedPomodoros": 2,
+        "completed": true
+      },
+      {
+        "id": "test-task-3",
+        "name": "Test Task 3",
+        "description": "Another test task for project Alpha",
+        "projectId": "test-project-1",
+        "estimatedPomodoros": 6,
+        "completed": false
+      }
+    ],
+    "timeEntries": [
+      {
+        "id": "test-entry-1",
+        "taskId": "test-task-1",
+        "projectId": "test-project-1",
+        "startTime": 1713118800000,
+        "endTime": 1713120300000,
+        "duration": 1500,
+        "date": "2026-04-14",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "test-entry-2",
+        "taskId": "test-task-2",
+        "projectId": "test-project-2",
+        "startTime": 1713120300000,
+        "endTime": 1713121800000,
+        "duration": 1500,
+        "date": "2026-04-14",
+        "pomodorosCompleted": 1
+      }
+    ],
+    "settings": {
+      "pomodoroDuration": 25,
+      "shortBreakDuration": 5,
+      "longBreakDuration": 15,
+      "longBreakInterval": 4,
+      "autoStartBreaks": false,
+      "autoStartPomodoros": false,
+      "notificationsEnabled": true,
+      "soundEnabled": true,
+      "volume": 50,
+      "ambientSoundEnabled": false,
+      "ambientSoundType": "none",
+      "ambientSoundVolume": 30,
+      "dailyGoal": 8
+    }
+  }
+}
