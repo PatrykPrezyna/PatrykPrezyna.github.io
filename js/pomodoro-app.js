@@ -453,6 +453,10 @@ createApp({
       summaryPeriod: 'day', // 'day' or 'week'
       timeLogDate: null, // Date for time log view (initialized in mounted)
       
+      // Drag and Drop state
+      draggedTask: null,
+      dragOverTask: null,
+      
       // Project/Task UI state
       showProjectModal: false,
       showTaskModal: false,
@@ -663,6 +667,15 @@ createApp({
       return this.timeEntries
         .filter(e => e.date === this.timeLogDate)
         .sort((a, b) => a.startTime - b.startTime);
+    },
+    
+    /**
+     * Get sorted incomplete tasks by priority
+     */
+    sortedIncompleteTasks() {
+      return this.tasks
+        .filter(t => !t.completed)
+        .sort((a, b) => (a.priority || 999999) - (b.priority || 999999));
     }
   },
 
@@ -687,6 +700,9 @@ createApp({
     this.loadTasks();
     this.loadTimeEntries();
     this.loadActiveTask();
+    
+    // Initialize task priorities for backward compatibility
+    this.initializeTaskPriorities();
     
     // Set initial mode color
     updateModeColor(this.currentMode);
@@ -1409,7 +1425,11 @@ createApp({
           this.tasks[index].estimatedPomodoros = this.taskForm.estimatedPomodoros;
         }
       } else {
-        // Create new task
+        // Create new task with priority
+        const maxPriority = Math.max(
+          0,
+          ...this.tasks.map(t => t.priority || 0)
+        );
         const newTask = {
           id: generateUUID(),
           projectId: this.taskForm.projectId,
@@ -1417,7 +1437,8 @@ createApp({
           description: this.taskForm.description.trim(),
           createdAt: Date.now(),
           completed: false,
-          estimatedPomodoros: this.taskForm.estimatedPomodoros
+          estimatedPomodoros: this.taskForm.estimatedPomodoros,
+          priority: maxPriority + 1
         };
         this.tasks.push(newTask);
       }
@@ -1452,6 +1473,96 @@ createApp({
         task.completed = !task.completed;
         this.saveTasks();
       }
+    },
+
+    /**
+     * Initialize task priorities for backward compatibility
+     */
+    initializeTaskPriorities() {
+      // For existing tasks without priority, assign sequential priorities
+      const tasksWithoutPriority = this.tasks.filter(t => t.priority === undefined || t.priority === null);
+      if (tasksWithoutPriority.length > 0) {
+        const maxPriority = Math.max(
+          0,
+          ...this.tasks.filter(t => t.priority !== undefined && t.priority !== null).map(t => t.priority)
+        );
+        tasksWithoutPriority.forEach((task, index) => {
+          task.priority = maxPriority + index + 1;
+        });
+        this.saveTasks();
+      }
+    },
+
+    /**
+     * Get project name by ID
+     */
+    getProjectName(projectId) {
+      const project = this.projects.find(p => p.id === projectId);
+      return project ? project.name : 'Unknown Project';
+    },
+
+    /**
+     * Handle drag start event
+     */
+    handleDragStart(event, task) {
+      this.draggedTask = task;
+      event.dataTransfer.effectAllowed = 'move';
+      event.target.classList.add('dragging');
+    },
+
+    /**
+     * Handle drag over event
+     */
+    handleDragOver(event, task) {
+      event.preventDefault();
+      this.dragOverTask = task;
+      event.dataTransfer.dropEffect = 'move';
+    },
+
+    /**
+     * Handle drop event
+     */
+    handleDrop(event, targetTask) {
+      event.preventDefault();
+      if (!this.draggedTask || this.draggedTask.id === targetTask.id) return;
+      
+      // Reorder tasks based on drop position
+      this.reorderTaskPriorities(this.draggedTask, targetTask);
+      this.saveTasks();
+    },
+
+    /**
+     * Handle drag end event
+     */
+    handleDragEnd(event) {
+      event.target.classList.remove('dragging');
+      this.draggedTask = null;
+      this.dragOverTask = null;
+    },
+
+    /**
+     * Reorder task priorities after drag and drop
+     */
+    reorderTaskPriorities(draggedTask, targetTask) {
+      const incompleteTasks = this.tasks
+        .filter(t => !t.completed)
+        .sort((a, b) => (a.priority || 999999) - (b.priority || 999999));
+      
+      // Remove dragged task from array
+      const draggedIndex = incompleteTasks.findIndex(t => t.id === draggedTask.id);
+      incompleteTasks.splice(draggedIndex, 1);
+      
+      // Insert at new position
+      const targetIndex = incompleteTasks.findIndex(t => t.id === targetTask.id);
+      incompleteTasks.splice(targetIndex, 0, draggedTask);
+      
+      // Reassign priorities
+      incompleteTasks.forEach((task, index) => {
+        const originalTask = this.tasks.find(t => t.id === task.id);
+        if (originalTask) {
+          originalTask.priority = index + 1;
+        }
+      });
     },
 
     /**

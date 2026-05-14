@@ -786,31 +786,135 @@
     }
 
     /* Task Selector */
-    .task-selector {
+    /* Task Priority List */
+    .task-priority-list {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      max-height: 500px;
+      min-height: 320px;
+      overflow-y: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .task-priority-list.empty {
+      max-height: none;
+    }
+
+    .task-priority-header {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .task-priority-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      margin: 0;
+    }
+
+    .task-priority-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-priority-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: var(--bg-secondary);
-      border-radius: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: grab;
+      transition: all 0.2s ease;
+      user-select: none;
     }
 
-    .task-selector-label {
+    .task-priority-item:hover {
+      border-color: var(--current-color);
+      background: var(--bg-card);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .task-priority-item.active {
+      border-color: var(--current-color);
+      background: var(--bg-card);
+      box-shadow: 0 0 0 3px rgba(217, 85, 80, 0.1);
+    }
+
+    .task-priority-item.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+      transform: scale(0.98);
+    }
+
+    .task-drag-handle {
+      color: var(--fg-muted);
+      font-size: 16px;
+      cursor: grab;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .task-priority-item:active .task-drag-handle {
+      cursor: grabbing;
+    }
+
+    .task-priority-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      background: var(--current-color);
+      color: white;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .task-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-name {
       font-size: 14px;
       font-weight: 500;
+      color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .task-project {
+      font-size: 12px;
       color: var(--fg-muted);
     }
 
-    .task-selector-dropdown {
-      flex: 1;
-      padding: 8px 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--fg);
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+    }
+
+    .empty-state p {
+      color: var(--fg-muted);
+      margin: 0;
       font-size: 14px;
-      cursor: pointer;
+    }
+
+    .empty-state-hint {
+      font-size: 13px;
+      margin-top: 8px !important;
+      opacity: 0.8;
     }
 
     /* Projects View */
@@ -1377,29 +1481,40 @@
 
     <!-- Timer View -->
     <div v-show="currentView === 'timer'">
-      <!-- Task Selector -->
-      <div class="task-selector" v-if="projects.length > 0">
-        <label class="task-selector-label">Working on:</label>
-        <select
-          v-model="activeTaskId"
-          @change="saveActiveTask"
-          class="task-selector-dropdown"
-        >
-          <option :value="null">No task selected</option>
-          <optgroup
-            v-for="project in projects"
-            :key="project.id"
-            :label="project.name"
+      <!-- Task Priority List -->
+      <div class="task-priority-list" v-if="projects.length > 0 && sortedIncompleteTasks.length > 0">
+        <div class="task-priority-header">
+          <h3>Tasks (drag to reorder priority)</h3>
+        </div>
+        <div class="task-priority-items">
+          <div
+            v-for="task in sortedIncompleteTasks"
+            :key="task.id"
+            class="task-priority-item"
+            :class="{ active: activeTaskId === task.id }"
+            draggable="true"
+            @dragstart="handleDragStart($event, task)"
+            @dragover.prevent="handleDragOver($event, task)"
+            @drop="handleDrop($event, task)"
+            @dragend="handleDragEnd"
+            @click="selectTask(task.id)"
           >
-            <option
-              v-for="task in tasksByProject[project.id]"
-              :key="task.id"
-              :value="task.id"
-            >
-              {{ task.name }}
-            </option>
-          </optgroup>
-        </select>
+            <div class="task-drag-handle">⋮⋮</div>
+            <div class="task-priority-badge">{{ task.priority }}</div>
+            <div class="task-info">
+              <div class="task-name">{{ task.name }}</div>
+              <div class="task-project">{{ getProjectName(task.projectId) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div class="task-priority-list empty" v-else-if="projects.length > 0">
+        <div class="empty-state">
+          <p>No tasks available</p>
+          <p class="empty-state-hint">Create tasks in the Projects tab to get started!</p>
+        </div>
       </div>
 
       <!-- Mode Selector -->
