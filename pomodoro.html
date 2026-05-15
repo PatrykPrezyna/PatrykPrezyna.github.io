@@ -1502,8 +1502,44 @@
             <div class="task-drag-handle">⋮⋮</div>
             <div class="task-priority-badge">{{ task.priority }}</div>
             <div class="task-info">
-              <div class="task-name">{{ task.name }}</div>
-              <div class="task-project">{{ getProjectName(task.projectId) }}</div>
+              <div class="task-name">
+                <span
+                  v-if="editingTaskNameId !== task.id"
+                  @dblclick="startEditingTaskName(task, $event)"
+                  title="Double-click to edit"
+                  style="cursor: text;"
+                >{{ task.name }}</span>
+                <input
+                  v-else
+                  type="text"
+                  v-model="editingTaskNameValue"
+                  @blur="saveTaskName(task.id)"
+                  @keydown="handleTaskNameKeypress($event, task.id)"
+                  @click.stop
+                  :data-task-id="task.id"
+                  class="inline-edit-input"
+                  style="width: 100%; padding: 2px 4px; border: 1px solid var(--current-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color);"
+                />
+              </div>
+              <div class="task-project">
+                <span
+                  v-if="editingProjectNameId !== getProjectId(task.projectId)"
+                  @dblclick="startEditingProjectName(task, $event)"
+                  title="Double-click to edit project"
+                  style="cursor: text;"
+                >{{ getProjectName(task.projectId) }}</span>
+                <input
+                  v-else
+                  type="text"
+                  v-model="editingProjectNameValue"
+                  @blur="saveProjectName(getProjectId(task.projectId))"
+                  @keydown="handleProjectNameKeypress($event, getProjectId(task.projectId))"
+                  @click.stop
+                  :data-project-id="getProjectId(task.projectId)"
+                  class="inline-edit-input"
+                  style="width: 100%; padding: 2px 4px; border: 1px solid var(--current-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color); font-size: 0.85rem;"
+                />
+              </div>
             </div>
           </div>
         </div>

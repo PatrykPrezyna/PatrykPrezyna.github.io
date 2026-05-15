@@ -466,6 +466,12 @@ createApp({
       editingTask: null,
       editingTimeEntry: null,
       
+      // Inline editing state
+      editingTaskNameId: null,
+      editingTaskNameValue: '',
+      editingProjectNameId: null,
+      editingProjectNameValue: '',
+      
       // Form data
       projectForm: { name: '', color: '#D95550' },
       taskForm: { name: '', description: '', projectId: null, estimatedPomodoros: 4 },
@@ -1491,6 +1497,130 @@ createApp({
         });
         this.saveTasks();
       }
+    },
+
+    /**
+     * Start editing task name inline
+     */
+    startEditingTaskName(task, event) {
+      // Prevent task selection when starting edit
+      if (event) {
+        event.stopPropagation();
+      }
+      this.editingTaskNameId = task.id;
+      this.editingTaskNameValue = task.name;
+      // Focus the input after Vue updates the DOM
+      this.$nextTick(() => {
+        const input = document.querySelector(`input[data-task-id="${task.id}"]`);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      });
+    },
+
+    /**
+     * Save edited task name
+     */
+    saveTaskName(taskId) {
+      if (!this.editingTaskNameValue.trim()) {
+        alert('Task name cannot be empty');
+        this.cancelEditingTaskName();
+        return;
+      }
+
+      const task = this.tasks.find(t => t.id === taskId);
+      if (task) {
+        task.name = this.editingTaskNameValue.trim();
+        this.saveTasks();
+      }
+      this.cancelEditingTaskName();
+    },
+
+    /**
+     * Cancel editing task name
+     */
+    cancelEditingTaskName() {
+      this.editingTaskNameId = null;
+      this.editingTaskNameValue = '';
+    },
+
+    /**
+     * Handle task name input keypress
+     */
+    handleTaskNameKeypress(event, taskId) {
+      if (event.key === 'Enter') {
+        this.saveTaskName(taskId);
+      } else if (event.key === 'Escape') {
+        this.cancelEditingTaskName();
+      }
+    },
+
+    /**
+     * Start editing project name inline
+     */
+    startEditingProjectName(task, event) {
+      // Prevent task selection when starting edit
+      if (event) {
+        event.stopPropagation();
+      }
+      const project = this.projects.find(p => p.id === task.projectId);
+      if (project) {
+        this.editingProjectNameId = project.id;
+        this.editingProjectNameValue = project.name;
+        // Focus the input after Vue updates the DOM
+        this.$nextTick(() => {
+          const input = document.querySelector(`input[data-project-id="${project.id}"]`);
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        });
+      }
+    },
+
+    /**
+     * Save edited project name
+     */
+    saveProjectName(projectId) {
+      if (!this.editingProjectNameValue.trim()) {
+        alert('Project name cannot be empty');
+        this.cancelEditingProjectName();
+        return;
+      }
+
+      const project = this.projects.find(p => p.id === projectId);
+      if (project) {
+        project.name = this.editingProjectNameValue.trim();
+        this.saveProjects();
+      }
+      this.cancelEditingProjectName();
+    },
+
+    /**
+     * Cancel editing project name
+     */
+    cancelEditingProjectName() {
+      this.editingProjectNameId = null;
+      this.editingProjectNameValue = '';
+    },
+
+    /**
+     * Handle project name input keypress
+     */
+    handleProjectNameKeypress(event, projectId) {
+      if (event.key === 'Enter') {
+        this.saveProjectName(projectId);
+      } else if (event.key === 'Escape') {
+        this.cancelEditingProjectName();
+      }
+    },
+
+    /**
+     * Get project ID (helper for inline editing)
+     */
+    getProjectId(projectId) {
+      return projectId;
     },
 
     /**
