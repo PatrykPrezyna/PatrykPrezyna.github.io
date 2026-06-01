@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mealprep - Recipe Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       1. CSS VARIABLES & RESET
+       ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    :root {
+      /* Base Colors */
+      --bg: #F6F4EF;
+      --bg-card: #FFFFFF;
+      --fg: #1C1C27;
+      --fg-muted: #66687A;
+      --border: #E3E0D8;
+      --accent: #2A5C8A;
+      --accent-lt: #E8F0F8;
+      
+      /* Difficulty Colors */
+      --easy: #4C9F70;
+      --medium: #D9A84C;
+      --hard: #D95550;
+      
+      /* UI Elements */
+      --radius: 12px;
+      --shadow-sm: 0 4px 18px rgba(10,20,30,0.06);
+      --shadow-md: 0 10px 34px rgba(10,20,30,0.12);
+      --shadow-lg: 0 20px 50px rgba(10,20,30,0.18);
+      
+      /* Typography */
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F141C;
+      --bg-card: #161D28;
+      --fg: #EDF2FA;
+      --fg-muted: #A9B6C8;
+      --accent: #7BA6D9;
+      --accent-lt: #1D2C40;
+      --border: #2B3646;
+    }
+
+    html { 
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color .25s ease, color .25s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       2. NAVIGATION
+       ═══════════════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1200;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: rgba(246,244,239,0.84);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    html[data-theme="dark"] nav {
+      background: rgba(15,20,28,0.85);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.16rem;
+      font-weight: 600;
+      color: var(--fg);
+      text-decoration: none;
+      letter-spacing: .01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo:hover {
+      color: var(--accent);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle, .back-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--fg);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+      font-size: 18px;
+    }
+
+    .theme-toggle:hover, .back-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       3. MAIN CONTAINER
+       ═══════════════════════════════════════════════════════════ */
+    main {
+      flex: 1;
+      margin-top: 68px;
+      padding: 32px clamp(16px, 4vw, 48px);
+      max-width: 1400px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 12px;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: var(--fg-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       4. DASHBOARD GRID
+       ═══════════════════════════════════════════════════════════ */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .dashboard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+
+    .dashboard-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .card-icon {
+      font-size: 24px;
+      opacity: 0.6;
+    }
+
+    .card-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .card-label {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       5. WHEEL OF FORTUNE
+       ═══════════════════════════════════════════════════════════ */
+    .wheel-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 48px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .wheel-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .wheel-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+
+    .wheel-subtitle {
+      color: var(--fg-muted);
+    }
+
+    .wheel-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .wheel-canvas-wrapper {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      max-width: 90vw;
+      max-height: 90vw;
+    }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 25px solid var(--hard);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      z-index: 10;
+    }
+
+    .wheel-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: none;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent);
+      filter: brightness(1.1);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-success {
+      background: var(--easy);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      filter: brightness(1.1);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 2px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .wheel-result {
+      width: 100%;
+      padding: 20px;
+      background: var(--accent-lt);
+      border-radius: var(--radius);
+      text-align: center;
+      display: none;
+    }
+
+    .wheel-result.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+      margin-bottom: 8px;
+    }
+
+    .result-recipe {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       6. RECIPE SECTION
+       ═══════════════════════════════════════════════════════════ */
+    .recipe-section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .recipe-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      transition: border-color .2s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--fg-muted);
+      pointer-events: none;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--fg-muted);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .recipe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s ease, transform .2s ease;
+      cursor: pointer;
+    }
+
+    .recipe-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+
+    .recipe-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--accent-lt) 0%, var(--border) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--fg-muted);
+    }
+
+    .recipe-content {
+      padding: 20px;
+    }
+
+    .recipe-header {
+      margin-bottom: 12px;
+    }
+
+    .recipe-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+
+    .recipe-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .difficulty-badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .difficulty-easy {
+      background: var(--easy);
+      color: white;
+    }
+
+    .difficulty-medium {
+      background: var(--medium);
+      color: white;
+    }
+
+    .difficulty-hard {
+      background: var(--hard);
+      color: white;
+    }
+
+    .recipe-time {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    .recipe-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      background: var(--accent-lt);
+      color: var(--accent);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .recipe-stats {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+    }
+
+    .recipe-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      flex: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 64px 32px;
+      color: var(--fg-muted);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      margin-bottom: 24px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       7. MODAL
+       ═══════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--fg-muted);
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--fg);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      transition: border-color .2s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .ingredient-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ingredient-item {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ingredient-item input {
+      flex: 1;
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .btn-danger {
+      background: var(--hard);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      filter: brightness(1.1);
+    }
+
+    .modal-footer {
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       8. RESPONSIVE
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .recipe-controls {
+        flex-direction: column;
+      }
+
+      .search-box {
+        min-width: 100%;
+      }
+
+      .wheel-canvas-wrapper {
+        width: 300px;
+        height: 300px;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .modal {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       9. UTILITIES
+       ═══════════════════════════════════════════════════════════ */
+    .hidden {
+      display: none !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-2 {
+      margin-top: 16px;
+    }
+
+    .mb-2 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span>🍳</span>
+      <span>Mealprep</span>
+    </a>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <a href="index.html" class="back-btn" aria-label="Back to home">
+        <span>←</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="app">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Mealprep Manager</h1>
+      <p class="page-subtitle">Manage your favorite recipes and let the wheel decide what to cook next!</p>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="dashboard">
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Total Recipes</h3>
+          <span class="card-icon">📚</span>
+        </div>
+        <div class="card-value">{{ totalRecipes }}</div>
+        <div class="card-label">In your collection</div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Times Cooked</h3>
+          <span class="card-icon">👨‍🍳</span>
+        </div>
+        <div class="card-value">{{ totalCooked }}</div>
+        <div class="card-label">Total cooking sessions</div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Most Popular</h3>
+          <span class="card-icon">⭐</span>
+        </div>
+        <div class="card-value" style="font-size: 1.2rem;">{{ mostCookedRecipe }}</div>
+        <div class="card-label">{{ mostCookedCount }} times cooked</div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Never Cooked</h3>
+          <span class="card-icon">🆕</span>
+        </div>
+        <div class="card-value">{{ neverCookedCount }}</div>
+        <div class="card-label">Recipes to try</div>
+      </div>
+    </div>
+
+    <!-- Wheel of Fortune -->
+    <div class="wheel-section">
+      <div class="wheel-header">
+        <h2 class="wheel-title">🎡 Wheel of Fortune</h2>
+        <p class="wheel-subtitle">Spin the wheel to decide what to cook next!</p>
+      </div>
+
+      <div class="wheel-container">
+        <div class="wheel-canvas-wrapper">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheelCanvas"></canvas>
+        </div>
+
+        <div class="wheel-controls">
+          <button 
+            class="btn btn-primary" 
+            @click="spinWheel" 
+            :disabled="isSpinning || recipes.length === 0"
+            style="width: 100%;">
+            <span v-if="!isSpinning">🎲 Spin the Wheel</span>
+            <span v-else>🌀 Spinning...</span>
+          </button>
+
+          <div class="wheel-result" :class="{ show: selectedRecipe }">
+            <div class="result-label">You should cook:</div>
+            <div class="result-recipe">{{ selectedRecipe?.name }}</div>
+            <button class="btn btn-success" @click="confirmCooking" v-if="selectedRecipe">
+              ✓ I Cooked This!
+            </button>
+            <button class="btn btn-outline mt-2" @click="viewRecipeDetail(selectedRecipe)" v-if="selectedRecipe">
+              View Recipe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipe Section -->
+    <div class="recipe-section">
+      <div class="section-header">
+        <h2 class="section-title">My Recipes</h2>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-outline" @click="exportData">
+            📥 Export Data
+          </button>
+          <button class="btn btn-outline" @click="triggerImport">
+            📤 Import Data
+          </button>
+          <input
+            type="file"
+            ref="fileInput"
+            @change="importData"
+            accept=".json"
+            style="display: none;">
+          <button class="btn btn-primary" @click="openAddRecipeModal">
+            + Add Recipe
+          </button>
+        </div>
+      </div>
+
+      <div class="recipe-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search recipes..."
+            v-model="searchQuery"
+            @input="filterRecipes">
+        </div>
+
+        <div class="filter-group">
+          <button 
+            class="filter-btn" 
+            :class="{ active: difficultyFilter === 'all' }"
+            @click="setDifficultyFilter('all')">
+            All
+          </button>
+          <button 
+            class="filter-btn" 
+            :class="{ active: difficultyFilter === 'easy' }"
+            @click="setDifficultyFilter('easy')">
+            Easy
+          </button>
+          <button 
+            class="filter-btn" 
+            :class="{ active: difficultyFilter === 'medium' }"
+            @click="setDifficultyFilter('medium')">
+            Medium
+          </button>
+          <button 
+            class="filter-btn" 
+            :class="{ active: difficultyFilter === 'hard' }"
+            @click="setDifficultyFilter('hard')">
+            Hard
+          </button>
+        </div>
+
+        <select class="form-select" v-model="sortBy" @change="sortRecipes" style="width: auto;">
+          <option value="name">Sort by Name</option>
+          <option value="difficulty">Sort by Difficulty</option>
+          <option value="prepTime">Sort by Prep Time</option>
+          <option value="cookTime">Sort by Cook Time</option>
+          <option value="lastCooked">Sort by Last Cooked</option>
+        </select>
+      </div>
+
+      <!-- Recipe Grid -->
+      <div class="recipe-grid" v-if="filteredRecipes.length > 0">
+        <div class="recipe-card" v-for="recipe in filteredRecipes" :key="recipe.id" @click="viewRecipeDetail(recipe)">
+          <div class="recipe-image">
+            <span v-if="!recipe.imageUrl">🍽️</span>
+            <img v-else :src="recipe.imageUrl" :alt="recipe.name" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div class="recipe-content">
+            <div class="recipe-header">
+              <h3 class="recipe-name">{{ recipe.name }}</h3>
+            </div>
+            <div class="recipe-meta">
+              <span class="difficulty-badge" :class="'difficulty-' + recipe.difficulty">
+                {{ recipe.difficulty }}
+              </span>
+              <span class="recipe-time">
+                ⏱️ {{ recipe.prepTime + recipe.cookTime }} min
+              </span>
+              <span class="recipe-time">
+                🍽️ {{ recipe.servings }} servings
+              </span>
+            </div>
+            <div class="recipe-tags">
+              <span class="tag" v-for="tag in recipe.tags" :key="tag">{{ tag }}</span>
+            </div>
+            <div class="recipe-stats">
+              <span>Cooked: {{ getCookingCount(recipe.id) }} times</span>
+              <span>{{ getLastCookedText(recipe.id) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" v-else-if="recipes.length === 0">
+        <div class="empty-icon">📝</div>
+        <h3 class="empty-title">No Recipes Yet</h3>
+        <p class="empty-text">Start by adding your first recipe!</p>
+        <button class="btn btn-primary" @click="openAddRecipeModal">
+          + Add Your First Recipe
+        </button>
+      </div>
+
+      <!-- No Results -->
+      <div class="empty-state" v-else>
+        <div class="empty-icon">🔍</div>
+        <h3 class="empty-title">No Recipes Found</h3>
+        <p class="empty-text">Try adjusting your search or filters</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Recipe Form Modal -->
+  <div class="modal-overlay" id="recipeModal" :class="{ show: showRecipeModal }">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ editingRecipe ? 'Edit Recipe' : 'Add New Recipe' }}</h2>
+        <button class="modal-close" @click="closeRecipeModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="saveRecipe">
+          <div class="form-group">
+            <label class="form-label">Recipe Name *</label>
+            <input type="text" class="form-input" v-model="recipeForm.name" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Prep Time (min) *</label>
+              <input type="number" class="form-input" v-model.number="recipeForm.prepTime" required min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cook Time (min) *</label>
+              <input type="number" class="form-input" v-model.number="recipeForm.cookTime" required min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Servings *</label>
+              <input type="number" class="form-input" v-model.number="recipeForm.servings" required min="1">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Difficulty *</label>
+            <select class="form-select" v-model="recipeForm.difficulty" required>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ingredients *</label>
+            <div class="ingredient-list">
+              <div class="ingredient-item" v-for="(ingredient, index) in recipeForm.ingredients" :key="index">
+                <input type="text" class="form-input" v-model="recipeForm.ingredients[index]" placeholder="e.g., 2 cups flour">
+                <button type="button" class="btn btn-icon btn-danger" @click="removeIngredient(index)" v-if="recipeForm.ingredients.length > 1">
+                  ×
+                </button>
+              </div>
+              <button type="button" class="btn btn-outline" @click="addIngredient">
+                + Add Ingredient
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Instructions *</label>
+            <textarea class="form-textarea" v-model="recipeForm.instructions" required placeholder="Step-by-step cooking instructions..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tags (comma-separated)</label>
+            <input type="text" class="form-input" v-model="recipeForm.tagsInput" placeholder="e.g., italian, pasta, dinner">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Image URL (optional)</label>
+            <input type="url" class="form-input" v-model="recipeForm.imageUrl" placeholder="https://example.com/image.jpg">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" @click="closeRecipeModal">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              {{ editingRecipe ? 'Update Recipe' : 'Add Recipe' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Detail Modal -->
+  <div class="modal-overlay" :class="{ show: showDetailModal }">
+    <div class="modal" v-if="viewingRecipe">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ viewingRecipe.name }}</h2>
+        <button class="modal-close" @click="closeDetailModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="recipe-meta mb-2">
+          <span class="difficulty-badge" :class="'difficulty-' + viewingRecipe.difficulty">
+            {{ viewingRecipe.difficulty }}
+          </span>
+          <span class="recipe-time">⏱️ Prep: {{ viewingRecipe.prepTime }} min</span>
+          <span class="recipe-time">🔥 Cook: {{ viewingRecipe.cookTime }} min</span>
+          <span class="recipe-time">🍽️ Servings: {{ viewingRecipe.servings }}</span>
+        </div>
+
+        <div class="recipe-tags mb-2">
+          <span class="tag" v-for="tag in viewingRecipe.tags" :key="tag">{{ tag }}</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Ingredients</label>
+          <ul style="padding-left: 20px;">
+            <li v-for="ingredient in viewingRecipe.ingredients" :key="ingredient" style="margin-bottom: 8px;">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Instructions</label>
+          <p style="white-space: pre-line; line-height: 1.8;">{{ viewingRecipe.instructions }}</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cooking History</label>
+          <div class="recipe-stats">
+            <span>Cooked {{ getCookingCount(viewingRecipe.id) }} times</span>
+            <span>{{ getLastCookedText(viewingRecipe.id) }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" @click="deleteRecipe(viewingRecipe.id)">Delete</button>
+        <button class="btn btn-outline" @click="editRecipe(viewingRecipe)">Edit</button>
+        <button class="btn btn-success" @click="confirmCookingFromDetail">I Cooked This!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vue.js 3 from CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <!-- Mealprep App -->
+  <script src="js/mealprep-app.js"></script>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>
