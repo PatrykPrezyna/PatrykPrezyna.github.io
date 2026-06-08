@@ -1079,10 +1079,9 @@
         <p class="empty-text">Try adjusting your search or filters</p>
       </div>
     </div>
-  </main>
 
-  <!-- Recipe Form Modal -->
-  <div class="modal-overlay" id="recipeModal" :class="{ show: showRecipeModal }">
+    <!-- Recipe Form Modal -->
+    <div class="modal-overlay" id="recipeModal" :class="{ show: showRecipeModal }">
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title">{{ editingRecipe ? 'Edit Recipe' : 'Add New Recipe' }}</h2>
@@ -1210,6 +1209,7 @@
       </div>
     </div>
   </div>
+  </main>
 
   <!-- Vue.js 3 from CDN -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

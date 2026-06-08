@@ -449,9 +449,10 @@ createApp({
       timeEntries: [],
       activeTaskId: null,
       sessionStartTime: null, // Track when current pomodoro started
-      currentView: 'timer', // 'timer', 'projects', 'summary', 'timelog'
+      currentView: 'timer', // 'timer', 'projects', 'summary'
       summaryPeriod: 'day', // 'day' or 'week'
-      timeLogDate: null, // Date for time log view (initialized in mounted)
+      selectedDate: null, // Selected date for day view (null = today)
+      selectedWeekStart: null, // Selected week start date (null = this week)
       
       // Drag and Drop state
       draggedTask: null,
@@ -555,8 +556,8 @@ createApp({
      * Calculate today's time summary
      */
     todaySummary() {
-      const today = this.getTodayString();
-      const todayEntries = this.timeEntries.filter(e => e.date === today);
+      const targetDate = this.selectedDate || this.getTodayString();
+      const todayEntries = this.timeEntries.filter(e => e.date === targetDate);
       
       const summary = {
         totalTime: 0,
@@ -605,10 +606,15 @@ createApp({
      * Calculate week's time summary
      */
     weekSummary() {
-      const today = new Date();
-      const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-      const monday = new Date(today);
-      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      let monday;
+      if (this.selectedWeekStart) {
+        monday = new Date(this.selectedWeekStart);
+      } else {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+        monday = new Date(today);
+        monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      }
       monday.setHours(0, 0, 0, 0);
       
       const weekEntries = this.timeEntries.filter(e => {
@@ -667,15 +673,6 @@ createApp({
     },
     
     /**
-     * Get filtered time entries for selected date in time log view
-     */
-    filteredTimeEntries() {
-      return this.timeEntries
-        .filter(e => e.date === this.timeLogDate)
-        .sort((a, b) => a.startTime - b.startTime);
-    },
-    
-    /**
      * Get sorted incomplete tasks by priority
      */
     sortedIncompleteTasks() {
@@ -691,9 +688,6 @@ createApp({
    * ─────────────────────────────────────────────────────────────────────
    */
   mounted() {
-    // Initialize time log date
-    this.timeLogDate = this.getTodayString();
-    
     // Initialize ambient sound generator
     this.ambientSound = new AmbientSoundGenerator();
     
@@ -756,6 +750,147 @@ createApp({
      */
     getTodayString() {
       return new Date().toISOString().split('T')[0];
+    },
+
+    /**
+     * Format date for display (e.g., "Mon, Jun 8, 2026")
+     * @param {string} dateString - Date in YYYY-MM-DD format
+     * @returns {string} Formatted date
+     */
+    formatDateDisplay(dateString) {
+      const date = new Date(dateString + 'T00:00:00');
+      return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    },
+
+    /**
+     * Format week range for display (e.g., "Jun 2 - Jun 8, 2026")
+     * @param {string} weekStart - Week start date in YYYY-MM-DD format
+     * @returns {string} Formatted week range
+     */
+    formatWeekDisplay(weekStart) {
+      const start = new Date(weekStart + 'T00:00:00');
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      
+      const startMonth = start.toLocaleDateString('en-US', { month: 'short' });
+      const endMonth = end.toLocaleDateString('en-US', { month: 'short' });
+      const year = end.getFullYear();
+      
+      if (startMonth === endMonth) {
+        return `${startMonth} ${start.getDate()} - ${end.getDate()}, ${year}`;
+      } else {
+        return `${startMonth} ${start.getDate()} - ${endMonth} ${end.getDate()}, ${year}`;
+      }
+    },
+
+    /**
+     * Navigate to previous day
+     */
+    previousDay() {
+      const currentDate = this.selectedDate ? new Date(this.selectedDate + 'T00:00:00') : new Date();
+      currentDate.setDate(currentDate.getDate() - 1);
+      this.selectedDate = currentDate.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to next day
+     */
+    nextDay() {
+      const currentDate = this.selectedDate ? new Date(this.selectedDate + 'T00:00:00') : new Date();
+      currentDate.setDate(currentDate.getDate() + 1);
+      this.selectedDate = currentDate.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to today
+     */
+    goToToday() {
+      this.selectedDate = null;
+    },
+
+    /**
+     * Navigate to previous week
+     */
+    previousWeek() {
+      const currentWeek = this.selectedWeekStart ? new Date(this.selectedWeekStart + 'T00:00:00') : this.getCurrentWeekStart();
+      currentWeek.setDate(currentWeek.getDate() - 7);
+      this.selectedWeekStart = currentWeek.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to next week
+     */
+    nextWeek() {
+      const currentWeek = this.selectedWeekStart ? new Date(this.selectedWeekStart + 'T00:00:00') : this.getCurrentWeekStart();
+      currentWeek.setDate(currentWeek.getDate() + 7);
+      this.selectedWeekStart = currentWeek.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to current week
+     */
+    goToThisWeek() {
+      this.selectedWeekStart = null;
+    },
+
+    /**
+     * Get current week start date (Monday)
+     * @returns {Date} Monday of current week
+     */
+    getCurrentWeekStart() {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      monday.setHours(0, 0, 0, 0);
+      return monday;
+    },
+
+    /**
+     * Handle date input change
+     * @param {Event} event - Input change event
+     */
+    onDateChange(event) {
+      this.selectedDate = event.target.value;
+    },
+
+    /**
+     * Handle week input change
+     * @param {Event} event - Input change event
+     */
+    onWeekChange(event) {
+      // Week input format is YYYY-Www (e.g., "2026-W23")
+      const weekValue = event.target.value;
+      if (!weekValue) return;
+      
+      const [year, week] = weekValue.split('-W');
+      const date = new Date(year, 0, 1 + (week - 1) * 7);
+      const dayOfWeek = date.getDay();
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      
+      this.selectedWeekStart = monday.toISOString().split('T')[0];
+    },
+
+    /**
+     * Get week input value from selected week start
+     * @returns {string} Week input value in YYYY-Www format
+     */
+    getWeekInputValue() {
+      if (!this.selectedWeekStart) return '';
+      
+      const date = new Date(this.selectedWeekStart + 'T00:00:00');
+      const year = date.getFullYear();
+      const firstDayOfYear = new Date(year, 0, 1);
+      const dayOfYear = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
+      const weekNumber = Math.ceil((dayOfYear + firstDayOfYear.getDay() + 1) / 7);
+      
+      return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
     },
 
     /**
@@ -1743,7 +1878,7 @@ createApp({
         this.editingTimeEntry = null;
         this.timeEditForm = {
           taskId: this.activeTaskId,
-          date: this.getTodayString(),
+          date: this.selectedDate || this.getTodayString(),
           hours: 0,
           minutes: 25
         };
@@ -1881,30 +2016,6 @@ createApp({
         return `${hours}h ${minutes}m`;
       }
       return `${minutes}m`;
-    },
-
-    /**
-     * Format time range for time log entries
-     */
-    formatTimeRange(startTime, endTime) {
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      const options = { hour: 'numeric', minute: '2-digit' };
-      return `${start.toLocaleTimeString('en-US', options)} - ${end.toLocaleTimeString('en-US', options)}`;
-    },
-
-    /**
-     * Get project for a time entry
-     */
-    getProjectForEntry(entry) {
-      return this.projects.find(p => p.id === entry.projectId);
-    },
-
-    /**
-     * Get task for a time entry
-     */
-    getTaskForEntry(entry) {
-      return this.tasks.find(t => t.id === entry.taskId);
     },
 
     /**
