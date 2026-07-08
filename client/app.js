@@ -1,0 +1,2196 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * POMODORO TIMER APPLICATION
+ * ═══════════════════════════════════════════════════════════════════════
+ * 
+ * A fully-featured Pomodoro timer application built with Vue.js 3.
+ * Features include customizable timers, progress tracking, notifications,
+ * and persistent settings storage.
+ * 
+ * @author Patryk Prężyna
+ * @version 1.0.0
+ */
+
+const { createApp } = Vue;
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * CONSTANTS & CONFIGURATION
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+// Timer mode identifiers
+const MODES = {
+  POMODORO: 'pomodoro',
+  SHORT_BREAK: 'shortBreak',
+  LONG_BREAK: 'longBreak'
+};
+
+// Default settings configuration
+const DEFAULT_SETTINGS = {
+  pomodoroDuration: 25,        // minutes
+  shortBreakDuration: 5,       // minutes
+  longBreakDuration: 15,       // minutes
+  autoStartBreaks: false,      // auto-start break timers
+  autoStartPomodoros: false,   // auto-start pomodoro after break
+  longBreakInterval: 4,        // pomodoros before long break
+  notificationsEnabled: true,  // browser notifications
+  soundEnabled: true,          // audio alerts
+  volume: 50,                  // volume percentage (0-100)
+  dailyGoal: 8,                // target pomodoros per day
+  ambientSoundEnabled: false,  // ambient sound during timer
+  ambientSoundType: 'none',    // 'none', 'white', 'brown'
+  ambientSoundVolume: 30       // ambient sound volume (0-100)
+};
+
+// Local storage keys
+const STORAGE_KEYS = {
+  SETTINGS: 'pomodoro_settings',
+  PROGRESS: 'pomodoro_progress',
+  LAST_DATE: 'pomodoro_last_date',
+  PROJECTS: 'pomodoro_projects',
+  TASKS: 'pomodoro_tasks',
+  TIME_ENTRIES: 'pomodoro_time_entries',
+  ACTIVE_TASK: 'pomodoro_active_task',
+  LAST_CONFIRMATION: 'pomodoro_last_confirmation'
+};
+
+const API_ENDPOINT = '/data';
+const DEFAULT_APP_DATA = {
+  projects: [],
+  tasks: [],
+  timeEntries: [],
+  settings: { ...DEFAULT_SETTINGS }
+};
+
+async function fetchAppDataFromServer() {
+  try {
+    const response = await fetch(API_ENDPOINT, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}`);
+    }
+    const data = await response.json();
+    return {
+      projects: Array.isArray(data.projects) ? data.projects : [],
+      tasks: Array.isArray(data.tasks) ? data.tasks : [],
+      timeEntries: Array.isArray(data.timeEntries) ? data.timeEntries : [],
+      settings: typeof data.settings === 'object' && data.settings !== null ? data.settings : {}
+    };
+  } catch (error) {
+    console.error('Unable to load app data from server:', error);
+    return DEFAULT_APP_DATA;
+  }
+}
+
+async function persistAppDataToServer(appData) {
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        projects: appData.projects,
+        tasks: appData.tasks,
+        timeEntries: appData.timeEntries,
+        settings: appData.settings
+      })
+    });
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(message || response.statusText);
+    }
+  } catch (error) {
+    console.error('Unable to save app data to server:', error);
+    throw error;
+  }
+}
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * UTILITY FUNCTIONS
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Format seconds into MM:SS display format
+ * @param {number} seconds - Total seconds to format
+ * @returns {string} Formatted time string (e.g., "25:00")
+ */
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Get today's date as a string (YYYY-MM-DD)
+ * @returns {string} Today's date
+ */
+function getTodayString() {
+  return new Date().toISOString().split('T')[0];
+}
+
+/**
+ * Load data from localStorage with fallback
+ * @param {string} key - Storage key
+ * @param {*} defaultValue - Default value if key doesn't exist
+ * @returns {*} Stored value or default
+ */
+function loadFromStorage(key, defaultValue) {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : defaultValue;
+  } catch (error) {
+    console.error(`Error loading ${key} from storage:`, error);
+    return defaultValue;
+  }
+}
+
+/**
+ * Save data to localStorage
+ * @param {string} key - Storage key
+ * @param {*} value - Value to store
+ */
+function saveToStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error saving ${key} to storage:`, error);
+  }
+}
+
+/**
+ * Request browser notification permission
+ * @returns {Promise<boolean>} True if permission granted
+ */
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    console.warn('Browser does not support notifications');
+    return false;
+  }
+  
+  if (Notification.permission === 'granted') {
+    return true;
+  }
+  
+  if (Notification.permission !== 'denied') {
+    const permission = await Notification.requestPermission();
+    return permission === 'granted';
+  }
+  
+  return false;
+}
+
+/**
+ * Show browser notification
+ * @param {string} title - Notification title
+ * @param {string} body - Notification body text
+ */
+function showNotification(title, body) {
+  if (Notification.permission === 'granted') {
+    const notification = new Notification(title, {
+      body,
+      icon: '🍅',
+      badge: '🍅',
+      tag: 'pomodoro-timer',
+      requireInteraction: false
+    });
+    
+    // Auto-close after 5 seconds
+    setTimeout(() => notification.close(), 5000);
+    
+    // Focus window when notification is clicked
+    notification.onclick = () => {
+      window.focus();
+      notification.close();
+    };
+  }
+}
+
+/**
+ * Play audio notification sound
+ * @param {number} volume - Volume level (0-100)
+ */
+function playSound(volume) {
+  try {
+    // Create audio context for better browser support
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Play 5 beeps in succession
+    const beepCount = 5;
+    const beepDuration = 0.15; // Duration of each beep
+    const beepInterval = 0.3;  // Time between beeps
+    
+    for (let i = 0; i < beepCount; i++) {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Configure sound (pleasant bell tone)
+      oscillator.frequency.value = 800;
+      oscillator.type = 'sine';
+      gainNode.gain.value = volume / 100 * 0.3; // Scale volume
+      
+      // Schedule beep start and stop
+      const startTime = audioContext.currentTime + (i * beepInterval);
+      oscillator.start(startTime);
+      oscillator.stop(startTime + beepDuration);
+    }
+    
+    // Cleanup after all beeps complete
+    const totalDuration = (beepCount * beepInterval) + beepDuration;
+    setTimeout(() => {
+      audioContext.close();
+    }, totalDuration * 1000 + 100);
+  } catch (error) {
+    console.error('Error playing sound:', error);
+  }
+}
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * AMBIENT SOUND GENERATION
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Ambient sound generator class
+ */
+class AmbientSoundGenerator {
+  constructor() {
+    this.audioContext = null;
+    this.gainNode = null;
+    this.sourceNode = null;
+    this.isPlaying = false;
+    this.currentType = 'none';
+  }
+
+  /**
+   * Initialize audio context
+   */
+  init() {
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      this.gainNode = this.audioContext.createGain();
+      this.gainNode.connect(this.audioContext.destination);
+    }
+  }
+
+  /**
+   * Generate white noise
+   */
+  createWhiteNoise() {
+    const bufferSize = 2 * this.audioContext.sampleRate;
+    const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    
+    const whiteNoise = this.audioContext.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+    
+    return whiteNoise;
+  }
+
+  /**
+   * Generate brown noise (Brownian noise)
+   */
+  createBrownNoise() {
+    const bufferSize = 2 * this.audioContext.sampleRate;
+    const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + (0.02 * white)) / 1.02;
+      lastOut = output[i];
+      output[i] *= 3.5; // Compensate for volume drop
+    }
+    
+    const brownNoise = this.audioContext.createBufferSource();
+    brownNoise.buffer = noiseBuffer;
+    brownNoise.loop = true;
+    
+    return brownNoise;
+  }
+
+  /**
+   * Start playing ambient sound
+   * @param {string} type - 'white' or 'brown'
+   * @param {number} volume - Volume level (0-100)
+   */
+  start(type, volume) {
+    if (this.isPlaying && this.currentType === type) {
+      // Just update volume
+      this.setVolume(volume);
+      return;
+    }
+
+    // Stop current sound if playing
+    this.stop();
+
+    if (type === 'none') return;
+
+    this.init();
+    
+    // Create appropriate noise type
+    if (type === 'white') {
+      this.sourceNode = this.createWhiteNoise();
+    } else if (type === 'brown') {
+      this.sourceNode = this.createBrownNoise();
+    } else {
+      return;
+    }
+
+    // Connect and start
+    this.sourceNode.connect(this.gainNode);
+    this.setVolume(volume);
+    this.sourceNode.start(0);
+    
+    this.isPlaying = true;
+    this.currentType = type;
+  }
+
+  /**
+   * Stop playing ambient sound
+   */
+  stop() {
+    if (this.sourceNode && this.isPlaying) {
+      try {
+        this.sourceNode.stop();
+        this.sourceNode.disconnect();
+      } catch (e) {
+        // Ignore errors if already stopped
+      }
+      this.sourceNode = null;
+      this.isPlaying = false;
+      this.currentType = 'none';
+    }
+  }
+
+  /**
+   * Set volume
+   * @param {number} volume - Volume level (0-100)
+   */
+  setVolume(volume) {
+    if (this.gainNode) {
+      // Convert 0-100 to 0-0.3 (ambient sounds should be subtle)
+      this.gainNode.gain.value = (volume / 100) * 0.3;
+    }
+  }
+
+  /**
+   * Cleanup resources
+   */
+  cleanup() {
+    this.stop();
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+  }
+}
+
+/**
+ * Generate a simple UUID v4
+ * @returns {string} UUID string
+ */
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+/**
+ * Update document title with timer
+ * @param {string} time - Formatted time string
+ * @param {string} mode - Current mode name
+ */
+function updateDocumentTitle(time, mode) {
+  document.title = `${time} - ${mode}`;
+}
+
+/**
+ * Update CSS custom property for current mode color
+ * @param {string} mode - Mode identifier
+ */
+function updateModeColor(mode) {
+  const root = document.documentElement;
+  const colors = {
+    [MODES.POMODORO]: {
+      color: '#D95550',
+      dark: '#C44742'
+    },
+    [MODES.SHORT_BREAK]: {
+      color: '#4C9F70',
+      dark: '#3D8A5C'
+    },
+    [MODES.LONG_BREAK]: {
+      color: '#457CA3',
+      dark: '#366A8C'
+    }
+  };
+  
+  const modeColors = colors[mode];
+  root.style.setProperty('--current-color', modeColors.color);
+  root.style.setProperty('--current-color-dark', modeColors.dark);
+}
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * VUE APPLICATION
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+createApp({
+  /**
+   * ─────────────────────────────────────────────────────────────────────
+   * DATA - Application State
+   * ─────────────────────────────────────────────────────────────────────
+   */
+  data() {
+    return {
+      // Timer modes configuration
+      modes: [
+        { id: MODES.POMODORO, name: 'Pomodoro' },
+        { id: MODES.SHORT_BREAK, name: 'Short Break' },
+        { id: MODES.LONG_BREAK, name: 'Long Break' }
+      ],
+      
+      // Current state
+      currentMode: MODES.POMODORO,
+      isRunning: false,
+      timeRemaining: 25 * 60, // seconds
+      totalTime: 25 * 60,     // seconds
+      
+      // Timer interval reference
+      timerInterval: null,
+      
+      // Settings (loaded from localStorage or defaults)
+      settings: { ...DEFAULT_SETTINGS },
+      
+      // Progress tracking
+      completedPomodoros: 0,
+      pomodorosUntilLongBreak: 4,
+      
+      // UI state
+      showSettings: false,
+      showNotification: false,
+      notificationTitle: '',
+      notificationMessage: '',
+      
+      // Daily goal
+      dailyGoal: 8,
+      
+      // Ambient sound generator
+      ambientSound: null,
+      
+      // Project & Task Management
+      projects: [],
+      tasks: [],
+      timeEntries: [],
+      activeTaskId: null,
+      sessionStartTime: null, // Track when current pomodoro started
+      currentView: 'timer', // 'timer', 'projects', 'summary'
+      summaryPeriod: 'day', // 'day' or 'week'
+      selectedDate: null, // Selected date for day view (null = today)
+      selectedWeekStart: null, // Selected week start date (null = this week)
+      
+      // Drag and Drop state
+      draggedTask: null,
+      dragOverTask: null,
+      
+      // Project/Task UI state
+      showProjectModal: false,
+      showTaskModal: false,
+      showTimeEditModal: false,
+      showMorningConfirmation: false,
+      editingProject: null,
+      editingTask: null,
+      editingTimeEntry: null,
+      
+      // Inline editing state
+      editingTaskNameId: null,
+      editingTaskNameValue: '',
+      editingProjectNameId: null,
+      editingProjectNameValue: '',
+      
+      // Form data
+      projectForm: { name: '', color: '#D95550' },
+      taskForm: { name: '', description: '', projectId: null, estimatedPomodoros: 4 },
+      timeEditForm: { taskId: null, date: '', hours: 0, minutes: 25 }
+    };
+  },
+
+  /**
+   * ─────────────────────────────────────────────────────────────────────
+   * COMPUTED PROPERTIES
+   * ─────────────────────────────────────────────────────────────────────
+   */
+  computed: {
+    /**
+     * Format remaining time as MM:SS
+     */
+    formattedTime() {
+      return formatTime(this.timeRemaining);
+    },
+    
+    /**
+     * Get current timer label
+     */
+    timerLabel() {
+      const labels = {
+        [MODES.POMODORO]: 'Focus Time',
+        [MODES.SHORT_BREAK]: 'Short Break',
+        [MODES.LONG_BREAK]: 'Long Break'
+      };
+      return labels[this.currentMode];
+    },
+    
+    /**
+     * Calculate progress ring style
+     */
+    progressStyle() {
+      const circumference = 2 * Math.PI * 152; // radius = 152
+      const progress = this.timeRemaining / this.totalTime;
+      const offset = circumference * (1 - progress);
+      
+      return {
+        strokeDasharray: `${circumference} ${circumference}`,
+        strokeDashoffset: offset
+      };
+    },
+    
+    /**
+     * Calculate daily progress percentage
+     */
+    progressPercentage() {
+      return Math.min((this.completedPomodoros / this.dailyGoal) * 100, 100);
+    },
+    
+    /**
+     * Get active task object
+     */
+    activeTask() {
+      return this.tasks.find(t => t.id === this.activeTaskId) || null;
+    },
+    
+    /**
+     * Get active project object
+     */
+    activeProject() {
+      if (!this.activeTask) return null;
+      return this.projects.find(p => p.id === this.activeTask.projectId) || null;
+    },
+    
+    /**
+     * Get tasks grouped by project
+     */
+    tasksByProject() {
+      const grouped = {};
+      this.projects.forEach(project => {
+        grouped[project.id] = this.tasks.filter(t => t.projectId === project.id && !t.completed);
+      });
+      return grouped;
+    },
+    
+    /**
+     * Calculate today's time summary
+     */
+    todaySummary() {
+      const targetDate = this.selectedDate || this.getTodayString();
+      const todayEntries = this.timeEntries.filter(e => e.date === targetDate);
+      
+      const summary = {
+        totalTime: 0,
+        totalPomodoros: 0,
+        byProject: {}
+      };
+      
+      todayEntries.forEach(entry => {
+        summary.totalTime += entry.duration;
+        summary.totalPomodoros += entry.pomodorosCompleted;
+        
+        const project = this.projects.find(p => p.id === entry.projectId);
+        const task = this.tasks.find(t => t.id === entry.taskId);
+        
+        if (project) {
+          if (!summary.byProject[project.id]) {
+            summary.byProject[project.id] = {
+              project,
+              time: 0,
+              pomodoros: 0,
+              tasks: {}
+            };
+          }
+          
+          summary.byProject[project.id].time += entry.duration;
+          summary.byProject[project.id].pomodoros += entry.pomodorosCompleted;
+          
+          if (task) {
+            if (!summary.byProject[project.id].tasks[task.id]) {
+              summary.byProject[project.id].tasks[task.id] = {
+                task,
+                time: 0,
+                pomodoros: 0
+              };
+            }
+            summary.byProject[project.id].tasks[task.id].time += entry.duration;
+            summary.byProject[project.id].tasks[task.id].pomodoros += entry.pomodorosCompleted;
+          }
+        }
+      });
+      
+      return summary;
+    },
+    
+    /**
+     * Calculate week's time summary
+     */
+    weekSummary() {
+      let monday;
+      if (this.selectedWeekStart) {
+        monday = new Date(this.selectedWeekStart);
+      } else {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+        monday = new Date(today);
+        monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      }
+      monday.setHours(0, 0, 0, 0);
+      
+      const weekEntries = this.timeEntries.filter(e => {
+        const entryDate = new Date(e.date);
+        return entryDate >= monday;
+      });
+      
+      const summary = {
+        totalTime: 0,
+        totalPomodoros: 0,
+        byProject: {}
+      };
+      
+      weekEntries.forEach(entry => {
+        summary.totalTime += entry.duration;
+        summary.totalPomodoros += entry.pomodorosCompleted;
+        
+        const project = this.projects.find(p => p.id === entry.projectId);
+        const task = this.tasks.find(t => t.id === entry.taskId);
+        
+        if (project) {
+          if (!summary.byProject[project.id]) {
+            summary.byProject[project.id] = {
+              project,
+              time: 0,
+              pomodoros: 0,
+              tasks: {}
+            };
+          }
+          
+          summary.byProject[project.id].time += entry.duration;
+          summary.byProject[project.id].pomodoros += entry.pomodorosCompleted;
+          
+          if (task) {
+            if (!summary.byProject[project.id].tasks[task.id]) {
+              summary.byProject[project.id].tasks[task.id] = {
+                task,
+                time: 0,
+                pomodoros: 0
+              };
+            }
+            summary.byProject[project.id].tasks[task.id].time += entry.duration;
+            summary.byProject[project.id].tasks[task.id].pomodoros += entry.pomodorosCompleted;
+          }
+        }
+      });
+      
+      return summary;
+    },
+    
+    /**
+     * Get current summary based on selected period
+     */
+    currentSummary() {
+      return this.summaryPeriod === 'week' ? this.weekSummary : this.todaySummary;
+    },
+    
+    /**
+     * Get sorted incomplete tasks by priority
+     */
+    sortedIncompleteTasks() {
+      return this.tasks
+        .filter(t => !t.completed)
+        .sort((a, b) => (a.priority || 999999) - (b.priority || 999999));
+    }
+  },
+
+  /**
+   * ─────────────────────────────────────────────────────────────────────
+   * LIFECYCLE HOOKS
+   * ─────────────────────────────────────────────────────────────────────
+   */
+  mounted() {
+    // Initialize ambient sound generator
+    this.ambientSound = new AmbientSoundGenerator();
+    
+    // Load app data from backend
+    this.loadAppData()
+      .then(() => {
+        this.initializeTaskPriorities();
+        this.loadActiveTask();
+        this.pomodorosUntilLongBreak = this.settings.longBreakInterval;
+      })
+      .catch(() => {
+        this.initializeTaskPriorities();
+        this.loadActiveTask();
+      });
+    
+    // Set initial mode color
+    updateModeColor(this.currentMode);
+    
+    // Update document title
+    updateDocumentTitle(this.formattedTime, this.timerLabel);
+    
+    // Setup keyboard shortcuts
+    this.setupKeyboardShortcuts();
+    
+    // Setup page visibility handling (for background tabs)
+    this.setupVisibilityHandling();
+    
+    // Setup theme toggle
+    this.setupThemeToggle();
+    
+    // Check if we need to reset daily progress
+    this.checkDailyReset();
+    
+    // Check for morning confirmation
+    this.checkMorningConfirmation();
+  },
+
+  /**
+   * Cleanup before component unmounts
+   */
+  beforeUnmount() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    if (this.ambientSound) {
+      this.ambientSound.cleanup();
+    }
+  },
+
+  /**
+   * ─────────────────────────────────────────────────────────────────────
+   * METHODS - Core Timer Logic
+   * ─────────────────────────────────────────────────────────────────────
+   */
+  methods: {
+    /**
+     * Get today's date as a string (YYYY-MM-DD)
+     * @returns {string} Today's date
+     */
+    getTodayString() {
+      return new Date().toISOString().split('T')[0];
+    },
+
+    /**
+     * Format date for display (e.g., "Mon, Jun 8, 2026")
+     * @param {string} dateString - Date in YYYY-MM-DD format
+     * @returns {string} Formatted date
+     */
+    formatDateDisplay(dateString) {
+      const date = new Date(dateString + 'T00:00:00');
+      return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    },
+
+    /**
+     * Format week range for display (e.g., "Jun 2 - Jun 8, 2026")
+     * @param {string} weekStart - Week start date in YYYY-MM-DD format
+     * @returns {string} Formatted week range
+     */
+    formatWeekDisplay(weekStart) {
+      const start = new Date(weekStart + 'T00:00:00');
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      
+      const startMonth = start.toLocaleDateString('en-US', { month: 'short' });
+      const endMonth = end.toLocaleDateString('en-US', { month: 'short' });
+      const year = end.getFullYear();
+      
+      if (startMonth === endMonth) {
+        return `${startMonth} ${start.getDate()} - ${end.getDate()}, ${year}`;
+      } else {
+        return `${startMonth} ${start.getDate()} - ${endMonth} ${end.getDate()}, ${year}`;
+      }
+    },
+
+    /**
+     * Navigate to previous day
+     */
+    previousDay() {
+      const currentDate = this.selectedDate ? new Date(this.selectedDate + 'T00:00:00') : new Date();
+      currentDate.setDate(currentDate.getDate() - 1);
+      this.selectedDate = currentDate.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to next day
+     */
+    nextDay() {
+      const currentDate = this.selectedDate ? new Date(this.selectedDate + 'T00:00:00') : new Date();
+      currentDate.setDate(currentDate.getDate() + 1);
+      this.selectedDate = currentDate.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to today
+     */
+    goToToday() {
+      this.selectedDate = null;
+    },
+
+    /**
+     * Navigate to previous week
+     */
+    previousWeek() {
+      const currentWeek = this.selectedWeekStart ? new Date(this.selectedWeekStart + 'T00:00:00') : this.getCurrentWeekStart();
+      currentWeek.setDate(currentWeek.getDate() - 7);
+      this.selectedWeekStart = currentWeek.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to next week
+     */
+    nextWeek() {
+      const currentWeek = this.selectedWeekStart ? new Date(this.selectedWeekStart + 'T00:00:00') : this.getCurrentWeekStart();
+      currentWeek.setDate(currentWeek.getDate() + 7);
+      this.selectedWeekStart = currentWeek.toISOString().split('T')[0];
+    },
+
+    /**
+     * Navigate to current week
+     */
+    goToThisWeek() {
+      this.selectedWeekStart = null;
+    },
+
+    /**
+     * Get current week start date (Monday)
+     * @returns {Date} Monday of current week
+     */
+    getCurrentWeekStart() {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      monday.setHours(0, 0, 0, 0);
+      return monday;
+    },
+
+    /**
+     * Handle date input change
+     * @param {Event} event - Input change event
+     */
+    onDateChange(event) {
+      this.selectedDate = event.target.value;
+    },
+
+    /**
+     * Handle week input change
+     * @param {Event} event - Input change event
+     */
+    onWeekChange(event) {
+      // Week input format is YYYY-Www (e.g., "2026-W23")
+      const weekValue = event.target.value;
+      if (!weekValue) return;
+      
+      const [year, week] = weekValue.split('-W');
+      const date = new Date(year, 0, 1 + (week - 1) * 7);
+      const dayOfWeek = date.getDay();
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      
+      this.selectedWeekStart = monday.toISOString().split('T')[0];
+    },
+
+    /**
+     * Get week input value from selected week start
+     * @returns {string} Week input value in YYYY-Www format
+     */
+    getWeekInputValue() {
+      if (!this.selectedWeekStart) return '';
+      
+      const date = new Date(this.selectedWeekStart + 'T00:00:00');
+      const year = date.getFullYear();
+      const firstDayOfYear = new Date(year, 0, 1);
+      const dayOfYear = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
+      const weekNumber = Math.ceil((dayOfYear + firstDayOfYear.getDay() + 1) / 7);
+      
+      return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
+    },
+
+    /**
+     * Switch between timer modes (Pomodoro, Short Break, Long Break)
+     * @param {string} mode - Mode identifier
+     */
+    switchMode(mode) {
+      // Stop current timer
+      this.stopTimer();
+      
+      // Update mode
+      this.currentMode = mode;
+      
+      // Reset timer to new duration
+      this.resetTimer();
+      
+      // Update UI colors
+      updateModeColor(mode);
+    },
+
+    /**
+     * Toggle timer between running and paused states
+     */
+    toggleTimer() {
+      if (this.isRunning) {
+        this.pauseTimer();
+      } else {
+        this.startTimer();
+      }
+    },
+
+    /**
+     * Start the countdown timer
+     */
+    startTimer() {
+      if (this.isRunning) return;
+      
+      this.isRunning = true;
+      
+      // Record start time for time tracking (only for pomodoro mode)
+      if (this.currentMode === MODES.POMODORO) {
+        this.sessionStartTime = Date.now();
+      }
+      
+      // Start ambient sound if enabled and in pomodoro mode
+      if (this.settings.ambientSoundEnabled &&
+          this.currentMode === MODES.POMODORO &&
+          this.settings.ambientSoundType !== 'none') {
+        this.ambientSound.start(
+          this.settings.ambientSoundType,
+          this.settings.ambientSoundVolume
+        );
+      }
+      
+      // Store start timestamp for accurate timing
+      let lastTick = Date.now();
+      
+      this.timerInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = Math.floor((now - lastTick) / 1000);
+        
+        if (elapsed >= 1) {
+          lastTick = now;
+          this.timeRemaining -= elapsed;
+          
+          // Update document title
+          updateDocumentTitle(this.formattedTime, this.timerLabel);
+          
+          // Check if timer completed
+          if (this.timeRemaining <= 0) {
+            this.completeTimer();
+          }
+        }
+      }, 100); // Check every 100ms for accuracy
+    },
+
+    /**
+     * Pause the timer
+     */
+    pauseTimer() {
+      this.stopTimer();
+      // Stop ambient sound when pausing
+      if (this.ambientSound) {
+        this.ambientSound.stop();
+      }
+    },
+
+    /**
+     * Stop the timer (clear interval)
+     */
+    stopTimer() {
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+      }
+      this.isRunning = false;
+      // Stop ambient sound when stopping
+      if (this.ambientSound) {
+        this.ambientSound.stop();
+      }
+    },
+
+    /**
+     * Reset timer to initial duration for current mode
+     */
+    resetTimer() {
+      this.stopTimer();
+      
+      // Get duration based on current mode
+      const durations = {
+        [MODES.POMODORO]: this.settings.pomodoroDuration,
+        [MODES.SHORT_BREAK]: this.settings.shortBreakDuration,
+        [MODES.LONG_BREAK]: this.settings.longBreakDuration
+      };
+      
+      const duration = durations[this.currentMode] * 60;
+      this.timeRemaining = duration;
+      this.totalTime = duration;
+      
+      // Update document title
+      updateDocumentTitle(this.formattedTime, this.timerLabel);
+    },
+
+    /**
+     * Skip to next session
+     */
+    skipTimer() {
+      this.stopTimer();
+      this.completeTimer(true);
+    },
+
+    /**
+     * Handle timer completion
+     * @param {boolean} skipped - Whether timer was skipped
+     */
+    completeTimer(skipped = false) {
+      this.stopTimer();
+      this.timeRemaining = 0;
+      
+      if (!skipped) {
+        // Play notification sound
+        if (this.settings.soundEnabled) {
+          playSound(this.settings.volume);
+        }
+        
+        // Show browser notification
+        if (this.settings.notificationsEnabled) {
+          const messages = {
+            [MODES.POMODORO]: {
+              title: 'Pomodoro Complete! 🎉',
+              body: 'Great work! Time for a break.'
+            },
+            [MODES.SHORT_BREAK]: {
+              title: 'Break Complete! ⏰',
+              body: 'Ready to focus again?'
+            },
+            [MODES.LONG_BREAK]: {
+              title: 'Long Break Complete! 🌟',
+              body: 'Refreshed and ready to go!'
+            }
+          };
+          
+          const message = messages[this.currentMode];
+          showNotification(message.title, message.body);
+          this.showToast(message.title, message.body);
+        }
+        
+        // Update progress if completing a pomodoro
+        if (this.currentMode === MODES.POMODORO) {
+          this.completedPomodoros++;
+          this.pomodorosUntilLongBreak--;
+          this.saveProgress();
+          
+          // Record time entry if task is selected
+          if (this.activeTaskId && this.sessionStartTime) {
+            this.recordTimeEntry();
+          }
+        }
+      }
+      
+      // Auto-switch to next mode
+      this.autoSwitchMode();
+    },
+
+    /**
+     * Automatically switch to next appropriate mode
+     */
+    autoSwitchMode() {
+      let nextMode;
+      let autoStart = false;
+      
+      if (this.currentMode === MODES.POMODORO) {
+        // After pomodoro, take a break
+        if (this.pomodorosUntilLongBreak <= 0) {
+          nextMode = MODES.LONG_BREAK;
+          this.pomodorosUntilLongBreak = this.settings.longBreakInterval;
+        } else {
+          nextMode = MODES.SHORT_BREAK;
+        }
+        autoStart = this.settings.autoStartBreaks;
+      } else {
+        // After break, start pomodoro
+        nextMode = MODES.POMODORO;
+        autoStart = this.settings.autoStartPomodoros;
+      }
+      
+      this.switchMode(nextMode);
+      
+      // Auto-start if enabled
+      if (autoStart) {
+        setTimeout(() => this.startTimer(), 1000);
+      }
+    },
+
+    /**
+     * ─────────────────────────────────────────────────────────────────
+     * SETTINGS MANAGEMENT
+     * ─────────────────────────────────────────────────────────────────
+     */
+
+    /**
+     * Open settings modal
+     */
+    openSettings() {
+      this.showSettings = true;
+    },
+
+    /**
+     * Close settings modal and save
+     */
+    closeSettings() {
+      this.showSettings = false;
+      this.saveAppData();
+      
+      // Update daily goal
+      this.dailyGoal = this.settings.dailyGoal;
+      
+      // Update ambient sound if timer is running
+      if (this.isRunning && this.currentMode === MODES.POMODORO) {
+        if (this.settings.ambientSoundEnabled && this.settings.ambientSoundType !== 'none') {
+          this.ambientSound.start(
+            this.settings.ambientSoundType,
+            this.settings.ambientSoundVolume
+          );
+        } else {
+          this.ambientSound.stop();
+        }
+      }
+      
+      // Reset timer if duration changed
+      if (!this.isRunning) {
+        this.resetTimer();
+      }
+    },
+
+    /**
+     * Update ambient sound volume in real-time
+     */
+    updateAmbientVolume() {
+      if (this.ambientSound && this.ambientSound.isPlaying) {
+        this.ambientSound.setVolume(this.settings.ambientSoundVolume);
+      }
+    },
+
+    /**
+     * Toggle notifications with permission request
+     */
+    async toggleNotifications() {
+      if (!this.settings.notificationsEnabled) {
+        const granted = await requestNotificationPermission();
+        this.settings.notificationsEnabled = granted;
+      } else {
+        this.settings.notificationsEnabled = false;
+      }
+    },
+
+    /**
+     * Load full app data from the backend
+     */
+    async loadAppData() {
+      const appData = await fetchAppDataFromServer();
+      this.projects = appData.projects;
+      this.tasks = appData.tasks;
+      this.timeEntries = appData.timeEntries;
+      this.settings = { ...DEFAULT_SETTINGS, ...appData.settings };
+      this.dailyGoal = this.settings.dailyGoal;
+      this.completedPomodoros = this.todaySummary.totalPomodoros;
+    },
+
+    /**
+     * Save full app data to the backend
+     */
+    async saveAppData() {
+      try {
+        await persistAppDataToServer({
+          projects: this.projects,
+          tasks: this.tasks,
+          timeEntries: this.timeEntries,
+          settings: this.settings
+        });
+      } catch (error) {
+        this.showToast('Save Failed', 'Unable to persist data to the backend.');
+      }
+    },
+
+    /**
+     * ─────────────────────────────────────────────────────────────────
+     * UI HELPERS
+     * ─────────────────────────────────────────────────────────────────
+     */
+
+    /**
+     * Show toast notification
+     * @param {string} title - Notification title
+     * @param {string} message - Notification message
+     */
+    showToast(title, message) {
+      this.notificationTitle = title;
+      this.notificationMessage = message;
+      this.showNotification = true;
+      
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 4000);
+    },
+
+    /**
+     * Setup keyboard shortcuts
+     */
+    setupKeyboardShortcuts() {
+      document.addEventListener('keydown', (e) => {
+        // Ignore if typing in input or textarea
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        
+        switch(e.key.toLowerCase()) {
+          case ' ':
+            e.preventDefault();
+            if (this.currentView === 'timer') {
+              this.toggleTimer();
+            }
+            break;
+          case 'r':
+            if (this.currentView === 'timer') {
+              this.resetTimer();
+            }
+            break;
+          case 's':
+            if (this.currentView === 'timer') {
+              this.skipTimer();
+            }
+            break;
+          case '1':
+            if (this.currentView === 'timer') {
+              this.switchMode(MODES.POMODORO);
+            }
+            break;
+          case '2':
+            if (this.currentView === 'timer') {
+              this.switchMode(MODES.SHORT_BREAK);
+            }
+            break;
+          case '3':
+            if (this.currentView === 'timer') {
+              this.switchMode(MODES.LONG_BREAK);
+            }
+            break;
+          case 't':
+            this.switchView('timer');
+            break;
+          case 'p':
+            this.switchView('projects');
+            break;
+          case 'u':
+            this.switchView('summary');
+            break;
+          case ',':
+            this.openSettings();
+            break;
+          case 'escape':
+            if (this.showSettings) {
+              this.closeSettings();
+            } else if (this.showProjectModal) {
+              this.closeProjectModal();
+            } else if (this.showTaskModal) {
+              this.closeTaskModal();
+            } else if (this.showTimeEditModal) {
+              this.closeTimeEditModal();
+            } else if (this.showMorningConfirmation) {
+              this.confirmMorningReview();
+            }
+            break;
+        }
+      });
+    },
+
+    /**
+     * Setup page visibility handling for background tabs
+     */
+    setupVisibilityHandling() {
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && this.isRunning) {
+          // Tab became visible - update title
+          updateDocumentTitle(this.formattedTime, this.timerLabel);
+        }
+      });
+    },
+
+    /**
+     * Setup theme toggle functionality
+     */
+    setupThemeToggle() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = themeToggle.querySelector('.theme-icon');
+      const html = document.documentElement;
+      
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', savedTheme);
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      
+      // Toggle theme
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+    },
+
+    /**
+     * ─────────────────────────────────────────────────────────────────
+     * PROJECT & TASK MANAGEMENT
+     * ─────────────────────────────────────────────────────────────────
+     */
+
+    /**
+     * No-op project loader; app data is loaded from backend
+     */
+    loadProjects() {
+      return Promise.resolve();
+    },
+
+    /**
+     * Save projects by persisting the full app data
+     */
+    saveProjects() {
+      return this.saveAppData();
+    },
+
+    /**
+     * No-op task loader; app data is loaded from backend
+     */
+    loadTasks() {
+      return Promise.resolve();
+    },
+
+    /**
+     * Save tasks by persisting the full app data
+     */
+    saveTasks() {
+      return this.saveAppData();
+    },
+
+    /**
+     * No-op time entry loader; app data is loaded from backend
+     */
+    loadTimeEntries() {
+      return Promise.resolve();
+    },
+
+    /**
+     * Save time entries by persisting the full app data
+     */
+    saveTimeEntries() {
+      return this.saveAppData();
+    },
+
+    /**
+     * Load active task from localStorage
+     */
+    loadActiveTask() {
+      this.activeTaskId = loadFromStorage(STORAGE_KEYS.ACTIVE_TASK, null);
+    },
+
+    /**
+     * Save active task to localStorage
+     */
+    saveActiveTask() {
+      saveToStorage(STORAGE_KEYS.ACTIVE_TASK, this.activeTaskId);
+    },
+
+    /**
+     * Switch view
+     */
+    switchView(view) {
+      this.currentView = view;
+    },
+
+    /**
+     * Select active task
+     */
+    selectTask(taskId) {
+      this.activeTaskId = taskId;
+      this.saveActiveTask();
+    },
+
+    /**
+     * Open project modal for creating new project
+     */
+    openNewProjectModal() {
+      this.editingProject = null;
+      this.projectForm = { name: '', color: '#D95550' };
+      this.showProjectModal = true;
+    },
+
+    /**
+     * Open project modal for editing
+     */
+    openEditProjectModal(project) {
+      this.editingProject = project;
+      this.projectForm = { name: project.name, color: project.color };
+      this.showProjectModal = true;
+    },
+
+    /**
+     * Close project modal
+     */
+    closeProjectModal() {
+      this.showProjectModal = false;
+      this.editingProject = null;
+    },
+
+    /**
+     * Save project (create or update)
+     */
+    saveProject() {
+      if (!this.projectForm.name.trim()) {
+        alert('Project name is required');
+        return;
+      }
+
+      if (this.editingProject) {
+        // Update existing project
+        const index = this.projects.findIndex(p => p.id === this.editingProject.id);
+        if (index !== -1) {
+          this.projects[index].name = this.projectForm.name.trim();
+          this.projects[index].color = this.projectForm.color;
+        }
+      } else {
+        // Create new project
+        const newProject = {
+          id: generateUUID(),
+          name: this.projectForm.name.trim(),
+          color: this.projectForm.color,
+          createdAt: Date.now(),
+          archived: false
+        };
+        this.projects.push(newProject);
+      }
+
+      this.saveProjects();
+      this.closeProjectModal();
+    },
+
+    /**
+     * Delete project
+     */
+    deleteProject(projectId) {
+      if (!confirm('Delete this project and all its tasks?')) return;
+
+      // Remove project
+      this.projects = this.projects.filter(p => p.id !== projectId);
+      
+      // Remove associated tasks
+      this.tasks = this.tasks.filter(t => t.projectId !== projectId);
+      
+      // Clear active task if it belonged to this project
+      if (this.activeTask && this.activeTask.projectId === projectId) {
+        this.activeTaskId = null;
+        this.saveActiveTask();
+      }
+
+      this.saveProjects();
+      this.saveTasks();
+    },
+
+    /**
+     * Open task modal for creating new task
+     */
+    openNewTaskModal(projectId) {
+      this.editingTask = null;
+      this.taskForm = {
+        name: '',
+        description: '',
+        projectId: projectId,
+        estimatedPomodoros: 4
+      };
+      this.showTaskModal = true;
+    },
+
+    /**
+     * Open task modal for editing
+     */
+    openEditTaskModal(task) {
+      this.editingTask = task;
+      this.taskForm = {
+        name: task.name,
+        description: task.description || '',
+        projectId: task.projectId,
+        estimatedPomodoros: task.estimatedPomodoros || 4
+      };
+      this.showTaskModal = true;
+    },
+
+    /**
+     * Close task modal
+     */
+    closeTaskModal() {
+      this.showTaskModal = false;
+      this.editingTask = null;
+    },
+
+    /**
+     * Save task (create or update)
+     */
+    saveTask() {
+      if (!this.taskForm.name.trim()) {
+        alert('Task name is required');
+        return;
+      }
+
+      if (this.editingTask) {
+        // Update existing task
+        const index = this.tasks.findIndex(t => t.id === this.editingTask.id);
+        if (index !== -1) {
+          this.tasks[index].name = this.taskForm.name.trim();
+          this.tasks[index].description = this.taskForm.description.trim();
+          this.tasks[index].estimatedPomodoros = this.taskForm.estimatedPomodoros;
+        }
+      } else {
+        // Create new task with priority
+        const maxPriority = Math.max(
+          0,
+          ...this.tasks.map(t => t.priority || 0)
+        );
+        const newTask = {
+          id: generateUUID(),
+          projectId: this.taskForm.projectId,
+          name: this.taskForm.name.trim(),
+          description: this.taskForm.description.trim(),
+          createdAt: Date.now(),
+          completed: false,
+          estimatedPomodoros: this.taskForm.estimatedPomodoros,
+          priority: maxPriority + 1
+        };
+        this.tasks.push(newTask);
+      }
+
+      this.saveTasks();
+      this.closeTaskModal();
+    },
+
+    /**
+     * Delete task
+     */
+    deleteTask(taskId) {
+      if (!confirm('Delete this task?')) return;
+
+      this.tasks = this.tasks.filter(t => t.id !== taskId);
+      
+      // Clear active task if it was deleted
+      if (this.activeTaskId === taskId) {
+        this.activeTaskId = null;
+        this.saveActiveTask();
+      }
+
+      this.saveTasks();
+    },
+
+    /**
+     * Toggle task completion
+     */
+    toggleTaskComplete(taskId) {
+      const task = this.tasks.find(t => t.id === taskId);
+      if (task) {
+        task.completed = !task.completed;
+        this.saveTasks();
+      }
+    },
+
+    /**
+     * Initialize task priorities for backward compatibility
+     */
+    initializeTaskPriorities() {
+      // For existing tasks without priority, assign sequential priorities
+      const tasksWithoutPriority = this.tasks.filter(t => t.priority === undefined || t.priority === null);
+      if (tasksWithoutPriority.length > 0) {
+        const maxPriority = Math.max(
+          0,
+          ...this.tasks.filter(t => t.priority !== undefined && t.priority !== null).map(t => t.priority)
+        );
+        tasksWithoutPriority.forEach((task, index) => {
+          task.priority = maxPriority + index + 1;
+        });
+        this.saveTasks();
+      }
+    },
+
+    /**
+     * Start editing task name inline
+     */
+    startEditingTaskName(task, event) {
+      // Prevent task selection when starting edit
+      if (event) {
+        event.stopPropagation();
+      }
+      this.editingTaskNameId = task.id;
+      this.editingTaskNameValue = task.name;
+      // Focus the input after Vue updates the DOM
+      this.$nextTick(() => {
+        const input = document.querySelector(`input[data-task-id="${task.id}"]`);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      });
+    },
+
+    /**
+     * Save edited task name
+     */
+    saveTaskName(taskId) {
+      if (!this.editingTaskNameValue.trim()) {
+        alert('Task name cannot be empty');
+        this.cancelEditingTaskName();
+        return;
+      }
+
+      const task = this.tasks.find(t => t.id === taskId);
+      if (task) {
+        task.name = this.editingTaskNameValue.trim();
+        this.saveTasks();
+      }
+      this.cancelEditingTaskName();
+    },
+
+    /**
+     * Cancel editing task name
+     */
+    cancelEditingTaskName() {
+      this.editingTaskNameId = null;
+      this.editingTaskNameValue = '';
+    },
+
+    /**
+     * Handle task name input keypress
+     */
+    handleTaskNameKeypress(event, taskId) {
+      if (event.key === 'Enter') {
+        this.saveTaskName(taskId);
+      } else if (event.key === 'Escape') {
+        this.cancelEditingTaskName();
+      }
+    },
+
+    /**
+     * Start editing project name inline
+     */
+    startEditingProjectName(task, event) {
+      // Prevent task selection when starting edit
+      if (event) {
+        event.stopPropagation();
+      }
+      const project = this.projects.find(p => p.id === task.projectId);
+      if (project) {
+        this.editingProjectNameId = project.id;
+        this.editingProjectNameValue = project.name;
+        // Focus the input after Vue updates the DOM
+        this.$nextTick(() => {
+          const input = document.querySelector(`input[data-project-id="${project.id}"]`);
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        });
+      }
+    },
+
+    /**
+     * Save edited project name
+     */
+    saveProjectName(projectId) {
+      if (!this.editingProjectNameValue.trim()) {
+        alert('Project name cannot be empty');
+        this.cancelEditingProjectName();
+        return;
+      }
+
+      const project = this.projects.find(p => p.id === projectId);
+      if (project) {
+        project.name = this.editingProjectNameValue.trim();
+        this.saveProjects();
+      }
+      this.cancelEditingProjectName();
+    },
+
+    /**
+     * Cancel editing project name
+     */
+    cancelEditingProjectName() {
+      this.editingProjectNameId = null;
+      this.editingProjectNameValue = '';
+    },
+
+    /**
+     * Handle project name input keypress
+     */
+    handleProjectNameKeypress(event, projectId) {
+      if (event.key === 'Enter') {
+        this.saveProjectName(projectId);
+      } else if (event.key === 'Escape') {
+        this.cancelEditingProjectName();
+      }
+    },
+
+    /**
+     * Get project ID (helper for inline editing)
+     */
+    getProjectId(projectId) {
+      return projectId;
+    },
+
+    /**
+     * Get project name by ID
+     */
+    getProjectName(projectId) {
+      const project = this.projects.find(p => p.id === projectId);
+      return project ? project.name : 'Unknown Project';
+    },
+
+    /**
+     * Handle drag start event
+     */
+    handleDragStart(event, task) {
+      this.draggedTask = task;
+      event.dataTransfer.effectAllowed = 'move';
+      event.target.classList.add('dragging');
+    },
+
+    /**
+     * Handle drag over event
+     */
+    handleDragOver(event, task) {
+      event.preventDefault();
+      this.dragOverTask = task;
+      event.dataTransfer.dropEffect = 'move';
+    },
+
+    /**
+     * Handle drop event
+     */
+    handleDrop(event, targetTask) {
+      event.preventDefault();
+      if (!this.draggedTask || this.draggedTask.id === targetTask.id) return;
+      
+      // Reorder tasks based on drop position
+      this.reorderTaskPriorities(this.draggedTask, targetTask);
+      this.saveTasks();
+    },
+
+    /**
+     * Handle drag end event
+     */
+    handleDragEnd(event) {
+      event.target.classList.remove('dragging');
+      this.draggedTask = null;
+      this.dragOverTask = null;
+    },
+
+    /**
+     * Reorder task priorities after drag and drop
+     */
+    reorderTaskPriorities(draggedTask, targetTask) {
+      const incompleteTasks = this.tasks
+        .filter(t => !t.completed)
+        .sort((a, b) => (a.priority || 999999) - (b.priority || 999999));
+      
+      // Remove dragged task from array
+      const draggedIndex = incompleteTasks.findIndex(t => t.id === draggedTask.id);
+      incompleteTasks.splice(draggedIndex, 1);
+      
+      // Insert at new position
+      const targetIndex = incompleteTasks.findIndex(t => t.id === targetTask.id);
+      incompleteTasks.splice(targetIndex, 0, draggedTask);
+      
+      // Reassign priorities
+      incompleteTasks.forEach((task, index) => {
+        const originalTask = this.tasks.find(t => t.id === task.id);
+        if (originalTask) {
+          originalTask.priority = index + 1;
+        }
+      });
+    },
+
+    /**
+     * Record time entry for completed pomodoro
+     */
+    recordTimeEntry() {
+      if (!this.activeTaskId || !this.sessionStartTime) return;
+
+      const task = this.tasks.find(t => t.id === this.activeTaskId);
+      if (!task) return;
+
+      const endTime = Date.now();
+      const duration = Math.floor((endTime - this.sessionStartTime) / 1000);
+
+      const timeEntry = {
+        id: generateUUID(),
+        taskId: this.activeTaskId,
+        projectId: task.projectId,
+        startTime: this.sessionStartTime,
+        endTime: endTime,
+        duration: duration,
+        date: this.getTodayString(),
+        pomodorosCompleted: 1
+      };
+
+      this.timeEntries.push(timeEntry);
+      this.saveTimeEntries();
+      this.sessionStartTime = null;
+    },
+
+    /**
+     * Open time edit modal
+     */
+    openTimeEditModal(entry = null) {
+      if (entry) {
+        this.editingTimeEntry = entry;
+        // Convert duration (seconds) to hours and minutes
+        const totalMinutes = Math.floor(entry.duration / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        this.timeEditForm = {
+          taskId: entry.taskId,
+          date: entry.date,
+          hours: hours,
+          minutes: minutes
+        };
+      } else {
+        this.editingTimeEntry = null;
+        this.timeEditForm = {
+          taskId: this.activeTaskId,
+          date: this.selectedDate || this.getTodayString(),
+          hours: 0,
+          minutes: 25
+        };
+      }
+      this.showTimeEditModal = true;
+    },
+
+    /**
+     * Close time edit modal
+     */
+    closeTimeEditModal() {
+      this.showTimeEditModal = false;
+      this.editingTimeEntry = null;
+    },
+
+    /**
+     * Save time entry edit
+     */
+    saveTimeEdit() {
+      if (!this.timeEditForm.taskId) {
+        alert('Please select a task');
+        return;
+      }
+
+      const task = this.tasks.find(t => t.id === this.timeEditForm.taskId);
+      if (!task) return;
+
+      // Convert hours and minutes to duration in seconds
+      const hours = parseInt(this.timeEditForm.hours) || 0;
+      const minutes = parseInt(this.timeEditForm.minutes) || 0;
+      
+      if (hours === 0 && minutes === 0) {
+        alert('Please enter a duration greater than 0');
+        return;
+      }
+
+      const duration = (hours * 3600) + (minutes * 60);
+      const pomodoros = Math.round(duration / (25 * 60));
+
+      // Create start and end times based on current time or end of day
+      const dateObj = new Date(this.timeEditForm.date);
+      const now = new Date();
+      
+      // If the date is today, use current time as end time
+      // Otherwise, use end of work day (5 PM) as end time
+      let endTime;
+      if (dateObj.toDateString() === now.toDateString()) {
+        endTime = now.getTime();
+      } else {
+        endTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), 17, 0).getTime();
+      }
+      
+      const startTime = endTime - (duration * 1000);
+
+      if (this.editingTimeEntry) {
+        // Update existing entry
+        const index = this.timeEntries.findIndex(e => e.id === this.editingTimeEntry.id);
+        if (index !== -1) {
+          this.timeEntries[index].taskId = this.timeEditForm.taskId;
+          this.timeEntries[index].projectId = task.projectId;
+          this.timeEntries[index].startTime = startTime;
+          this.timeEntries[index].endTime = endTime;
+          this.timeEntries[index].duration = duration;
+          this.timeEntries[index].date = this.timeEditForm.date;
+          this.timeEntries[index].pomodorosCompleted = pomodoros;
+        }
+      } else {
+        // Create new entry
+        const newEntry = {
+          id: generateUUID(),
+          taskId: this.timeEditForm.taskId,
+          projectId: task.projectId,
+          startTime: startTime,
+          endTime: endTime,
+          duration: duration,
+          date: this.timeEditForm.date,
+          pomodorosCompleted: pomodoros
+        };
+        this.timeEntries.push(newEntry);
+      }
+
+      this.saveTimeEntries();
+      this.closeTimeEditModal();
+    },
+
+    /**
+     * Delete time entry
+     */
+    deleteTimeEntry(entryId) {
+      if (!confirm('Delete this time entry?')) return;
+      this.timeEntries = this.timeEntries.filter(e => e.id !== entryId);
+      this.saveTimeEntries();
+    },
+
+    /**
+     * Check for morning confirmation
+     */
+    checkMorningConfirmation() {
+      const lastConfirmation = loadFromStorage(STORAGE_KEYS.LAST_CONFIRMATION, null);
+      const today = this.getTodayString();
+      
+      if (lastConfirmation === today) return;
+
+      // Check if there were entries yesterday
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+      
+      const yesterdayEntries = this.timeEntries.filter(e => e.date === yesterdayStr);
+      
+      if (yesterdayEntries.length > 0) {
+        // Show morning confirmation after a short delay
+        setTimeout(() => {
+          this.showMorningConfirmation = true;
+        }, 1000);
+      }
+    },
+
+    /**
+     * Confirm morning review
+     */
+    confirmMorningReview() {
+      saveToStorage(STORAGE_KEYS.LAST_CONFIRMATION, this.getTodayString());
+      this.showMorningConfirmation = false;
+    },
+
+    /**
+     * Format duration in seconds to human readable
+     */
+    formatDuration(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      
+      if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+      }
+      return `${minutes}m`;
+    },
+
+    /**
+     * Export all data to JSON file
+     */
+    exportData() {
+      const exportData = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        appName: 'Pomodoro Timer',
+        data: {
+          projects: this.projects,
+          tasks: this.tasks,
+          timeEntries: this.timeEntries,
+          settings: this.settings
+        }
+      };
+      
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `pomodoro-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      // Show success message
+      this.showNotification = true;
+      this.notificationTitle = 'Export Successful';
+      this.notificationMessage = 'Your data has been exported successfully!';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
+    },
+
+    /**
+     * Trigger file input for import
+     */
+    triggerImport() {
+      this.$refs.importInput.click();
+    },
+
+    /**
+     * Import data from JSON file
+     */
+    importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          
+          // Validate structure
+          if (!importedData.version || !importedData.data) {
+            throw new Error('Invalid file format. Please select a valid Pomodoro backup file.');
+          }
+          
+          // Validate data types
+          if (importedData.data.projects && !Array.isArray(importedData.data.projects)) {
+            throw new Error('Invalid projects data format.');
+          }
+          if (importedData.data.tasks && !Array.isArray(importedData.data.tasks)) {
+            throw new Error('Invalid tasks data format.');
+          }
+          if (importedData.data.timeEntries && !Array.isArray(importedData.data.timeEntries)) {
+            throw new Error('Invalid time entries data format.');
+          }
+          
+          // Confirm with user
+          const projectCount = importedData.data.projects?.length || 0;
+          const taskCount = importedData.data.tasks?.length || 0;
+          const entryCount = importedData.data.timeEntries?.length || 0;
+          
+          const message = `This will replace all current data with:\n\n` +
+            `• ${projectCount} project(s)\n` +
+            `• ${taskCount} task(s)\n` +
+            `• ${entryCount} time entry(ies)\n\n` +
+            `Continue?`;
+          
+          if (!confirm(message)) {
+            // Reset file input
+            event.target.value = '';
+            return;
+          }
+          
+          // Import data
+          if (importedData.data.projects) {
+            this.projects = importedData.data.projects;
+            this.saveProjects();
+          }
+          if (importedData.data.tasks) {
+            this.tasks = importedData.data.tasks;
+            this.saveTasks();
+          }
+          if (importedData.data.timeEntries) {
+            this.timeEntries = importedData.data.timeEntries;
+            this.saveTimeEntries();
+          }
+          if (importedData.data.settings) {
+            this.settings = { ...DEFAULT_SETTINGS, ...importedData.data.settings };
+            this.saveSettings();
+            // Update timer with new settings
+            this.timeRemaining = this.settings.pomodoroDuration * 60;
+            this.totalTime = this.settings.pomodoroDuration * 60;
+          }
+          
+          // Reset file input
+          event.target.value = '';
+          
+          // Show success message
+          this.showNotification = true;
+          this.notificationTitle = 'Import Successful';
+          this.notificationMessage = 'Your data has been imported successfully!';
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+          
+          // Close settings modal
+          this.closeSettings();
+        } catch (error) {
+          console.error('Import error:', error);
+          alert('Error importing data: ' + error.message);
+          // Reset file input
+          event.target.value = '';
+        }
+      };
+      
+      reader.onerror = () => {
+        alert('Error reading file. Please try again.');
+        event.target.value = '';
+      };
+      
+      reader.readAsText(file);
+    }
+  }
+}).mount('#app');
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * INITIALIZATION COMPLETE
+ * ═══════════════════════════════════════════════════════════════════════
+ * 
+ * The Pomodoro Timer is now ready to use!
+ * 
+ * Keyboard Shortcuts:
+ * - Space: Start/Pause timer
+ * - R: Reset timer
+ * - S: Skip to next session
+ * - 1: Switch to Pomodoro mode
+ * - 2: Switch to Short Break mode
+ * - 3: Switch to Long Break mode
+ * - ,: Open settings
+ * - Esc: Close settings
+ */
+
+// Made with Bob

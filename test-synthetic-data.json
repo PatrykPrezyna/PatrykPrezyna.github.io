@@ -1,0 +1,1563 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-06-08T17:30:45.504Z",
+  "appName": "Pomodoro Timer",
+  "data": {
+    "projects": [
+      {
+        "id": "proj-001",
+        "name": "Frontend Development",
+        "color": "#D95550",
+        "createdAt": 1715000000000,
+        "archived": false
+      },
+      {
+        "id": "proj-002",
+        "name": "Backend API",
+        "color": "#4A90E2",
+        "createdAt": 1715000000000,
+        "archived": false
+      },
+      {
+        "id": "proj-003",
+        "name": "Database Design",
+        "color": "#50C878",
+        "createdAt": 1715000000000,
+        "archived": false
+      },
+      {
+        "id": "proj-004",
+        "name": "Testing & QA",
+        "color": "#FFB347",
+        "createdAt": 1715000000000,
+        "archived": false
+      },
+      {
+        "id": "proj-005",
+        "name": "Documentation",
+        "color": "#9B59B6",
+        "createdAt": 1715000000000,
+        "archived": false
+      }
+    ],
+    "tasks": [
+      {
+        "id": "task-001",
+        "projectId": "proj-001",
+        "name": "Implement Login Page",
+        "description": "Task for Frontend Development",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 4,
+        "priority": 1
+      },
+      {
+        "id": "task-002",
+        "projectId": "proj-001",
+        "name": "Build Dashboard UI",
+        "description": "Task for Frontend Development",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 5,
+        "priority": 2
+      },
+      {
+        "id": "task-003",
+        "projectId": "proj-001",
+        "name": "Create Navigation Menu",
+        "description": "Task for Frontend Development",
+        "createdAt": 1715000000000,
+        "completed": true,
+        "estimatedPomodoros": 6,
+        "priority": 3
+      },
+      {
+        "id": "task-004",
+        "projectId": "proj-001",
+        "name": "Implement Form Validation",
+        "description": "Task for Frontend Development",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 7,
+        "priority": 4
+      },
+      {
+        "id": "task-005",
+        "projectId": "proj-001",
+        "name": "Add Dark Mode Support",
+        "description": "Task for Frontend Development",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 8,
+        "priority": 5
+      },
+      {
+        "id": "task-006",
+        "projectId": "proj-002",
+        "name": "Setup Express Server",
+        "description": "Task for Backend API",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 4,
+        "priority": 6
+      },
+      {
+        "id": "task-007",
+        "projectId": "proj-002",
+        "name": "Create Authentication Endpoints",
+        "description": "Task for Backend API",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 5,
+        "priority": 7
+      },
+      {
+        "id": "task-008",
+        "projectId": "proj-002",
+        "name": "Implement CRUD Operations",
+        "description": "Task for Backend API",
+        "createdAt": 1715000000000,
+        "completed": true,
+        "estimatedPomodoros": 6,
+        "priority": 8
+      },
+      {
+        "id": "task-009",
+        "projectId": "proj-002",
+        "name": "Add Error Handling",
+        "description": "Task for Backend API",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 7,
+        "priority": 9
+      },
+      {
+        "id": "task-010",
+        "projectId": "proj-002",
+        "name": "Setup API Rate Limiting",
+        "description": "Task for Backend API",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 8,
+        "priority": 10
+      },
+      {
+        "id": "task-011",
+        "projectId": "proj-003",
+        "name": "Design Database Schema",
+        "description": "Task for Database Design",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 4,
+        "priority": 11
+      },
+      {
+        "id": "task-012",
+        "projectId": "proj-003",
+        "name": "Setup PostgreSQL Database",
+        "description": "Task for Database Design",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 5,
+        "priority": 12
+      },
+      {
+        "id": "task-013",
+        "projectId": "proj-003",
+        "name": "Create Migration Scripts",
+        "description": "Task for Database Design",
+        "createdAt": 1715000000000,
+        "completed": true,
+        "estimatedPomodoros": 6,
+        "priority": 13
+      },
+      {
+        "id": "task-014",
+        "projectId": "proj-003",
+        "name": "Optimize Query Performance",
+        "description": "Task for Database Design",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 7,
+        "priority": 14
+      },
+      {
+        "id": "task-015",
+        "projectId": "proj-003",
+        "name": "Setup Database Backups",
+        "description": "Task for Database Design",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 8,
+        "priority": 15
+      },
+      {
+        "id": "task-016",
+        "projectId": "proj-004",
+        "name": "Write Unit Tests",
+        "description": "Task for Testing & QA",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 4,
+        "priority": 16
+      },
+      {
+        "id": "task-017",
+        "projectId": "proj-004",
+        "name": "Create Integration Tests",
+        "description": "Task for Testing & QA",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 5,
+        "priority": 17
+      },
+      {
+        "id": "task-018",
+        "projectId": "proj-004",
+        "name": "Setup E2E Testing",
+        "description": "Task for Testing & QA",
+        "createdAt": 1715000000000,
+        "completed": true,
+        "estimatedPomodoros": 6,
+        "priority": 18
+      },
+      {
+        "id": "task-019",
+        "projectId": "proj-004",
+        "name": "Perform Security Audit",
+        "description": "Task for Testing & QA",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 7,
+        "priority": 19
+      },
+      {
+        "id": "task-020",
+        "projectId": "proj-004",
+        "name": "Load Testing",
+        "description": "Task for Testing & QA",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 8,
+        "priority": 20
+      },
+      {
+        "id": "task-021",
+        "projectId": "proj-005",
+        "name": "Write API Documentation",
+        "description": "Task for Documentation",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 4,
+        "priority": 21
+      },
+      {
+        "id": "task-022",
+        "projectId": "proj-005",
+        "name": "Create User Guide",
+        "description": "Task for Documentation",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 5,
+        "priority": 22
+      },
+      {
+        "id": "task-023",
+        "projectId": "proj-005",
+        "name": "Document Architecture",
+        "description": "Task for Documentation",
+        "createdAt": 1715000000000,
+        "completed": true,
+        "estimatedPomodoros": 6,
+        "priority": 23
+      },
+      {
+        "id": "task-024",
+        "projectId": "proj-005",
+        "name": "Setup Code Comments",
+        "description": "Task for Documentation",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 7,
+        "priority": 24
+      },
+      {
+        "id": "task-025",
+        "projectId": "proj-005",
+        "name": "Create Deployment Guide",
+        "description": "Task for Documentation",
+        "createdAt": 1715000000000,
+        "completed": false,
+        "estimatedPomodoros": 8,
+        "priority": 25
+      }
+    ],
+    "timeEntries": [
+      {
+        "id": "entry-001",
+        "taskId": "task-001",
+        "projectId": "proj-001",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-002",
+        "taskId": "task-001",
+        "projectId": "proj-001",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-003",
+        "taskId": "task-001",
+        "projectId": "proj-001",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-004",
+        "taskId": "task-001",
+        "projectId": "proj-001",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-005",
+        "taskId": "task-001",
+        "projectId": "proj-001",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-006",
+        "taskId": "task-002",
+        "projectId": "proj-001",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-007",
+        "taskId": "task-002",
+        "projectId": "proj-001",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-008",
+        "taskId": "task-002",
+        "projectId": "proj-001",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-009",
+        "taskId": "task-002",
+        "projectId": "proj-001",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-010",
+        "taskId": "task-002",
+        "projectId": "proj-001",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-011",
+        "taskId": "task-003",
+        "projectId": "proj-001",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-012",
+        "taskId": "task-003",
+        "projectId": "proj-001",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-013",
+        "taskId": "task-003",
+        "projectId": "proj-001",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-014",
+        "taskId": "task-003",
+        "projectId": "proj-001",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-015",
+        "taskId": "task-003",
+        "projectId": "proj-001",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-016",
+        "taskId": "task-004",
+        "projectId": "proj-001",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-017",
+        "taskId": "task-004",
+        "projectId": "proj-001",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-018",
+        "taskId": "task-004",
+        "projectId": "proj-001",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-019",
+        "taskId": "task-004",
+        "projectId": "proj-001",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-020",
+        "taskId": "task-004",
+        "projectId": "proj-001",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-021",
+        "taskId": "task-005",
+        "projectId": "proj-001",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-022",
+        "taskId": "task-005",
+        "projectId": "proj-001",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-023",
+        "taskId": "task-005",
+        "projectId": "proj-001",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-024",
+        "taskId": "task-005",
+        "projectId": "proj-001",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-025",
+        "taskId": "task-005",
+        "projectId": "proj-001",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-026",
+        "taskId": "task-006",
+        "projectId": "proj-002",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-027",
+        "taskId": "task-006",
+        "projectId": "proj-002",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-028",
+        "taskId": "task-006",
+        "projectId": "proj-002",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-029",
+        "taskId": "task-006",
+        "projectId": "proj-002",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-030",
+        "taskId": "task-006",
+        "projectId": "proj-002",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-031",
+        "taskId": "task-007",
+        "projectId": "proj-002",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-032",
+        "taskId": "task-007",
+        "projectId": "proj-002",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-033",
+        "taskId": "task-007",
+        "projectId": "proj-002",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-034",
+        "taskId": "task-007",
+        "projectId": "proj-002",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-035",
+        "taskId": "task-007",
+        "projectId": "proj-002",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-036",
+        "taskId": "task-008",
+        "projectId": "proj-002",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-037",
+        "taskId": "task-008",
+        "projectId": "proj-002",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-038",
+        "taskId": "task-008",
+        "projectId": "proj-002",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-039",
+        "taskId": "task-008",
+        "projectId": "proj-002",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-040",
+        "taskId": "task-008",
+        "projectId": "proj-002",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-041",
+        "taskId": "task-009",
+        "projectId": "proj-002",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-042",
+        "taskId": "task-009",
+        "projectId": "proj-002",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-043",
+        "taskId": "task-009",
+        "projectId": "proj-002",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-044",
+        "taskId": "task-009",
+        "projectId": "proj-002",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-045",
+        "taskId": "task-009",
+        "projectId": "proj-002",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-046",
+        "taskId": "task-010",
+        "projectId": "proj-002",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-047",
+        "taskId": "task-010",
+        "projectId": "proj-002",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-048",
+        "taskId": "task-010",
+        "projectId": "proj-002",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-049",
+        "taskId": "task-010",
+        "projectId": "proj-002",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-050",
+        "taskId": "task-010",
+        "projectId": "proj-002",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-051",
+        "taskId": "task-011",
+        "projectId": "proj-003",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-052",
+        "taskId": "task-011",
+        "projectId": "proj-003",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-053",
+        "taskId": "task-011",
+        "projectId": "proj-003",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-054",
+        "taskId": "task-011",
+        "projectId": "proj-003",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-055",
+        "taskId": "task-011",
+        "projectId": "proj-003",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-056",
+        "taskId": "task-012",
+        "projectId": "proj-003",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-057",
+        "taskId": "task-012",
+        "projectId": "proj-003",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-058",
+        "taskId": "task-012",
+        "projectId": "proj-003",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-059",
+        "taskId": "task-012",
+        "projectId": "proj-003",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-060",
+        "taskId": "task-012",
+        "projectId": "proj-003",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-061",
+        "taskId": "task-013",
+        "projectId": "proj-003",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-062",
+        "taskId": "task-013",
+        "projectId": "proj-003",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-063",
+        "taskId": "task-013",
+        "projectId": "proj-003",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-064",
+        "taskId": "task-013",
+        "projectId": "proj-003",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-065",
+        "taskId": "task-013",
+        "projectId": "proj-003",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-066",
+        "taskId": "task-014",
+        "projectId": "proj-003",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-067",
+        "taskId": "task-014",
+        "projectId": "proj-003",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-068",
+        "taskId": "task-014",
+        "projectId": "proj-003",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-069",
+        "taskId": "task-014",
+        "projectId": "proj-003",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-070",
+        "taskId": "task-014",
+        "projectId": "proj-003",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-071",
+        "taskId": "task-015",
+        "projectId": "proj-003",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-072",
+        "taskId": "task-015",
+        "projectId": "proj-003",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-073",
+        "taskId": "task-015",
+        "projectId": "proj-003",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-074",
+        "taskId": "task-015",
+        "projectId": "proj-003",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-075",
+        "taskId": "task-015",
+        "projectId": "proj-003",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-076",
+        "taskId": "task-016",
+        "projectId": "proj-004",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-077",
+        "taskId": "task-016",
+        "projectId": "proj-004",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-078",
+        "taskId": "task-016",
+        "projectId": "proj-004",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-079",
+        "taskId": "task-016",
+        "projectId": "proj-004",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-080",
+        "taskId": "task-016",
+        "projectId": "proj-004",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-081",
+        "taskId": "task-017",
+        "projectId": "proj-004",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-082",
+        "taskId": "task-017",
+        "projectId": "proj-004",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-083",
+        "taskId": "task-017",
+        "projectId": "proj-004",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-084",
+        "taskId": "task-017",
+        "projectId": "proj-004",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-085",
+        "taskId": "task-017",
+        "projectId": "proj-004",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-086",
+        "taskId": "task-018",
+        "projectId": "proj-004",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-087",
+        "taskId": "task-018",
+        "projectId": "proj-004",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-088",
+        "taskId": "task-018",
+        "projectId": "proj-004",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-089",
+        "taskId": "task-018",
+        "projectId": "proj-004",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-090",
+        "taskId": "task-018",
+        "projectId": "proj-004",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-091",
+        "taskId": "task-019",
+        "projectId": "proj-004",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-092",
+        "taskId": "task-019",
+        "projectId": "proj-004",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-093",
+        "taskId": "task-019",
+        "projectId": "proj-004",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-094",
+        "taskId": "task-019",
+        "projectId": "proj-004",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-095",
+        "taskId": "task-019",
+        "projectId": "proj-004",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-096",
+        "taskId": "task-020",
+        "projectId": "proj-004",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-097",
+        "taskId": "task-020",
+        "projectId": "proj-004",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-098",
+        "taskId": "task-020",
+        "projectId": "proj-004",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-099",
+        "taskId": "task-020",
+        "projectId": "proj-004",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-100",
+        "taskId": "task-020",
+        "projectId": "proj-004",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-101",
+        "taskId": "task-021",
+        "projectId": "proj-005",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-102",
+        "taskId": "task-021",
+        "projectId": "proj-005",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-103",
+        "taskId": "task-021",
+        "projectId": "proj-005",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-104",
+        "taskId": "task-021",
+        "projectId": "proj-005",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-105",
+        "taskId": "task-021",
+        "projectId": "proj-005",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-106",
+        "taskId": "task-022",
+        "projectId": "proj-005",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-107",
+        "taskId": "task-022",
+        "projectId": "proj-005",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-108",
+        "taskId": "task-022",
+        "projectId": "proj-005",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-109",
+        "taskId": "task-022",
+        "projectId": "proj-005",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-110",
+        "taskId": "task-022",
+        "projectId": "proj-005",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-111",
+        "taskId": "task-023",
+        "projectId": "proj-005",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-112",
+        "taskId": "task-023",
+        "projectId": "proj-005",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-113",
+        "taskId": "task-023",
+        "projectId": "proj-005",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-114",
+        "taskId": "task-023",
+        "projectId": "proj-005",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-115",
+        "taskId": "task-023",
+        "projectId": "proj-005",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-116",
+        "taskId": "task-024",
+        "projectId": "proj-005",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-117",
+        "taskId": "task-024",
+        "projectId": "proj-005",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-118",
+        "taskId": "task-024",
+        "projectId": "proj-005",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-119",
+        "taskId": "task-024",
+        "projectId": "proj-005",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-120",
+        "taskId": "task-024",
+        "projectId": "proj-005",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-121",
+        "taskId": "task-025",
+        "projectId": "proj-005",
+        "startTime": 1779112800000,
+        "endTime": 1779114300000,
+        "duration": 1500,
+        "date": "2026-05-19",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-122",
+        "taskId": "task-025",
+        "projectId": "proj-005",
+        "startTime": 1779458400000,
+        "endTime": 1779459900000,
+        "duration": 1500,
+        "date": "2026-05-23",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-123",
+        "taskId": "task-025",
+        "projectId": "proj-005",
+        "startTime": 1779804000000,
+        "endTime": 1779805500000,
+        "duration": 1500,
+        "date": "2026-05-27",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-124",
+        "taskId": "task-025",
+        "projectId": "proj-005",
+        "startTime": 1780236000000,
+        "endTime": 1780237500000,
+        "duration": 1500,
+        "date": "2026-06-01",
+        "pomodorosCompleted": 1
+      },
+      {
+        "id": "entry-125",
+        "taskId": "task-025",
+        "projectId": "proj-005",
+        "startTime": 1780581600000,
+        "endTime": 1780583100000,
+        "duration": 1500,
+        "date": "2026-06-05",
+        "pomodorosCompleted": 1
+      }
+    ],
+    "settings": {
+      "pomodoroDuration": 25,
+      "shortBreakDuration": 5,
+      "longBreakDuration": 15,
+      "longBreakInterval": 4,
+      "autoStartBreaks": false,
+      "autoStartPomodoros": false,
+      "notificationsEnabled": true,
+      "soundEnabled": true,
+      "volume": 50,
+      "ambientSoundEnabled": false,
+      "ambientSoundType": "none",
+      "ambientSoundVolume": 30,
+      "dailyGoal": 8
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "projects": [],
+  "tasks": [],
+  "timeEntries": [],
+  "settings": {
+    "pomodoroDuration": 25,
+    "shortBreakDuration": 5,
+    "longBreakDuration": 15,
+    "autoStartBreaks": false,
+    "autoStartPomodoros": false,
+    "longBreakInterval": 4,
+    "notificationsEnabled": true,
+    "soundEnabled": true,
+    "volume": 50,
+    "dailyGoal": 8,
+    "ambientSoundEnabled": false,
+    "ambientSoundType": "none",
+    "ambientSoundVolume": 30
+  }
+}
