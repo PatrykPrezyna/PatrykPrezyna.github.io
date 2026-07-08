@@ -1617,6 +1617,18 @@ createApp({
     },
 
     /**
+     * Mark task as done
+     * @param {string} taskId - Task identifier
+     */
+    markTaskDone(taskId) {
+      const task = this.tasks.find(t => t.id === taskId);
+      if (task && !task.completed) {
+        task.completed = true;
+        this.saveTasks();
+      }
+    },
+
+    /**
      * Initialize task priorities for backward compatibility
      */
     initializeTaskPriorities() {
@@ -1821,13 +1833,54 @@ createApp({
       const targetIndex = incompleteTasks.findIndex(t => t.id === targetTask.id);
       incompleteTasks.splice(targetIndex, 0, draggedTask);
       
-      // Reassign priorities
-      incompleteTasks.forEach((task, index) => {
+      this.applyIncompleteTaskOrder(incompleteTasks);
+    },
+
+    /**
+     * Apply a new ordered list to incomplete task priorities
+     */
+    applyIncompleteTaskOrder(orderedTasks) {
+      orderedTasks.forEach((task, index) => {
         const originalTask = this.tasks.find(t => t.id === task.id);
         if (originalTask) {
           originalTask.priority = index + 1;
         }
       });
+    },
+
+    /**
+     * Handle direct priority edits
+     */
+    handleTaskPriorityChange(taskId, event) {
+      const task = this.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const rawValue = event?.target?.value;
+      const desiredPriority = Number.parseInt(rawValue, 10);
+      const incompleteTasks = this.tasks
+        .filter(t => !t.completed)
+        .sort((a, b) => (a.priority || 999999) - (b.priority || 999999));
+
+      if (!Number.isFinite(desiredPriority)) {
+        if (event?.target) {
+          event.target.value = task.priority || 1;
+        }
+        return;
+      }
+
+      const currentIndex = incompleteTasks.findIndex(t => t.id === taskId);
+      if (currentIndex === -1) return;
+
+      const [movedTask] = incompleteTasks.splice(currentIndex, 1);
+      const clampedPriority = Math.max(1, Math.min(desiredPriority, incompleteTasks.length + 1));
+      incompleteTasks.splice(clampedPriority - 1, 0, movedTask);
+
+      this.applyIncompleteTaskOrder(incompleteTasks);
+      this.saveTasks();
+
+      if (event?.target) {
+        event.target.value = movedTask.priority;
+      }
     },
 
     /**

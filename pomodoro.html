@@ -918,9 +918,70 @@
       flex-shrink: 0;
     }
 
+    .task-priority-input {
+      width: 56px;
+      height: 32px;
+      border: 1px solid transparent;
+      background: var(--current-color);
+      color: white;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      flex-shrink: 0;
+      outline: none;
+      padding: 0 6px;
+      font-family: var(--sans);
+      -moz-appearance: textfield;
+    }
+
+    .task-priority-input::-webkit-outer-spin-button,
+    .task-priority-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .task-priority-input:focus {
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 3px rgba(217, 85, 80, 0.18);
+    }
+
     .task-info {
       flex: 1;
       min-width: 0;
+    }
+
+    .task-priority-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    .task-done-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: var(--current-color);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      white-space: nowrap;
+    }
+
+    .task-done-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    }
+
+    .task-done-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     }
 
     .task-name {
@@ -1375,7 +1436,7 @@
       <!-- Task Priority List -->
       <div class="task-priority-list" v-if="projects.length > 0 && sortedIncompleteTasks.length > 0">
         <div class="task-priority-header">
-          <h3>Tasks (drag to reorder priority)</h3>
+          <h3>Tasks (drag or edit priority)</h3>
         </div>
         <div class="task-priority-items">
           <div
@@ -1391,7 +1452,22 @@
             @click="selectTask(task.id)"
           >
             <div class="task-drag-handle">⋮⋮</div>
-            <div class="task-priority-badge">{{ task.priority }}</div>
+            <input
+              type="number"
+              class="task-priority-input"
+              :value="task.priority"
+              min="1"
+              :max="sortedIncompleteTasks.length"
+              step="1"
+              inputmode="numeric"
+              title="Edit task priority"
+              aria-label="Edit task priority"
+              @mousedown.stop
+              @click.stop
+              @change="handleTaskPriorityChange(task.id, $event)"
+              @keydown.enter.prevent="handleTaskPriorityChange(task.id, $event)"
+              @keydown.escape.prevent="$event.target.blur()"
+            />
             <div class="task-info">
               <div class="task-name">
                 <span
@@ -1432,6 +1508,16 @@
                 />
               </div>
             </div>
+            <div class="task-priority-actions">
+              <button
+                class="task-done-btn"
+                @click.stop="markTaskDone(task.id)"
+                title="Mark task as done"
+                aria-label="Mark task as done"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1458,6 +1544,19 @@
       </button>
     </div>
 
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-primary" @click="toggleTimer" :aria-label="isRunning ? 'Pause timer' : 'Start timer'">
+        {{ isRunning ? 'Pause' : 'Start' }}
+      </button>
+      <button class="btn btn-secondary" @click="resetTimer" aria-label="Reset timer">
+        Reset
+      </button>
+      <button class="btn btn-secondary" @click="skipTimer" aria-label="Skip to next session">
+        Skip
+      </button>
+    </div>
+
     <!-- Timer Display -->
     <div class="timer-container">
       <svg class="timer-svg" viewBox="0 0 320 320">
@@ -1479,19 +1578,6 @@
         <div class="timer-time" aria-live="polite">{{ formattedTime }}</div>
         <div class="timer-label">{{ timerLabel }}</div>
       </div>
-    </div>
-
-    <!-- Controls -->
-    <div class="controls">
-      <button class="btn btn-primary" @click="toggleTimer" :aria-label="isRunning ? 'Pause timer' : 'Start timer'">
-        {{ isRunning ? 'Pause' : 'Start' }}
-      </button>
-      <button class="btn btn-secondary" @click="resetTimer" aria-label="Reset timer">
-        Reset
-      </button>
-      <button class="btn btn-secondary" @click="skipTimer" aria-label="Skip to next session">
-        Skip
-      </button>
     </div>
 
       <!-- Progress Tracker -->
