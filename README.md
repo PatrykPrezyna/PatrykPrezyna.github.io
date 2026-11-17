@@ -1,80 +1,16 @@
-# Patryk Prężyna - Portfolio & Pomodoro Timer
+# Patryk Prężyna
 
-Personal portfolio website with an integrated Pomodoro timer application.
+Personal site for Patryk Prężyna, systems engineer.
 
-## 🚀 Live Demo
+## Live
 
-Visit: [https://patrykprezyna.github.io](https://patrykprezyna.github.io)
+[https://patrykprezyna.github.io](https://patrykprezyna.github.io)
 
-## ✨ Features
+## Structure
 
-### Pomodoro Timer
-- ⏱️ Three timer modes: Pomodoro (25 min), Short Break (5 min), Long Break (15 min)
-- 📊 Daily progress tracking with visual progress bar
-- 🔔 Browser notifications and audio alerts
-- ⚙️ Customizable durations and settings
-- 🌓 Dark mode support
-- 📱 Fully responsive design
-- ♿ Accessible with keyboard shortcuts
-- 🎯 Project and task tracking
-- 🔊 Ambient sounds (White/Brown noise)
-- 💾 **Export/Import data** - Backup and restore your projects, tasks, and time entries
-
-### Portfolio
-- Clean, modern design
-- Responsive layout
-- Easy navigation
-
-## 🛠️ Technologies
-
-- **Vue.js 3** - Reactive UI framework
-- **Vanilla CSS** - Custom styling
-- **LocalStorage API** - Persistent settings
-- **Web Audio API** - Sound generation
-- **Notifications API** - Browser alerts
-
-## 📦 Deployment
-
-This project is deployed using **GitHub Pages**.
-
-### Deploy Your Own
-
-1. Fork this repository
-2. Go to Settings → Pages
-3. Select branch: `main`
-4. Save and wait for deployment
-5. Access at `https://yourusername.github.io`
-
-## 🎮 Keyboard Shortcuts
-
-- `Space` - Start/Pause timer
-- `R` - Reset timer
-- `S` - Skip session
-- `1/2/3` - Switch modes
-- `,` - Open settings
-- `Esc` - Close modals
-
-## 💾 Data Export/Import
-
-The Pomodoro Timer includes a complete backup and restore system. You can export all your data (projects, tasks, time entries, and settings) to a JSON file and import it back whenever needed.
-
-**Quick Start:**
-1. Open Settings (⚙️)
-2. Scroll to "Data Management"
-3. Click "Export Data" to create a backup
-4. Click "Import Data" to restore from a backup
-
-📖 **[Read the complete Export/Import Guide](EXPORT_IMPORT_GUIDE.md)** for detailed instructions, troubleshooting, and best practices.
-
-## 📄 License
-
-MIT License - Free to use for personal or commercial purposes.
-
-## 👤 Author
-
-**Patryk Prężyna**
-- GitHub: [@PatrykPrezyna](https://github.com/PatrykPrezyna)
-
----
-
-*Stay focused, stay productive!* 🍅
+```text
+.
+├── index.html    # Site
+├── styles.css    # Styles
+└── assets/       # Portrait
+```

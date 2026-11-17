@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/pomodoro",
-      "dest": "/pomodoro.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
