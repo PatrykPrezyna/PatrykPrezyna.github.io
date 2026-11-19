@@ -7,367 +7,624 @@
   <meta name="description" content="Patryk Prężyna. Engineering and manufacturing leader in automation, robotics, and software for regulated pharmaceutical manufacturing. M.S. in Engineering and Management at MIT.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="menubar">
-  <a class="brand" href="#top">Patryk Prężyna</a>
-  <nav id="site-nav">
-    <a href="#portfolio">Work</a>
-    <a href="#experience">Experience</a>
-    <a href="#about">About</a>
-    <a href="#education">Education</a>
-    <a href="#publications">Publications</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <div class="menu-actions">
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+<nav>
+  <a class="nav-logo" href="#top">Patryk Prężyna</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Software · Regulated Manufacturing · Systems Engineering</p>
+    <h1 class="hero-name">Patryk<br>Prężyna</h1>
+    <p class="hero-tagline">Ten years delivering automation, robotics, and software in regulated pharmaceutical manufacturing — now at MIT, on how a smaller team keeps the model running.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#contact">Get in Touch</a>
+      <a class="btn btn-secondary" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </div>
+  <div class="hero-photo-wrap">
+    <div class="hero-photo-frame">
+      <img src="assets/patryk.jpg" alt="Portrait of Patryk Prężyna">
+    </div>
   </div>
 </header>
 
-<main class="wrap" id="top">
-
-  <section class="lede-hero">
-    <div class="lede-copy">
-      <p class="lede-eyebrow">Engineering and manufacturing · MIT</p>
-      <h1 class="lede-h1">Automation, robotics, software.<br>Regulated manufacturing.<br>I align the <span class="accent">outcome</span>.</h1>
-      <p class="lede-sub">I'm <b>Patryk Prężyna</b>. For more than ten years I have delivered automation, robotics, software, and digital transformation in highly regulated pharmaceutical manufacturing. I lead programs from concept through deployment: new manufacturing technology, the organizational change around it, and engineering processes a team can keep running. I am completing an M.S. in Engineering and Management at MIT. The research is Model-Based Systems Engineering and the digital transformation of regulated medical product industries.</p>
-      <div class="lede-cta">
-        <!-- email button hidden -->
-        <span class="lede-links">
-          <a href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-          <a href="https://github.com/PatrykPrezyna" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-        </span>
-      </div>
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">Years in Regulated Industries</span>
     </div>
-    <div class="lede-photo">
-      <img src="assets/patryk.jpg" alt="Portrait of Patryk Prężyna">
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Patents</span>
     </div>
-  </section>
-
-  <section class="panel" id="portfolio">
-    <div class="panel-strip"><span>Portfolio</span><span>Machines · software · devices</span></div>
-
-    <div class="entry-acc open">
-      <button class="entry-head" type="button" aria-expanded="true">
-        <span class="n">01</span>
-        <span class="tag">Machines</span>
-        <h3>Pharmaceutical machine line</h3>
-        <span class="chip">Rommelag</span>
-        <span class="flip" aria-hidden="true">+</span>
-      </button>
-      <div class="entry-body">
-        <div class="entry-inner">
-          <div>
-            <div class="role">bottelpack bp 700 Series · Blow-Fill-Seal</div>
-            <p>The bottelpack bp 700 Series is Rommelag’s Blow-Fill-Seal platform for large-volume parenterals. One machine forms, fills, and seals bottles from 100 to 1,000 ml. I worked this product line from the automation through the packaging equipment: the devices that produce the container, and the molding tools that travel with each format.</p>
-            <p>The series is built to raise output and shrink the cost around the machine. A bp 730 nearly doubles bottles per hour versus the bp 321 at 1,000 ml. A format change is under two hours. Only 20% of the aseptic cabinet sits in the classified area, so the line fits a 3.5 m room. Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</p>
-            <div class="figures">
-              <span>100–1,000 ml</span>
-              <span>Format change under 2 h</span>
-              <span>20% of the cabinet in the classified area</span>
-              <span>Container devices and molding tools</span>
-            </div>
-            <div class="shot-grid">
-              <figure class="shot shot-lead">
-                <img src="assets/bp700/bp730-side.jpg" alt="bottelpack bp 730 beside the classified-area wall, with most of the machine outside that room">
-                <figcaption>bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/bp700/bp730-exterior.jpg" alt="Exterior of the bottelpack bp 730 Blow-Fill-Seal machine">
-                <figcaption>Exterior of the bp 730, closed for production.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/bp700/bp730-bottles.jpg" alt="Blow-Fill-Seal infusion bottles in several sizes, from 100 to 1,000 ml">
-                <figcaption>Bottles from 100 to 1,000 ml.</figcaption>
-              </figure>
-            </div>
-            <p class="credit">Photographs and machine data from <a href="https://www.rommelag.com/en/bp-700" target="_blank" rel="noopener noreferrer">Rommelag, bp 700 Series</a>.</p>
-          </div>
-        </div>
-      </div>
+    <div class="stat">
+      <span class="stat-num">MIT</span>
+      <span class="stat-label">M.S. Engineering and Management</span>
     </div>
-
-    <div class="entry-acc">
-      <button class="entry-head" type="button" aria-expanded="false">
-        <span class="n">02</span>
-        <span class="tag">Software</span>
-        <h3>Human-machine interface</h3>
-        <span class="chip">HMI</span>
-        <span class="flip" aria-hidden="true">+</span>
-      </button>
-      <div class="entry-body">
-        <div class="entry-inner">
-          <div>
-            <div class="role">Operator interface · bottelpack</div>
-            <p>The operator interface for the Blow-Fill-Seal line. It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen. I built it in Python, Vue.js, and Docker, on a domain model shared with the mechatronic team, so the screen and the machine describe one process.</p>
-            <div class="figures">
-              <span>Python · Vue.js · Docker</span>
-              <span>Guided batch steps</span>
-              <span>Domain model shared with mechatronics</span>
-            </div>
-            <figure class="shot shot-hmi">
-              <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
-              <figcaption>Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
+    <div class="stat">
+      <span class="stat-num">3 × 3</span>
+      <span class="stat-label">Connects software, mechanics, and electronics</span>
+      <span class="stat-label">Polish · English · German</span>
     </div>
-
-    <div class="entry-acc">
-      <button class="entry-head" type="button" aria-expanded="false">
-        <span class="n">03</span>
-        <span class="tag">Device</span>
-        <h3>Localized spinal cord hypothermia</h3>
-        <span class="chip">Class II</span>
-        <span class="flip" aria-hidden="true">+</span>
-      </button>
-      <div class="entry-body">
-        <div class="entry-inner">
-          <div>
-            <div class="role">Fast prototyping · thoracic aortic repair</div>
-            <p>Repair of the thoracic aorta interrupts blood flow to the spinal cord. The ischemia can injure the cord and leave the patient paraplegic. That risk runs from 6 to 18 percent. Cooling the cord lowers its metabolic demand. The cooling used today is systemic, and systemic hypothermia brings cardiac, renal, and pulmonary complications.</p>
-            <p>The idea is local hypothermia: cool the cord, and leave the patient at normal body temperature. I lead the fast prototyping. The hardware moves quickly, and the work stays inside FDA design controls, ISO 13485 for the quality system, and ISO 14971 for risk management.</p>
-            <p>With clinicians, researchers, and the other stakeholders I turn the clinical need into requirements and specifications. I lead the systems engineering, the risk management, and the design controls. I design the preclinical study protocols and the evaluation methods that will show the device is safe and that it performs. Multiphysics models predict how well the cooling works, guide the next design, and produce data intended for a paper.</p>
-            <div class="figures">
-              <span>ISO 13485</span>
-              <span>ISO 14971</span>
-              <span>FDA design controls</span>
-              <span>Preclinical protocols</span>
-              <span>Multiphysics models</span>
-            </div>
-            <figure class="shot shot-spine">
-              <img src="assets/coolspine/console.png" alt="Illustration of a portable cooling console on a rolling stand, with a line running to the spinal cord of a figure seen from behind. The console ports are labeled IN, OUT, and CSF.">
-              <figcaption>The cooling console and the cord. Fluid runs from the unit to the spine. The ports are IN, OUT, and CSF. Body temperature stays normal.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="entry-acc">
-      <button class="entry-head" type="button" aria-expanded="false">
-        <span class="n">04</span>
-        <span class="tag">Robotics</span>
-        <h3>Kneematic</h3>
-        <span class="chip">MIT</span>
-        <span class="flip" aria-hidden="true">+</span>
-      </button>
-      <div class="entry-body">
-        <div class="entry-inner">
-          <div>
-            <div class="role">Robotic assistance · knee reconstruction</div>
-            <p>Kneematic is a handheld robotic assistant for the cuts in knee reconstruction. The aim is surgeon adoption. Systems in use today are bulky, slow to set up, and costly to learn. The operation stays the same. The device changes form.</p>
-            <p>With the MIT team I worked the architecture tradespace: how the robot is mounted, how it is powered, and how it knows where the bones are. The recommendation is a wireless handpiece. The surgeon keeps robotic control of position and of the cutting plane. An inertial unit on the knee and on the device provides navigation, with an infrared camera as the backup. No scan is required before the case. The battery is on the tool. The computation is not. The handpiece is sterilizable, with disposable parts, and it takes more than one cutting tool.</p>
-            <p>Scored on ergonomics and time in the room, that concept rates 0.79 against 0.63 for the system in use today, and the estimated unit cost falls from about $170,000 to about $94,000. The development plan is about 21 months and $2.4 million, with the project risk brought down by a phased plan and the backup navigation path.</p>
-            <div class="figures">
-              <span>Handheld, battery powered</span>
-              <span>Cuts within 1 mm</span>
-              <span>Setup and cleanup under 45 min</span>
-              <span>Inertial navigation, infrared backup</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="console-grid">
-      <div class="cell">
-        <div class="from">From the line</div>
-        <div class="num"><span class="grow" data-count="10" data-suffix="+">10+</span></div>
-        <div class="lbl2">years at Rommelag, from automation engineer to senior software engineer</div>
-      </div>
-      <div class="cell">
-        <div class="from">From the work</div>
-        <div class="num"><span class="grow" data-count="3">3</span></div>
-        <div class="lbl2">patents in pharmaceutical packaging and manufacturing equipment</div>
-      </div>
-      <div class="cell">
-        <div class="from">From the institute</div>
-        <div class="num">MIT</div>
-        <div class="lbl2">M.S. in Engineering and Management, and teaching the digital thread</div>
-      </div>
-      <div class="cell">
-        <div class="from">Across the work</div>
-        <div class="num"><span class="grow" data-count="3">3</span></div>
-        <div class="lbl2">languages used on the job: Polish, English, and German</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel dark" id="frameworks" aria-labelledby="frameworks-label">
-    <div class="panel-strip"><span id="frameworks-label">The frameworks</span></div>
-    <div class="panel-body">
-      <!-- empty for now -->
-    </div>
-  </section>
-
-  <div class="desk-quote" id="about">
-    <p>“The useful model is the one a small team can keep running.”</p>
-    <div class="who">Where the work comes from</div>
   </div>
+</div>
 
-  <section class="panel" aria-labelledby="about-label">
-    <div class="panel-strip"><span id="about-label">About</span><span>Industry first, then the research</span></div>
-    <div class="panel-body">
-      <div class="person-grid">
-        <figure class="portrait">
-          <img src="assets/patryk.jpg" alt="Patryk Prężyna">
-          <figcaption class="cap">Patryk Prężyna</figcaption>
-        </figure>
-        <div>
-          <h2>Ten years on the machine, then the question of how a smaller team models one.</h2>
-          <p>I am a systems engineer and researcher in the Master of Science program at MIT, and a teaching assistant for Model-Based Engineering in the Product Development Lifecycle. The research is MBSE adoption for small and medium-sized organizations. The tools are powerful. The rollout designed for a large enterprise usually is not.</p>
-          <p>Before MIT I worked at Rommelag across automation, software, and a senior engineering role on the human-machine interface for pharmaceutical equipment. That sequence is the point of view: I trust a model that a commissioning engineer can still use, and I am skeptical of one that only looks complete in a conference room.</p>
-          <p>I work in Polish, English, and German.</p>
-          <div class="skill-row">
-            <span>CAMEO / SysML</span>
-            <span>Digital thread</span>
-            <span>Python</span>
-            <span>Vue.js</span>
-            <span>Docker</span>
-            <span>PLC · B&amp;R, S7</span>
-            <span>LabVIEW</span>
-            <span>Agile / Scrum</span>
-            <span>Domain-driven design</span>
+<div class="divider"></div>
+
+<section id="about">
+  <p class="section-label">Background</p>
+  <h2 class="section-title">About</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a systems engineer and researcher in the Master of Science program at MIT, and a teaching assistant for Model-Based Engineering in the Product Development Lifecycle. The research is MBSE adoption for small and medium-sized organizations. The tools are powerful. The rollout designed for a large enterprise usually is not.</p>
+      <p>Before MIT I worked at Rommelag across automation, software, and a senior engineering role on the human-machine interface for pharmaceutical equipment. That sequence is the point of view: I trust a model that a commissioning engineer can still use, and I am skeptical of one that only looks complete in a conference room.</p>
+      <p>I work in Polish, English, and German. The useful model is the one a small team can keep running.</p>
+    </div>
+    <div>
+      <p class="skills-label">Technical skills</p>
+      <div class="skills-grid">
+        <span class="skill-tag">CAMEO / SysML</span>
+        <span class="skill-tag">Digital thread</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Vue.js</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">PLC · B&amp;R, S7</span>
+        <span class="skill-tag">LabVIEW</span>
+        <span class="skill-tag">Agile / Scrum</span>
+        <span class="skill-tag">Domain-driven design</span>
+        <span class="skill-tag">Autodesk Inventor</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="portfolio-section" id="portfolio">
+  <div class="portfolio-inner">
+    <h2 class="section-title">Engineering portfolio</h2>
+
+    <div class="work-list">
+
+    <article class="work-item open">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="true">
+          <span class="n">01</span>
+          <span class="tag">Software</span>
+          <span class="name">Industrial automation software stack</span>
+          <span class="chip">Rommelag</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body">
+    <article class="case-study">
+      <div class="cs-hero cs-hero--fit">
+        <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+      </div>
+      <div class="cs-body">
+        <div class="cs-content">
+          <p class="cs-type">Industrial automation · Software stack · Rommelag</p>
+          <h3 class="cs-title">Full software stack upgrade</h3>
+          <p class="cs-hook">The operator interface is the part of the upgraded stack a batch runs on.</p>
+          <ul class="cs-highlights">
+            <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
+            <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
+            <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
+          </ul>
+          <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
+          <div class="cs-tags">
+            <span class="cs-tag">Python</span>
+            <span class="cs-tag">Vue.js</span>
+            <span class="cs-tag">Docker</span>
+            <span class="cs-tag">Domain-driven design</span>
           </div>
         </div>
+        <aside class="cs-sidebar">
+          <div>
+            <p class="cs-meta-label">Stack</p>
+            <p class="cs-meta-val">Python · Vue.js · Docker</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">On the screen</p>
+            <p class="cs-meta-val">Guided batch steps, with the process parameters beside them</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Shared model</p>
+            <p class="cs-meta-val">One domain model with the mechatronic team</p>
+          </div>
+        </aside>
       </div>
-    </div>
-  </section>
-
-  <section class="panel" id="training">
-    <div class="panel-strip"><span>Training</span><span>Degrees, certificates, and the camp</span></div>
-    <div class="panel-body">
-      <div class="pp-list">
-        <div class="pp">
-          <span class="pp-id">2024 — 26</span>
-          <span class="pp-title">Master of Science, Engineering and Management<span class="pp-where">Massachusetts Institute of Technology · expected 2026</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">2021 — 22</span>
-          <span class="pp-title">Certificate, Architecture and Systems Engineering<span class="pp-where">MIT Professional Education · models and methods for complex systems</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">2015 — 16</span>
-          <span class="pp-title">Professional certificate, Automation Technology<span class="pp-where">B&amp;R Engineering Camp · visualization and motion control</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">2011 — 15</span>
-          <span class="pp-title">Bachelor of Science, Information Technologies in Automatic Control &amp; Robotics<span class="pp-where">Silesian University of Technology · Politechnika Śląska</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">Also</span>
-          <span class="pp-title">Python object-oriented programming · Goethe-Zertifikat C1 · Autodesk Inventor Essentials</span>
-        </div>
+    </article>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <section class="panel" id="patents">
-    <div class="panel-strip"><span>Publications &amp; patents</span><span>Research in progress · Rommelag</span></div>
-    <div class="panel-body">
-      <div class="pp-list">
-        <div class="pp">
-          <span class="pp-id">Research</span>
-          <span class="pp-title">MBSE Adoption Pathways for Small and Medium-Sized Organizations<span class="pp-where">MIT · model-based systems engineering and the digital thread · in progress</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">Patent</span>
-          <span class="pp-title">Device for Producing Container Products<span class="pp-where">Rommelag · pharmaceutical packaging</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">Patent</span>
-          <span class="pp-title">Method for Producing a Container Product and Device for Implementing the Method<span class="pp-where">Rommelag · pharmaceutical packaging</span></span>
-        </div>
-        <div class="pp">
-          <span class="pp-id">Patent</span>
-          <span class="pp-title">Device with Associated Molding Tools and System Consisting of a Set of Molding Tools<span class="pp-where">Rommelag · pharmaceutical manufacturing equipment</span></span>
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">02</span>
+          <span class="tag">Systems</span>
+          <span class="name">New machine generation</span>
+          <span class="chip">Rommelag</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+    <article class="case-study">
+      <div class="cs-hero">
+        <img src="assets/bp700/bp730-side.jpg" alt="bottelpack bp 730 beside the classified-area wall, with most of the machine outside that room">
+        <div class="cs-hero-overlay">
+          <h3 class="cs-hero-title">New machine generation</h3>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="panel dark" id="contact">
-    <div class="panel-strip"><span>Start a conversation</span><span>LinkedIn or GitHub</span></div>
-    <div class="panel-body contact-body">
-      <p class="lede">Open to collaboration, teaching conversations, and research on MBSE and the digital thread.</p>
-      <p>If you are bringing model-based engineering into a smaller organization, or you build the software behind a regulated machine, I would like to hear what you are trying to make true.</p>
-      <div class="cta-row">
-        <!-- email button hidden -->
-        <a class="btn-ghost" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a class="btn-ghost" href="https://github.com/PatrykPrezyna" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <div class="cs-thumbs">
+        <button class="cs-thumb active" type="button" aria-label="Show the bp 730 beside the classified area" data-fit="cover" data-caption="bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.">
+          <img src="assets/bp700/bp730-side.jpg" alt="bottelpack bp 730 beside the classified-area wall, with most of the machine outside that room">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the exterior of the bp 730" data-fit="cover" data-caption="Exterior of the bp 730, closed for production.">
+          <img src="assets/bp700/bp730-exterior.jpg" alt="Exterior of the bottelpack bp 730 Blow-Fill-Seal machine">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the bottles from 100 to 1,000 ml" data-fit="cover" data-caption="Bottles from 100 to 1,000 ml.">
+          <img src="assets/bp700/bp730-bottles.jpg" alt="Blow-Fill-Seal infusion bottles in several sizes, from 100 to 1,000 ml">
+        </button>
       </div>
-    </div>
-  </section>
+      <div class="cs-body">
+        <div class="cs-content">
+          <p class="cs-type">New machine generation · Systems engineering · Rommelag</p>
+          <h3 class="cs-title">bottelpack bp 700 Series</h3>
+          <p class="cs-hook">A new Blow-Fill-Seal generation, brought in as one system.</p>
+          <ul class="cs-highlights">
+            <li>The bottelpack bp 700 Series is Rommelag’s Blow-Fill-Seal platform for large-volume parenterals. One machine forms, fills, and seals bottles from 100 to 1,000 ml. Systems engineering on this line was that span: from the automation through the packaging equipment, the devices that produce the container, and the molding tools that travel with each format.</li>
+            <li>The series is built to raise output and shrink the cost around the machine. A bp 730 nearly doubles bottles per hour versus the bp 321 at 1,000 ml. A format change is under two hours.</li>
+            <li>Only 20% of the aseptic cabinet sits in the classified area, so the line fits a 3.5 m room. Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</li>
+          </ul>
+          <p class="cs-caption">bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.</p>
+          <div class="cs-tags">
+            <span class="cs-tag">100–1,000 ml</span>
+            <span class="cs-tag">Format change under 2 h</span>
+            <span class="cs-tag">GAMP category 4</span>
+          </div>
+        </div>
+        <aside class="cs-sidebar">
+          <div>
+            <p class="cs-meta-label">Product</p>
+            <p class="cs-meta-val">bottelpack bp 700 Series · Blow-Fill-Seal</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Scope</p>
+            <p class="cs-meta-val">Automation through packaging equipment, container devices, and molding tools</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Room</p>
+            <p class="cs-meta-val">20% of the cabinet in the classified area · fits a 3.5 m room</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Source</p>
+            <p class="cs-meta-val">Photographs and machine data from <a href="https://www.rommelag.com/en/bp-700" target="_blank" rel="noopener noreferrer">Rommelag, bp 700 Series</a>.</p>
+          </div>
+        </aside>
+      </div>
+    </article>
 
-</main>
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">03</span>
+          <span class="tag">Research</span>
+          <span class="name">MIT research</span>
+          <span class="chip">In progress</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <p class="cs-type">MIT · Model-based systems engineering · Digital thread</p>
+          <h3 class="cs-title">MBSE adoption for smaller organizations</h3>
+          <p>Research in the M.S. in Engineering and Management at MIT. The question is how small and medium-sized organizations adopt model-based systems engineering, and how the digital thread holds in regulated medical product industries.</p>
+          <p>The tools are powerful. The rollout designed for a large enterprise usually is not. The work is in progress, under the title MBSE Adoption Pathways for Small and Medium-Sized Organizations.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">04</span>
+          <span class="tag">Open</span>
+          <span class="name">To be added</span>
+          <span class="chip">Placeholder</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <p class="cs-type">Placeholder</p>
+          <h3 class="cs-title">To be added</h3>
+          <p>This tab is open for the next project.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">05</span>
+          <span class="tag">Teaching</span>
+          <span class="name">Teaching the digital thread</span>
+          <span class="chip">MIT</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <p class="cs-type">Teaching · Placeholder</p>
+          <h3 class="cs-title">Teaching the digital thread</h3>
+          <p>I teach Model-Based Engineering in the Product Development Lifecycle at MIT, including the digital thread. The write-up of that teaching is not on the page yet.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">06</span>
+          <span class="tag">Thesis</span>
+          <span class="name">MBSE for small organizations and agile teams</span>
+          <span class="chip">In progress</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <p class="cs-type">Master’s thesis · MIT · In progress</p>
+          <h3 class="cs-title">MBSE for small organizations and agile teams</h3>
+          <p>The master’s thesis takes the adoption question into the team that has to live with the model: small organizations, and agile teams. The useful model is the one a small team can keep running. The thesis is in progress.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">07</span>
+          <span class="tag">Robotics</span>
+          <span class="name">Knee replacement robotic assistant</span>
+          <span class="chip">Architecture</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+    <article class="case-study">
+      <div class="cs-hero cs-hero--fit">
+        <img src="assets/kneematic/concept-selection.jpg" alt="Decision matrix for the surgical robot architecture, with the selected options highlighted">
+      </div>
+      <div class="cs-thumbs">
+        <button class="cs-thumb active" type="button" aria-label="Show the concept selection matrix" data-fit="contain" data-caption="Concept selection. Highlighted options are the architecture carried forward, from control and mount through power and computing.">
+          <img class="fit" src="assets/kneematic/concept-selection.jpg" alt="Decision matrix for the surgical robot architecture, with the selected options highlighted">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the mount-type tradespace" data-fit="contain" data-caption="Mount-type tradespace. Handheld concepts sit higher on performance for a given manufacturing cost.">
+          <img class="fit" src="assets/kneematic/tradespace-mount.jpg" alt="Tradespace chart of performance against manufacturing cost for bed-mounted, floor-mounted, and handheld surgical robots">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the stakeholder map" data-fit="contain" data-caption="Stakeholder interfaces. The surgeon is primary. The other groups constrain safety, time, and adoption.">
+          <img class="fit" src="assets/kneematic/stakeholders.jpg" alt="Stakeholder map for a knee-replacement robot, with the surgeon as the primary user">
+        </button>
+      </div>
+      <div class="cs-body">
+        <div class="cs-content">
+          <p class="cs-type">Robotics · Knee replacement · Architecture</p>
+          <h3 class="cs-title">Knee replacement robotic assistant</h3>
+          <p class="cs-hook">From stakeholder needs to the concept that was selected.</p>
+          <ul class="cs-highlights">
+            <li>A new product generation of a surgical robot for knee reconstruction. I worked the system architecture from stakeholder needs through to the concept that was selected: what each group required, how those needs decomposed into requirements, and the tradeoffs that decided the design.</li>
+            <li>The surgeon is the primary user. Patients, the operating room, hospitals, regulators, and insurers set the constraints around that user: a safe procedure, surgeon control, a smaller footprint, and less time to set up and clear the room.</li>
+            <li>Those needs became requirements. Cuts within 1 mm. End-to-end latency under 100 ms. Setup and cleanup under 45 minutes. Weight under 7 lb.</li>
+            <li>The tradespace compared how the robot is mounted, powered, and navigated, and how much of the cut it controls. Handheld concepts score higher on performance for the manufacturing cost.</li>
+            <li>The concept carried forward is a wireless handpiece: robotic control of position and the cutting plane, inertial navigation with an infrared camera as backup, the battery on the tool, and the computation off the device.</li>
+          </ul>
+          <p class="cs-caption">Concept selection. Highlighted options are the architecture carried forward, from control and mount through power and computing.</p>
+          <div class="cs-tags">
+            <span class="cs-tag">Cuts within 1 mm</span>
+            <span class="cs-tag">Latency under 100 ms</span>
+            <span class="cs-tag">Setup under 45 min</span>
+            <span class="cs-tag">Under 7 lb</span>
+          </div>
+        </div>
+        <aside class="cs-sidebar">
+          <div>
+            <p class="cs-meta-label">Selected</p>
+            <p class="cs-meta-val">Wireless handpiece. Robotic control of position and the cutting plane.</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Navigation</p>
+            <p class="cs-meta-val">Inertial, with an infrared camera as backup</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Power and compute</p>
+            <p class="cs-meta-val">Battery on the tool. Computation off the device.</p>
+          </div>
+          <div>
+            <p class="cs-meta-label">Tradespace</p>
+            <p class="cs-meta-val">Mount, power, navigation, and how much of the cut the robot controls</p>
+          </div>
+        </aside>
+      </div>
+    </article>
+
+      </div>
+    </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">08</span>
+          <span class="tag">More</span>
+          <span class="name">Robotic platform and quadrocopter</span>
+          <span class="chip">Placeholder</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <p class="cs-type">Placeholder</p>
+          <h3 class="cs-title">Robotic platform and quadrocopter</h3>
+          <p>Two projects still to write up: a robotic platform and a quadrocopter.</p>
+        </div>
+      </div>
+    </article>
+
+    </div>
+  </div>
+</div>
+
+<section id="experience">
+  <p class="section-label">Work history</p>
+  <h2 class="section-title">Experience</h2>
+  <div class="exp-list">
+    <article class="exp-item">
+      <div>
+        <p class="exp-company">Massachusetts Institute of Technology</p>
+        <p class="exp-dates">2024 — 2026</p>
+      </div>
+      <div>
+        <h3 class="exp-title">M.S. in Engineering and Management</h3>
+        <p class="exp-desc">Expected 2026. Teaching assistant for Model-Based Engineering in the Product Development Lifecycle. The research is MBSE adoption for small and medium-sized organizations, and the digital thread in regulated medical product industries.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">MBSE</span>
+          <span class="exp-tag">Digital thread</span>
+          <span class="exp-tag">Teaching</span>
+        </div>
+      </div>
+    </article>
+    <article class="exp-item">
+      <div>
+        <p class="exp-company">Rommelag</p>
+        <p class="exp-dates">More than ten years</p>
+      </div>
+      <div>
+        <h3 class="exp-title">Automation engineer to senior software engineer</h3>
+        <p class="exp-desc">Delivered automation, robotics, software, and digital transformation in highly regulated pharmaceutical manufacturing. The work runs from the Blow-Fill-Seal machine line through the human-machine interface, and includes three patents in pharmaceutical packaging and manufacturing equipment.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Automation</span>
+          <span class="exp-tag">HMI</span>
+          <span class="exp-tag">Blow-Fill-Seal</span>
+          <span class="exp-tag">GAMP</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="publications">
+  <p class="section-label">Research and IP</p>
+  <h2 class="section-title">Patents &amp; Publications</h2>
+  <div class="pub-list">
+    <article class="pub-item">
+      <span class="pub-badge">Research</span>
+      <div>
+        <p class="pub-title">MBSE Adoption Pathways for Small and Medium-Sized Organizations</p>
+        <p class="pub-meta">MIT · model-based systems engineering and the digital thread · in progress</p>
+      </div>
+    </article>
+    <article class="pub-item">
+      <span class="pub-badge">Patent</span>
+      <div>
+        <p class="pub-title">Device for Producing Container Products</p>
+        <p class="pub-meta">Rommelag · pharmaceutical packaging</p>
+      </div>
+    </article>
+    <article class="pub-item">
+      <span class="pub-badge">Patent</span>
+      <div>
+        <p class="pub-title">Method for Producing a Container Product and Device for Implementing the Method</p>
+        <p class="pub-meta">Rommelag · pharmaceutical packaging</p>
+      </div>
+    </article>
+    <article class="pub-item">
+      <span class="pub-badge">Patent</span>
+      <div>
+        <p class="pub-title">Device with Associated Molding Tools and System Consisting of a Set of Molding Tools</p>
+        <p class="pub-meta">Rommelag · pharmaceutical manufacturing equipment</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="education">
+  <p class="section-label">Academic background</p>
+  <h2 class="section-title">Education</h2>
+  <div class="education-grid">
+    <article class="edu-card">
+      <h3 class="edu-school">Massachusetts Institute of Technology</h3>
+      <p class="edu-degree">M.S. — Engineering and Management</p>
+      <p class="edu-dates">Expected 2026 · 2024 — 2026</p>
+    </article>
+    <article class="edu-card">
+      <h3 class="edu-school">MIT Professional Education</h3>
+      <p class="edu-degree">Certificate — Architecture and Systems Engineering</p>
+      <p class="edu-dates">Models and methods for complex systems · 2021 — 2022</p>
+    </article>
+    <article class="edu-card">
+      <h3 class="edu-school">Silesian University of Technology</h3>
+      <p class="edu-degree">B.S. — Information Technologies in Automatic Control &amp; Robotics</p>
+      <p class="edu-dates">Politechnika Śląska · 2011 — 2015</p>
+    </article>
+    <article class="edu-card">
+      <h3 class="edu-school">B&amp;R Engineering Camp</h3>
+      <p class="edu-degree">Professional certificate — Automation Technology</p>
+      <p class="edu-dates">Visualization and motion control · 2015 — 2016</p>
+    </article>
+  </div>
+  <p class="edu-also">Also: Python object-oriented programming · Goethe-Zertifikat C1 · Autodesk Inventor Essentials</p>
+</section>
+
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title">Start a conversation</h2>
+    <p class="contact-sub">Open to collaboration, teaching conversations, and research on medical devices. If you are taking a device through design controls, or bringing model-based engineering and the digital thread into agile fast moving team, I would like to hear what you are trying to make true.</p>
+    <div class="contact-btns">
+      <a class="btn btn-white" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="btn btn-outline-white" href="https://github.com/PatrykPrezyna" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-name">Patryk Prężyna</p>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" type="button" aria-label="Close">✕</button>
+  <img id="lightbox-img" alt="">
+  <p class="lightbox-caption" id="lightbox-caption"></p>
+</div>
 
 <script>
   (function () {
-    const header = document.querySelector(".menubar");
+    const nav = document.querySelector("nav");
     const toggle = document.querySelector(".nav-toggle");
-    const nav = document.getElementById("site-nav");
+    const links = document.getElementById("nav-links");
 
     toggle.addEventListener("click", function () {
-      const open = header.classList.toggle("open");
+      const open = nav.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       toggle.textContent = open ? "Close" : "Menu";
     });
 
-    nav.querySelectorAll("a").forEach(function (link) {
+    links.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        header.classList.remove("open");
+        nav.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
         toggle.textContent = "Menu";
       });
     });
 
-    document.querySelectorAll(".entry-acc .entry-head").forEach(function (btn) {
+    document.querySelectorAll(".work-head").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        const acc = btn.closest(".entry-acc");
-        const wasOpen = acc.classList.contains("open");
-        document.querySelectorAll(".entry-acc.open").forEach(function (open) {
+        const item = btn.closest(".work-item");
+        const wasOpen = item.classList.contains("open");
+        document.querySelectorAll(".work-item.open").forEach(function (open) {
           open.classList.remove("open");
-          open.querySelector(".entry-head").setAttribute("aria-expanded", "false");
+          open.querySelector(".work-head").setAttribute("aria-expanded", "false");
+          open.querySelector(".work-body").hidden = true;
         });
         if (!wasOpen) {
-          acc.classList.add("open");
+          item.classList.add("open");
           btn.setAttribute("aria-expanded", "true");
+          item.querySelector(".work-body").hidden = false;
         }
       });
     });
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxCaption = document.getElementById("lightbox-caption");
+    let lastFocus = null;
 
-    const counters = document.querySelectorAll("[data-count]");
-    const watcher = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        watcher.unobserve(el);
-        const end = parseFloat(el.dataset.count);
-        const suffix = el.dataset.suffix || "";
-        el.textContent = "0" + suffix;
-        el.classList.add("arm");
-        const startTime = performance.now();
-        const duration = 900;
-        const step = function (now) {
-          const p = Math.min((now - startTime) / duration, 1);
-          const value = end * (1 - Math.pow(1 - p, 3));
-          el.textContent = Math.round(value) + suffix;
-          if (p < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(function () { el.classList.add("grown"); });
-        requestAnimationFrame(step);
+    function openLightbox(src, alt, caption) {
+      lastFocus = document.activeElement;
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || "";
+      lightboxCaption.textContent = caption || "";
+      lightbox.hidden = false;
+      document.body.classList.add("lightbox-open");
+      lightbox.querySelector(".lightbox-close").focus();
+    }
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightboxImg.removeAttribute("src");
+      document.body.classList.remove("lightbox-open");
+      if (lastFocus) lastFocus.focus();
+    }
+
+    document.querySelectorAll(".cs-hero").forEach(function (hero) {
+      hero.setAttribute("role", "button");
+      hero.tabIndex = 0;
+      hero.setAttribute("aria-label", "Enlarge image");
+      hero.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          hero.click();
+        }
       });
-    }, { threshold: 0.6 });
+      hero.addEventListener("click", function () {
+        const img = hero.querySelector("img");
+        const study = hero.closest(".case-study");
+        const caption = study.querySelector(".cs-caption");
+        openLightbox(img.src, img.alt, caption ? caption.textContent : "");
+      });
+    });
 
-    counters.forEach(function (el) { watcher.observe(el); });
+    document.querySelectorAll(".cs-thumb").forEach(function (thumb) {
+      thumb.addEventListener("click", function () {
+        const study = thumb.closest(".case-study");
+        const hero = study.querySelector(".cs-hero");
+        const heroImg = hero.querySelector("img");
+        const img = thumb.querySelector("img");
+        heroImg.src = img.src;
+        heroImg.alt = img.alt;
+        hero.classList.toggle("cs-hero--fit", thumb.dataset.fit === "contain");
+        const caption = study.querySelector(".cs-caption");
+        if (caption) caption.textContent = thumb.dataset.caption || "";
+        study.querySelectorAll(".cs-thumb").forEach(function (item) {
+          item.classList.toggle("active", item === thumb);
+        });
+      });
+    });
+
+    lightbox.addEventListener("click", function (event) {
+      if (event.target === lightbox || event.target.classList.contains("lightbox-close")) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+    });
   })();
 </script>
 </body>
