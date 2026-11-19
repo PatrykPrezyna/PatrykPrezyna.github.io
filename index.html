@@ -24,13 +24,14 @@
   </ul>
 </nav>
 
+<div class="fold">
 <header class="hero" id="top">
   <div class="hero-text">
     <p class="hero-eyebrow">Software · Regulated Manufacturing · Systems Engineering</p>
     <h1 class="hero-name">Patryk<br>Prężyna</h1>
-    <p class="hero-tagline">Ten years delivering automation, robotics, and software in regulated pharmaceutical manufacturing — now at MIT, on how a smaller team keeps the model running.</p>
+    <p class="hero-tagline">Ten years delivering automation, robotics, and software in regulated pharmaceutical manufacturing — now at MIT, connecting software with hardware and leadership.</p>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="#contact">Get in Touch</a>
+      <a class="btn btn-primary" href="mailto:Patryk78@mit.edu">Get in Touch</a>
       <a class="btn btn-secondary" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
   </div>
@@ -55,18 +56,21 @@
       <span class="stat-num">MIT</span>
       <span class="stat-label">M.S. Engineering and Management</span>
     </div>
-    <div class="stat">
-      <span class="stat-num">3 × 3</span>
-      <span class="stat-label">Connects software, mechanics, and electronics</span>
-      <span class="stat-label">Polish · English · German</span>
+    <div class="stat stat-languages">
+      <img class="stat-lang-icon" src="assets/languages.png" alt="Languages">
+      <ul class="stat-list">
+        <li>Business and engineering</li>
+        <li>Software and hardware</li>
+        <li>English, German, and Polish</li>
+      </ul>
     </div>
   </div>
+</div>
 </div>
 
 <div class="divider"></div>
 
 <section id="about">
-  <p class="section-label">Background</p>
   <h2 class="section-title">About</h2>
   <div class="about-grid">
     <div class="about-text">
@@ -76,18 +80,7 @@
     </div>
     <div>
       <p class="skills-label">Technical skills</p>
-      <div class="skills-grid">
-        <span class="skill-tag">CAMEO / SysML</span>
-        <span class="skill-tag">Digital thread</span>
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">Vue.js</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">PLC · B&amp;R, S7</span>
-        <span class="skill-tag">LabVIEW</span>
-        <span class="skill-tag">Agile / Scrum</span>
-        <span class="skill-tag">Domain-driven design</span>
-        <span class="skill-tag">Autodesk Inventor</span>
-      </div>
+      <div class="skills-grid" id="skills-grid"></div>
     </div>
   </div>
 </section>
@@ -98,32 +91,72 @@
 
     <div class="work-list">
 
-    <article class="work-item open">
+    <article class="work-item open" id="work-research">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="true">
           <span class="n">01</span>
-          <span class="tag">Software</span>
-          <span class="name">Industrial automation software stack</span>
-          <span class="chip">Rommelag</span>
+          <span class="tag">Medical Device</span>
+          <span class="name">Medical device</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
       <div class="work-body">
+        <article class="case-study">
+          <div class="cs-hero cs-hero--fit">
+            <img src="assets/coolspine/console.png" alt="Cooling console on a rolling stand, with lines running to the spinal cord. The ports are labeled IN, OUT, and CSF.">
+          </div>
+          <p class="cs-caption">The cooling console and the cord. Fluid runs from the unit to the spine. The ports are IN, OUT, and CSF.</p>
+          <div class="cs-thumbs">
+            <button class="cs-thumb active" type="button" aria-label="Show the cooling console" data-fit="contain" data-caption="The cooling console and the cord. Fluid runs from the unit to the spine. The ports are IN, OUT, and CSF.">
+              <img class="fit" src="assets/coolspine/console.png" alt="Cooling console on a rolling stand, with lines running to the spinal cord. The ports are labeled IN, OUT, and CSF.">
+            </button>
+            <button class="cs-thumb" type="button" aria-label="Show the P1.5 SENSE board" data-fit="contain" data-caption="P1.5 SENSE board, with temperature and pressure sensing for the cooling device.">
+              <img class="fit" src="assets/coolspine/p15-sense.png" alt="P1.5 SENSE circuit board with connectors for a temperature sensor, pressure sensor, thermistor, and backup ADC input.">
+            </button>
+          </div>
+          <div class="cs-body">
+            <div class="cs-content">
+              <ul class="cs-highlights">
+                <li>Research in the M.S. in Engineering and Management at MIT. The question is how small and medium-sized organizations adopt model-based systems engineering, and how the digital thread holds in regulated medical product industries.</li>
+                <li>The tools are powerful. The rollout designed for a large enterprise usually is not.</li>
+                <li>The work is in progress, under the title MBSE Adoption Pathways for Small and Medium-Sized Organizations.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </article>
+
+    <article class="work-item" id="work-hmi">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">02</span>
+          <span class="tag">Interfaces</span>
+          <span class="name">Human-Machine Interface and IoT interfaces</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
     <article class="case-study">
       <div class="cs-hero cs-hero--fit">
         <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
       </div>
+      <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
+      <div class="cs-thumbs">
+        <button class="cs-thumb active" type="button" aria-label="Show the sterilization operator screen" data-fit="contain" data-caption="Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.">
+          <img class="fit" src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the folder of software archives" data-fit="contain" data-caption="Software copies saved as zip archives, named FINAL, latest, and do not delete.">
+          <img class="fit" src="assets/bp700/software-archives.png" alt="Folder of zip archives named Software_FINAL, Software_latest_USE_THIS_ONE, and Software_backup_DO_NOT_DELETE">
+        </button>
+      </div>
       <div class="cs-body">
         <div class="cs-content">
-          <p class="cs-type">Industrial automation · Software stack · Rommelag</p>
-          <h3 class="cs-title">Full software stack upgrade</h3>
-          <p class="cs-hook">The operator interface is the part of the upgraded stack a batch runs on.</p>
           <ul class="cs-highlights">
             <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
             <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
             <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
           </ul>
-          <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
           <div class="cs-tags">
             <span class="cs-tag">Python</span>
             <span class="cs-tag">Vue.js</span>
@@ -131,32 +164,17 @@
             <span class="cs-tag">Domain-driven design</span>
           </div>
         </div>
-        <aside class="cs-sidebar">
-          <div>
-            <p class="cs-meta-label">Stack</p>
-            <p class="cs-meta-val">Python · Vue.js · Docker</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">On the screen</p>
-            <p class="cs-meta-val">Guided batch steps, with the process parameters beside them</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Shared model</p>
-            <p class="cs-meta-val">One domain model with the mechatronic team</p>
-          </div>
-        </aside>
       </div>
     </article>
       </div>
     </article>
 
-    <article class="work-item">
+    <article class="work-item" id="work-machine">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="false">
-          <span class="n">02</span>
+          <span class="n">03</span>
           <span class="tag">Systems</span>
           <span class="name">New machine generation</span>
-          <span class="chip">Rommelag</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
@@ -168,142 +186,126 @@
           <h3 class="cs-hero-title">New machine generation</h3>
         </div>
       </div>
+      <p class="cs-caption">bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.</p>
       <div class="cs-thumbs">
         <button class="cs-thumb active" type="button" aria-label="Show the bp 730 beside the classified area" data-fit="cover" data-caption="bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.">
           <img src="assets/bp700/bp730-side.jpg" alt="bottelpack bp 730 beside the classified-area wall, with most of the machine outside that room">
         </button>
-        <button class="cs-thumb" type="button" aria-label="Show the exterior of the bp 730" data-fit="cover" data-caption="Exterior of the bp 730, closed for production.">
-          <img src="assets/bp700/bp730-exterior.jpg" alt="Exterior of the bottelpack bp 730 Blow-Fill-Seal machine">
-        </button>
         <button class="cs-thumb" type="button" aria-label="Show the bottles from 100 to 1,000 ml" data-fit="cover" data-caption="Bottles from 100 to 1,000 ml.">
           <img src="assets/bp700/bp730-bottles.jpg" alt="Blow-Fill-Seal infusion bottles in several sizes, from 100 to 1,000 ml">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the state and transformation model" data-fit="contain" data-caption="A process as states and transformations: coffee beans are ground into powder, then brewed into coffee in a mug. Below, the same pattern in general: state, transformation, state.">
+          <img class="fit" src="assets/bp700/state-transformation.png" alt="Diagram of coffee beans ground into powder and brewed into coffee, and the general pattern of state, transformation, state.">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the machine process model" data-fit="contain" data-caption="Process model of the machine line, from material preparation through forming, filling, and sealing.">
+          <img class="fit" src="assets/bp700/process-model.png" alt="Wide process diagram of the manufacturing line, with material flows through preparation, forming, filling, and sealing.">
         </button>
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <p class="cs-type">New machine generation · Systems engineering · Rommelag</p>
-          <h3 class="cs-title">bottelpack bp 700 Series</h3>
-          <p class="cs-hook">A new Blow-Fill-Seal generation, brought in as one system.</p>
           <ul class="cs-highlights">
             <li>The bottelpack bp 700 Series is Rommelag’s Blow-Fill-Seal platform for large-volume parenterals. One machine forms, fills, and seals bottles from 100 to 1,000 ml. Systems engineering on this line was that span: from the automation through the packaging equipment, the devices that produce the container, and the molding tools that travel with each format.</li>
             <li>The series is built to raise output and shrink the cost around the machine. A bp 730 nearly doubles bottles per hour versus the bp 321 at 1,000 ml. A format change is under two hours.</li>
             <li>Only 20% of the aseptic cabinet sits in the classified area, so the line fits a 3.5 m room. Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</li>
           </ul>
-          <p class="cs-caption">bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.</p>
           <div class="cs-tags">
             <span class="cs-tag">100–1,000 ml</span>
             <span class="cs-tag">Format change under 2 h</span>
             <span class="cs-tag">GAMP category 4</span>
           </div>
         </div>
-        <aside class="cs-sidebar">
-          <div>
-            <p class="cs-meta-label">Product</p>
-            <p class="cs-meta-val">bottelpack bp 700 Series · Blow-Fill-Seal</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Scope</p>
-            <p class="cs-meta-val">Automation through packaging equipment, container devices, and molding tools</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Room</p>
-            <p class="cs-meta-val">20% of the cabinet in the classified area · fits a 3.5 m room</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Source</p>
-            <p class="cs-meta-val">Photographs and machine data from <a href="https://www.rommelag.com/en/bp-700" target="_blank" rel="noopener noreferrer">Rommelag, bp 700 Series</a>.</p>
-          </div>
-        </aside>
       </div>
     </article>
 
       </div>
     </article>
 
-    <article class="work-item">
-      <h3 class="work-heading">
-        <button class="work-head" type="button" aria-expanded="false">
-          <span class="n">03</span>
-          <span class="tag">Research</span>
-          <span class="name">MIT research</span>
-          <span class="chip">In progress</span>
-          <span class="flip" aria-hidden="true">+</span>
-        </button>
-      </h3>
-      <div class="work-body" hidden>
-        <div class="work-note">
-          <p class="cs-type">MIT · Model-based systems engineering · Digital thread</p>
-          <h3 class="cs-title">MBSE adoption for smaller organizations</h3>
-          <p>Research in the M.S. in Engineering and Management at MIT. The question is how small and medium-sized organizations adopt model-based systems engineering, and how the digital thread holds in regulated medical product industries.</p>
-          <p>The tools are powerful. The rollout designed for a large enterprise usually is not. The work is in progress, under the title MBSE Adoption Pathways for Small and Medium-Sized Organizations.</p>
-        </div>
-      </div>
-    </article>
-
-    <article class="work-item">
+    <article class="work-item" id="work-software">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="false">
           <span class="n">04</span>
-          <span class="tag">Open</span>
-          <span class="name">To be added</span>
-          <span class="chip">Placeholder</span>
+          <span class="tag">Software</span>
+          <span class="name">Industrial automation software stack</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
       <div class="work-body" hidden>
-        <div class="work-note">
-          <p class="cs-type">Placeholder</p>
-          <h3 class="cs-title">To be added</h3>
-          <p>This tab is open for the next project.</p>
+    <article class="case-study">
+      <div class="cs-hero cs-hero--fit">
+        <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+      </div>
+      <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
+      <div class="cs-thumbs">
+        <button class="cs-thumb active" type="button" aria-label="Show the sterilization operator screen" data-fit="contain" data-caption="Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.">
+          <img class="fit" src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+        </button>
+        <button class="cs-thumb" type="button" aria-label="Show the folder of software archives" data-fit="contain" data-caption="Software copies saved as zip archives, named FINAL, latest, and do not delete.">
+          <img class="fit" src="assets/bp700/software-archives.png" alt="Folder of zip archives named Software_FINAL, Software_latest_USE_THIS_ONE, and Software_backup_DO_NOT_DELETE">
+        </button>
+      </div>
+      <div class="cs-body">
+        <div class="cs-content">
+          <ul class="cs-highlights">
+            <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
+            <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
+            <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
+          </ul>
+          <div class="cs-tags">
+            <span class="cs-tag">Python</span>
+            <span class="cs-tag">Vue.js</span>
+            <span class="cs-tag">Docker</span>
+            <span class="cs-tag">Domain-driven design</span>
+          </div>
         </div>
       </div>
     </article>
+      </div>
+    </article>
 
-    <article class="work-item">
+    <div class="work-more">
+    <article class="work-item" id="work-teaching">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="false">
           <span class="n">05</span>
           <span class="tag">Teaching</span>
           <span class="name">Teaching the digital thread</span>
-          <span class="chip">MIT</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
       <div class="work-body" hidden>
         <div class="work-note">
-          <p class="cs-type">Teaching · Placeholder</p>
-          <h3 class="cs-title">Teaching the digital thread</h3>
-          <p>I teach Model-Based Engineering in the Product Development Lifecycle at MIT, including the digital thread. The write-up of that teaching is not on the page yet.</p>
+          <ul class="cs-highlights">
+            <li>I teach Model-Based Engineering in the Product Development Lifecycle at MIT, including the digital thread. The write-up of that teaching is not on the page yet.</li>
+          </ul>
         </div>
       </div>
     </article>
 
-    <article class="work-item">
+    <article class="work-item" id="work-thesis">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="false">
           <span class="n">06</span>
           <span class="tag">Thesis</span>
           <span class="name">MBSE for small organizations and agile teams</span>
-          <span class="chip">In progress</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
       <div class="work-body" hidden>
         <div class="work-note">
-          <p class="cs-type">Master’s thesis · MIT · In progress</p>
-          <h3 class="cs-title">MBSE for small organizations and agile teams</h3>
-          <p>The master’s thesis takes the adoption question into the team that has to live with the model: small organizations, and agile teams. The useful model is the one a small team can keep running. The thesis is in progress.</p>
+          <ul class="cs-highlights">
+            <li>The master’s thesis takes the adoption question into the team that has to live with the model: small organizations, and agile teams.</li>
+            <li>The useful model is the one a small team can keep running. The thesis is in progress.</li>
+          </ul>
         </div>
       </div>
     </article>
 
-    <article class="work-item">
+    <article class="work-item" id="work-knee">
       <h3 class="work-heading">
         <button class="work-head" type="button" aria-expanded="false">
           <span class="n">07</span>
           <span class="tag">Robotics</span>
           <span class="name">Knee replacement robotic assistant</span>
-          <span class="chip">Architecture</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
@@ -312,6 +314,7 @@
       <div class="cs-hero cs-hero--fit">
         <img src="assets/kneematic/concept-selection.jpg" alt="Decision matrix for the surgical robot architecture, with the selected options highlighted">
       </div>
+      <p class="cs-caption">Concept selection. Highlighted options are the architecture carried forward, from control and mount through power and computing.</p>
       <div class="cs-thumbs">
         <button class="cs-thumb active" type="button" aria-label="Show the concept selection matrix" data-fit="contain" data-caption="Concept selection. Highlighted options are the architecture carried forward, from control and mount through power and computing.">
           <img class="fit" src="assets/kneematic/concept-selection.jpg" alt="Decision matrix for the surgical robot architecture, with the selected options highlighted">
@@ -325,9 +328,6 @@
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <p class="cs-type">Robotics · Knee replacement · Architecture</p>
-          <h3 class="cs-title">Knee replacement robotic assistant</h3>
-          <p class="cs-hook">From stakeholder needs to the concept that was selected.</p>
           <ul class="cs-highlights">
             <li>A new product generation of a surgical robot for knee reconstruction. I worked the system architecture from stakeholder needs through to the concept that was selected: what each group required, how those needs decomposed into requirements, and the tradeoffs that decided the design.</li>
             <li>The surgeon is the primary user. Patients, the operating room, hospitals, regulators, and insurers set the constraints around that user: a safe procedure, surgeon control, a smaller footprint, and less time to set up and clear the room.</li>
@@ -335,7 +335,6 @@
             <li>The tradespace compared how the robot is mounted, powered, and navigated, and how much of the cut it controls. Handheld concepts score higher on performance for the manufacturing cost.</li>
             <li>The concept carried forward is a wireless handpiece: robotic control of position and the cutting plane, inertial navigation with an infrared camera as backup, the battery on the tool, and the computation off the device.</li>
           </ul>
-          <p class="cs-caption">Concept selection. Highlighted options are the architecture carried forward, from control and mount through power and computing.</p>
           <div class="cs-tags">
             <span class="cs-tag">Cuts within 1 mm</span>
             <span class="cs-tag">Latency under 100 ms</span>
@@ -343,24 +342,6 @@
             <span class="cs-tag">Under 7 lb</span>
           </div>
         </div>
-        <aside class="cs-sidebar">
-          <div>
-            <p class="cs-meta-label">Selected</p>
-            <p class="cs-meta-val">Wireless handpiece. Robotic control of position and the cutting plane.</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Navigation</p>
-            <p class="cs-meta-val">Inertial, with an infrared camera as backup</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Power and compute</p>
-            <p class="cs-meta-val">Battery on the tool. Computation off the device.</p>
-          </div>
-          <div>
-            <p class="cs-meta-label">Tradespace</p>
-            <p class="cs-meta-val">Mount, power, navigation, and how much of the cut the robot controls</p>
-          </div>
-        </aside>
       </div>
     </article>
 
@@ -373,65 +354,122 @@
           <span class="n">08</span>
           <span class="tag">More</span>
           <span class="name">Robotic platform and quadrocopter</span>
-          <span class="chip">Placeholder</span>
           <span class="flip" aria-hidden="true">+</span>
         </button>
       </h3>
       <div class="work-body" hidden>
         <div class="work-note">
-          <p class="cs-type">Placeholder</p>
-          <h3 class="cs-title">Robotic platform and quadrocopter</h3>
-          <p>Two projects still to write up: a robotic platform and a quadrocopter.</p>
+          <ul class="cs-highlights">
+            <li>Two projects still to write up: a robotic platform and a quadrocopter.</li>
+          </ul>
         </div>
       </div>
     </article>
+
+    <article class="work-item">
+      <h3 class="work-heading">
+        <button class="work-head" type="button" aria-expanded="false">
+          <span class="n">09</span>
+          <span class="tag">Open</span>
+          <span class="name">To be added</span>
+          <span class="flip" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="work-body" hidden>
+        <div class="work-note">
+          <ul class="cs-highlights">
+            <li>This tab is open for the next project.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+    </div>
 
     </div>
   </div>
 </div>
 
 <section id="experience">
-  <p class="section-label">Work history</p>
   <h2 class="section-title">Experience</h2>
   <div class="exp-list">
     <article class="exp-item">
       <div>
         <p class="exp-company">Massachusetts Institute of Technology</p>
-        <p class="exp-dates">2024 — 2026</p>
       </div>
-      <div>
-        <h3 class="exp-title">M.S. in Engineering and Management</h3>
-        <p class="exp-desc">Expected 2026. Teaching assistant for Model-Based Engineering in the Product Development Lifecycle. The research is MBSE adoption for small and medium-sized organizations, and the digital thread in regulated medical product industries.</p>
-        <div class="exp-tags">
-          <span class="exp-tag">MBSE</span>
-          <span class="exp-tag">Digital thread</span>
-          <span class="exp-tag">Teaching</span>
+      <div class="exp-roles">
+        <div class="exp-role" id="exp-hypothermia">
+          <h3 class="exp-title">Research, Localized Spinal Cord Hypothermia</h3>
+          <ul class="exp-points">
+            <li>The device cools the cord and leaves the patient at normal body temperature.</li>
+            <li>Fast prototyping stays inside FDA design controls, ISO 13485, and ISO 14971.</li>
+          </ul>
+        </div>
+        <div class="exp-role" id="exp-teaching">
+          <h3 class="exp-title">Teaching, Digital Thread</h3>
+          <ul class="exp-points">
+            <li>Teaching assistant for Model-Based Engineering in the Product Development Lifecycle, including the digital thread.</li>
+          </ul>
+        </div>
+        <div class="exp-role">
+          <h3 class="exp-title">Master in System Design and Management</h3>
         </div>
       </div>
     </article>
     <article class="exp-item">
       <div>
         <p class="exp-company">Rommelag</p>
-        <p class="exp-dates">More than ten years</p>
+        <p class="exp-dates">2015 — 2025</p>
       </div>
-      <div>
-        <h3 class="exp-title">Automation engineer to senior software engineer</h3>
-        <p class="exp-desc">Delivered automation, robotics, software, and digital transformation in highly regulated pharmaceutical manufacturing. The work runs from the Blow-Fill-Seal machine line through the human-machine interface, and includes three patents in pharmaceutical packaging and manufacturing equipment.</p>
-        <div class="exp-tags">
-          <span class="exp-tag">Automation</span>
-          <span class="exp-tag">HMI</span>
-          <span class="exp-tag">Blow-Fill-Seal</span>
-          <span class="exp-tag">GAMP</span>
+      <div class="exp-roles">
+        <div class="exp-role" id="exp-hmi">
+          <h3 class="exp-title">Product Manager, Human-Machine Interface</h3>
+          <p class="exp-dates">2022 — 2025</p>
+          <ul class="exp-points">
+            <li>Defined and executed product strategy and roadmap for next-generation Human-Machine Interface (HMI) platforms used in primary pharmaceutical liquid packaging systems.</li>
+            <li>Developed a multi-device human-machine interaction ecosystem that reduced operator training time from months to days while improving usability and operational reliability.</li>
+            <li>Led the design and implementation of automated verification and validation solutions that reduced testing effort from two weeks to one day.</li>
+            <li>Collaborated with executive leadership to transform the company from project execution to a product-driven organization.</li>
+          </ul>
+        </div>
+        <div class="exp-role" id="exp-systems">
+          <h3 class="exp-title">Systems Engineering, Team Leader</h3>
+          <p class="exp-dates">2018 — 2022</p>
+          <ul class="exp-points">
+            <li>Established systems engineering practices, including requirements management, functional and logical architecture trade-space analysis, and technical decision frameworks. This new product development framework reduced time to market from 12 to 6 months.</li>
+            <li>Led 3 multidisciplinary engineering teams (4–6 members each) across software, electrical, and mechanical domains in the development of next-generation pharmaceutical packaging equipment.</li>
+            <li>Drove the development of innovative machine platforms, resulting in three patented inventions redefining how the process is executed and strengthening the company's market leadership position.</li>
+            <li>Championed organization-wide agile transformation, serving as a coach for senior management.</li>
+            <li>Implemented enterprise knowledge management and software lifecycle processes that improved onboarding efficiency by 30%.</li>
+          </ul>
+        </div>
+        <div class="exp-role" id="exp-automation">
+          <h3 class="exp-title">Automation Engineer</h3>
+          <p class="exp-dates">2015 — 2018</p>
+          <ul class="exp-points">
+            <li>Designed and implemented control systems for pharmaceutical manufacturing equipment using B&amp;R, Siemens, and Beckhoff automation platforms.</li>
+            <li>Executed Factory Acceptance Testing (FAT) and Site Acceptance Testing (SAT) for manufacturing systems deployed to more than 10 leading global pharmaceutical manufacturers.</li>
+            <li>Worked closely with validation, quality, manufacturing, and regulatory stakeholders to support successful implementation in GMP environments.</li>
+          </ul>
         </div>
       </div>
     </article>
+    <article class="exp-item">
+      <div>
+        <p class="exp-company">Silesian University of Technology</p>
+        <p class="exp-dates">2011 — 2015</p>
+      </div>
+      <div>
+        <h3 class="exp-title">B.S. in Information Technologies in Automatic Control &amp; Robotics</h3>
+        <p class="exp-desc">Politechnika Śląska.</p>
+      </div>
+    </article>
   </div>
+  <p class="edu-also">Also: Certificate, Architecture and Systems Engineering, MIT Professional Education, 2021 — 2022. Professional certificate, Automation Technology, B&amp;R Engineering Camp, 2015 — 2016. Python object-oriented programming · Goethe-Zertifikat C1 · Autodesk Inventor Essentials.</p>
 </section>
 
 <div class="divider"></div>
 
 <section id="publications">
-  <p class="section-label">Research and IP</p>
   <h2 class="section-title">Patents &amp; Publications</h2>
   <div class="pub-list">
     <article class="pub-item">
@@ -465,43 +503,13 @@
   </div>
 </section>
 
-<div class="divider"></div>
-
-<section id="education">
-  <p class="section-label">Academic background</p>
-  <h2 class="section-title">Education</h2>
-  <div class="education-grid">
-    <article class="edu-card">
-      <h3 class="edu-school">Massachusetts Institute of Technology</h3>
-      <p class="edu-degree">M.S. — Engineering and Management</p>
-      <p class="edu-dates">Expected 2026 · 2024 — 2026</p>
-    </article>
-    <article class="edu-card">
-      <h3 class="edu-school">MIT Professional Education</h3>
-      <p class="edu-degree">Certificate — Architecture and Systems Engineering</p>
-      <p class="edu-dates">Models and methods for complex systems · 2021 — 2022</p>
-    </article>
-    <article class="edu-card">
-      <h3 class="edu-school">Silesian University of Technology</h3>
-      <p class="edu-degree">B.S. — Information Technologies in Automatic Control &amp; Robotics</p>
-      <p class="edu-dates">Politechnika Śląska · 2011 — 2015</p>
-    </article>
-    <article class="edu-card">
-      <h3 class="edu-school">B&amp;R Engineering Camp</h3>
-      <p class="edu-degree">Professional certificate — Automation Technology</p>
-      <p class="edu-dates">Visualization and motion control · 2015 — 2016</p>
-    </article>
-  </div>
-  <p class="edu-also">Also: Python object-oriented programming · Goethe-Zertifikat C1 · Autodesk Inventor Essentials</p>
-</section>
-
 <div class="contact-section" id="contact">
   <div class="contact-inner">
     <h2 class="contact-title">Start a conversation</h2>
-    <p class="contact-sub">Open to collaboration, teaching conversations, and research on medical devices. If you are taking a device through design controls, or bringing model-based engineering and the digital thread into agile fast moving team, I would like to hear what you are trying to make true.</p>
+    <p class="contact-sub">Open to collaboration, teaching conversations, and research on medical devices. If you are taking a device through design controls, or bringing model-based engineering and the digital thread into an agile, fast-moving team, I would welcome the chance to understand what you are working to achieve and how I can help.</p>
     <div class="contact-btns">
-      <a class="btn btn-white" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a class="btn btn-outline-white" href="https://github.com/PatrykPrezyna" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="btn btn-white" href="mailto:Patryk78@mit.edu">Get in Touch</a>
+      <a class="btn btn-outline-white" href="https://www.linkedin.com/in/patryk-prezyna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
   </div>
 </div>
@@ -522,8 +530,109 @@
   <p class="lightbox-caption" id="lightbox-caption"></p>
 </div>
 
+<script id="skills-data" type="text/plain">
+skill,link
+Engineering Management,#exp-systems
+"Software (Python, Vue.js)",#work-software
+"Firmware (C, Labview)",#exp-automation
+DevOps,#exp-hmi
+Docker,#work-software
+"PLC · B&R, S7, CodeSys",#exp-automation
+"Fast Prototyping",#exp-hypothermia
+Agile / Scrum,#exp-systems
+ECAD (KiCad),#work-knee
+"CAD (Fusion, Python CAD)",#work-machine
+"MBSE (CAMEO, SysMLv2)",#work-research
+"PLM (Windchil, 3DExperience)",#exp-teaching
+</script>
 <script>
   (function () {
+    const skillsGrid = document.getElementById("skills-grid");
+
+    function parseCsv(text) {
+      const rows = [];
+      let field = "";
+      let row = [];
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (inQuotes) {
+          if (c === '"') {
+            if (text[i + 1] === '"') {
+              field += '"';
+              i++;
+            } else {
+              inQuotes = false;
+            }
+          } else {
+            field += c;
+          }
+        } else if (c === '"') {
+          inQuotes = true;
+        } else if (c === ",") {
+          row.push(field);
+          field = "";
+        } else if (c === "\n" || c === "\r") {
+          if (c === "\r" && text[i + 1] === "\n") i++;
+          row.push(field);
+          field = "";
+          if (row.some(function (cell) { return cell.trim(); })) rows.push(row);
+          row = [];
+        } else {
+          field += c;
+        }
+      }
+      if (field || row.length) {
+        row.push(field);
+        if (row.some(function (cell) { return cell.trim(); })) rows.push(row);
+      }
+      const start = rows.length && rows[0][0].trim().toLowerCase() === "skill" ? 1 : 0;
+      return rows.slice(start).map(function (cells) {
+        return { name: cells[0].trim(), link: (cells[1] || "").trim() };
+      }).filter(function (row) { return row.name; });
+    }
+
+    function openWork(item) {
+      document.querySelectorAll(".work-item.open").forEach(function (open) {
+        if (open === item) return;
+        open.classList.remove("open");
+        open.querySelector(".work-head").setAttribute("aria-expanded", "false");
+        open.querySelector(".work-body").hidden = true;
+      });
+      item.classList.add("open");
+      item.querySelector(".work-head").setAttribute("aria-expanded", "true");
+      item.querySelector(".work-body").hidden = false;
+    }
+
+    function showSkills(rows) {
+      skillsGrid.replaceChildren.apply(skillsGrid, rows.map(function (row) {
+        const tag = document.createElement(row.link ? "a" : "span");
+        tag.className = "skill-tag";
+        tag.textContent = row.name;
+        if (row.link) {
+          tag.href = row.link;
+          tag.addEventListener("click", function (event) {
+            const target = document.querySelector(row.link);
+            if (!target) return;
+            event.preventDefault();
+            if (target.classList.contains("work-item")) openWork(target);
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }
+        return tag;
+      }));
+    }
+
+    showSkills(parseCsv(document.getElementById("skills-data").textContent));
+
+    fetch("skills.csv", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.text() : Promise.reject(); })
+      .then(function (text) {
+        const skills = parseCsv(text);
+        if (skills.length) showSkills(skills);
+      })
+      .catch(function () {});
+
     const nav = document.querySelector("nav");
     const toggle = document.querySelector(".nav-toggle");
     const links = document.getElementById("nav-links");
@@ -545,16 +654,12 @@
     document.querySelectorAll(".work-head").forEach(function (btn) {
       btn.addEventListener("click", function () {
         const item = btn.closest(".work-item");
-        const wasOpen = item.classList.contains("open");
-        document.querySelectorAll(".work-item.open").forEach(function (open) {
-          open.classList.remove("open");
-          open.querySelector(".work-head").setAttribute("aria-expanded", "false");
-          open.querySelector(".work-body").hidden = true;
-        });
-        if (!wasOpen) {
-          item.classList.add("open");
-          btn.setAttribute("aria-expanded", "true");
-          item.querySelector(".work-body").hidden = false;
+        if (item.classList.contains("open")) {
+          item.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+          item.querySelector(".work-body").hidden = true;
+        } else {
+          openWork(item);
         }
       });
     });
@@ -581,6 +686,18 @@
       if (lastFocus) lastFocus.focus();
     }
 
+    function markCaption(caption) {
+      if (!caption || caption.clientWidth === 0) return;
+      caption.classList.toggle("is-long", caption.scrollWidth > caption.clientWidth + 1);
+    }
+
+    document.querySelectorAll(".cs-caption").forEach(function (caption) {
+      markCaption(caption);
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () { markCaption(caption); }).observe(caption);
+      }
+    });
+
     document.querySelectorAll(".cs-hero").forEach(function (hero) {
       hero.setAttribute("role", "button");
       hero.tabIndex = 0;
@@ -599,6 +716,42 @@
       });
     });
 
+    document.querySelectorAll(".cs-thumbs").forEach(function (strip) {
+      const slider = document.createElement("div");
+      slider.className = "cs-slider";
+      const prev = document.createElement("button");
+      const next = document.createElement("button");
+      prev.type = "button";
+      next.type = "button";
+      prev.className = "cs-slider-btn";
+      next.className = "cs-slider-btn";
+      prev.setAttribute("aria-label", "Previous pictures");
+      next.setAttribute("aria-label", "Next pictures");
+      prev.textContent = "‹";
+      next.textContent = "›";
+      strip.parentNode.insertBefore(slider, strip);
+      slider.appendChild(prev);
+      slider.appendChild(strip);
+      slider.appendChild(next);
+
+      function update() {
+        const max = strip.scrollWidth - strip.clientWidth;
+        const overflow = max > 4;
+        prev.hidden = !overflow || strip.scrollLeft <= 2;
+        next.hidden = !overflow || strip.scrollLeft >= max - 2;
+      }
+
+      prev.addEventListener("click", function () {
+        strip.scrollBy({ left: -(128 + 10) * 2, behavior: "smooth" });
+      });
+      next.addEventListener("click", function () {
+        strip.scrollBy({ left: (128 + 10) * 2, behavior: "smooth" });
+      });
+      strip.addEventListener("scroll", update);
+      if (window.ResizeObserver) new ResizeObserver(update).observe(strip);
+      update();
+    });
+
     document.querySelectorAll(".cs-thumb").forEach(function (thumb) {
       thumb.addEventListener("click", function () {
         const study = thumb.closest(".case-study");
@@ -609,7 +762,10 @@
         heroImg.alt = img.alt;
         hero.classList.toggle("cs-hero--fit", thumb.dataset.fit === "contain");
         const caption = study.querySelector(".cs-caption");
-        if (caption) caption.textContent = thumb.dataset.caption || "";
+        if (caption) {
+          caption.textContent = thumb.dataset.caption || "";
+          markCaption(caption);
+        }
         study.querySelectorAll(".cs-thumb").forEach(function (item) {
           item.classList.toggle("active", item === thumb);
         });
