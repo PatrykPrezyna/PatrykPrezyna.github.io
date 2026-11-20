@@ -74,9 +74,9 @@
   <h2 class="section-title">About</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>I am a systems engineer and researcher in the Master of Science program at MIT, and a teaching assistant for Model-Based Engineering in the Product Development Lifecycle. The research is MBSE adoption for small and medium-sized organizations. The tools are powerful. The rollout designed for a large enterprise usually is not.</p>
-      <p>Before MIT I worked at Rommelag across automation, software, and a senior engineering role on the human-machine interface for pharmaceutical equipment. That sequence is the point of view: I trust a model that a commissioning engineer can still use, and I am skeptical of one that only looks complete in a conference room.</p>
-      <p>I work in Polish, English, and German. The useful model is the one a small team can keep running.</p>
+      <p>I am a systems engineer and researcher at MIT. During my master’s in System Design and Management, I taught Model-Based Engineering in the Product Development Lifecycle, a class I developed with Eric Rebentisch. My research is how small and medium-sized organizations adopt model-based systems engineering (MBSE). I am developing the Methodology and tools by simplifying the SysMl v2 language and incorporating AI assitants.</p>
+      <p>Before MIT I was a senior engineer at Rommelag, a leader in blow-fill-seal systems for aseptic pharmaceutical packaging, across automation, software, and human-machine interfaces. I am taking that practice into medical devices. The current project is localized spinal cord hypothermia, kept inside design controls. The direction from here is the digital thread for agile teams in regulated industries.</p>
+      <p>I have led teams across software and hardware in English, German, and Polish. Translating between business and engineering. My current focus is on Model Based Systems Engineering and Digital Thread for agile teams in regulated industries.</p>
     </div>
     <div>
       <p class="skills-label">Technical skills</p>
@@ -105,22 +105,52 @@
           <div class="cs-hero cs-hero--fit">
             <img src="assets/coolspine/console.png" alt="Cooling console on a rolling stand, with lines running to the spinal cord. The ports are labeled IN, OUT, and CSF.">
           </div>
-          <p class="cs-caption">The cooling console and the cord. Fluid runs from the unit to the spine. The ports are IN, OUT, and CSF.</p>
+          <p class="cs-caption">Medical Device providing spinal cord hypothermia.</p>
           <div class="cs-thumbs">
-            <button class="cs-thumb active" type="button" aria-label="Show the cooling console" data-fit="contain" data-caption="The cooling console and the cord. Fluid runs from the unit to the spine. The ports are IN, OUT, and CSF.">
+            <button class="cs-thumb active" type="button" aria-label="Show the cooling console" data-fit="contain" data-caption="Medical Device providing spinal cord hypothermia.">
               <img class="fit" src="assets/coolspine/console.png" alt="Cooling console on a rolling stand, with lines running to the spinal cord. The ports are labeled IN, OUT, and CSF.">
             </button>
-            <button class="cs-thumb" type="button" aria-label="Show the P1.5 SENSE board" data-fit="contain" data-caption="P1.5 SENSE board, with temperature and pressure sensing for the cooling device.">
+            <button class="cs-thumb" type="button" aria-label="Show the P1.5 SENSE board" data-fit="contain" data-caption="Custom PCB with temperature, flowrate, and pressure sensing.">
               <img class="fit" src="assets/coolspine/p15-sense.png" alt="P1.5 SENSE circuit board with connectors for a temperature sensor, pressure sensor, thermistor, and backup ADC input.">
+            </button>
+            <button class="cs-thumb" type="button" aria-label="Show traceability between user needs, design inputs and outputs" data-fit="contain" data-caption="Traceability between user needs, design inputs and outputs according to ISO 13485.">
+              <img class="fit" src="assets/coolspine/traceability.png" alt="Requirements diagram tracing user needs for spinal cord cooling to system requirements and to the refrigeration unit, touch display, and fluid reservoir.">
+            </button>
+            <button class="cs-thumb" type="button" aria-label="Show the Cool Spine prototype" data-fit="contain" data-caption="Fast prototyping.">
+              <img class="fit" src="assets/coolspine/prototype.jpg" alt="MIT Cool Spine Version 1.5 prototype on a bench. The front panel has a touchscreen, catheter ports, and a label that reads Research Use Only, Not for Use on Humans.">
+            </button>
+            <button class="cs-thumb" type="button" aria-label="Show the cooling device user interface" data-fit="contain" data-caption="Intuitive and simplistic user interface.">
+              <img class="fit" src="assets/coolspine/ui.png" alt="Temperature screen for the cooling device, with a trend chart, an error that the heat exchanger is too cold, and readings for the tip, cartridge, catheter, cool plate, and compressor.">
             </button>
           </div>
           <div class="cs-body">
             <div class="cs-content">
-              <ul class="cs-highlights">
-                <li>Research in the M.S. in Engineering and Management at MIT. The question is how small and medium-sized organizations adopt model-based systems engineering, and how the digital thread holds in regulated medical product industries.</li>
-                <li>The tools are powerful. The rollout designed for a large enterprise usually is not.</li>
-                <li>The work is in progress, under the title MBSE Adoption Pathways for Small and Medium-Sized Organizations.</li>
-              </ul>
+              <div class="cs-split">
+                <p class="cs-type">About the challenge</p>
+                <div class="cs-facts">
+                  <p class="cs-fact">
+                    <span class="cs-fact-num">15,000</span>
+                    <span class="cs-fact-label">Deaths per year from thoracic aortic aneurysm rupture in the US</span>
+                  </p>
+                  <p class="cs-fact">
+                    <span class="cs-fact-num">6–18%</span>
+                    <span class="cs-fact-label">Risk of post-op paraplegia from spinal cord ischemia during repair</span>
+                  </p>
+                </div>
+              </div>
+              <div class="cs-split">
+                <p class="cs-type">My contribution</p>
+                <ul class="cs-highlights">
+                  <li>Developed the software while coordinating the mechanical, electrical, and regulatory work.</li>
+                  <li>Led systems engineering in a fast-moving team while keeping the work compliant.</li>
+                  <li>Designed preclinical study protocols and built multiphysics models to predict therapeutic efficacy.</li>
+                </ul>
+                <div class="cs-tags">
+                  <span class="cs-tag">ISO 13485</span>
+                  <span class="cs-tag">ISO 14971</span>
+                  <span class="cs-tag">Fast Prototyping</span>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -141,27 +171,37 @@
       <div class="cs-hero cs-hero--fit">
         <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
       </div>
-      <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
+      <p class="cs-caption">Moden infrastructure with modern look.</p>
       <div class="cs-thumbs">
-        <button class="cs-thumb active" type="button" aria-label="Show the sterilization operator screen" data-fit="contain" data-caption="Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.">
+        <button class="cs-thumb active" type="button" aria-label="Show the sterilization operator screen" data-fit="contain" data-caption="Moden infrastructure with modern look.">
           <img class="fit" src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
         </button>
-        <button class="cs-thumb" type="button" aria-label="Show the folder of software archives" data-fit="contain" data-caption="Software copies saved as zip archives, named FINAL, latest, and do not delete.">
-          <img class="fit" src="assets/bp700/software-archives.png" alt="Folder of zip archives named Software_FINAL, Software_latest_USE_THIS_ONE, and Software_backup_DO_NOT_DELETE">
+        <button class="cs-thumb" type="button" aria-label="Show the HMI ecosystem" data-fit="contain" data-caption="Connecting Stakeholders and devices.">
+          <img class="fit" src="assets/bp700/hmi-ecosystem.png" alt="Diagram of the operator, plan manager, and hotline around the human-machine interface, Rommelag Pharma Platform, programmable logic controller, servo control, and manufacturing execution system.">
         </button>
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <ul class="cs-highlights">
-            <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
-            <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
-            <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
-          </ul>
-          <div class="cs-tags">
-            <span class="cs-tag">Python</span>
-            <span class="cs-tag">Vue.js</span>
-            <span class="cs-tag">Docker</span>
-            <span class="cs-tag">Domain-driven design</span>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <ul class="cs-highlights">
+              <li>Reduce operator onboarding time from months to days.</li>
+              <li>Enable connectivity while garanteein security in critical industries.</li>
+            </ul>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>Defined the system architecture, product strategy, and roadmap for the next-generation human-machine interface.</li>
+              <li>Built a full-stack application, from the firmware to the cloud.</li>
+              <li>With executive leadership, moved the company from delivering projects to running a product.</li>
+            </ul>
+            <div class="cs-tags">
+              <span class="cs-tag">Python</span>
+              <span class="cs-tag">Vue.js</span>
+              <span class="cs-tag">Docker</span>
+              <span class="cs-tag">Domain-driven design</span>
+            </div>
           </div>
         </div>
       </div>
@@ -186,9 +226,9 @@
           <h3 class="cs-hero-title">New machine generation</h3>
         </div>
       </div>
-      <p class="cs-caption">bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.</p>
+      <p class="cs-caption">BP 730, the new machine generation.</p>
       <div class="cs-thumbs">
-        <button class="cs-thumb active" type="button" aria-label="Show the bp 730 beside the classified area" data-fit="cover" data-caption="bp 730. The gray volume is the classified area. Most of the aseptic cabinet stays outside it.">
+        <button class="cs-thumb active" type="button" aria-label="Show the bp 730 beside the classified area" data-fit="cover" data-caption="BP 730, the new machine generation.">
           <img src="assets/bp700/bp730-side.jpg" alt="bottelpack bp 730 beside the classified-area wall, with most of the machine outside that room">
         </button>
         <button class="cs-thumb" type="button" aria-label="Show the bottles from 100 to 1,000 ml" data-fit="cover" data-caption="Bottles from 100 to 1,000 ml.">
@@ -200,18 +240,32 @@
         <button class="cs-thumb" type="button" aria-label="Show the machine process model" data-fit="contain" data-caption="Process model of the machine line, from material preparation through forming, filling, and sealing.">
           <img class="fit" src="assets/bp700/process-model.png" alt="Wide process diagram of the manufacturing line, with material flows through preparation, forming, filling, and sealing.">
         </button>
+        <button class="cs-thumb" type="button" aria-label="Show systems engineering in the value stream" data-fit="contain" data-caption="Organisational Transformation">
+          <img class="fit" src="assets/bp700/se-value-stream.png" alt="Diagram comparing systems engineering as its own discipline with systems engineering inside each value stream team, across software, mechanical, and electrical.">
+        </button>
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <ul class="cs-highlights">
-            <li>The bottelpack bp 700 Series is Rommelag’s Blow-Fill-Seal platform for large-volume parenterals. One machine forms, fills, and seals bottles from 100 to 1,000 ml. Systems engineering on this line was that span: from the automation through the packaging equipment, the devices that produce the container, and the molding tools that travel with each format.</li>
-            <li>The series is built to raise output and shrink the cost around the machine. A bp 730 nearly doubles bottles per hour versus the bp 321 at 1,000 ml. A format change is under two hours.</li>
-            <li>Only 20% of the aseptic cabinet sits in the classified area, so the line fits a 3.5 m room. Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</li>
-          </ul>
-          <div class="cs-tags">
-            <span class="cs-tag">100–1,000 ml</span>
-            <span class="cs-tag">Format change under 2 h</span>
-            <span class="cs-tag">GAMP category 4</span>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <ul class="cs-highlights">
+              <li>Improve output and performance.</li>
+              <li>Reduce development time and cost.</li>
+              <li>Transform the organization from project-driven to product-driven.</li>
+            </ul>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>Systems engineering on this line was that span: from the automation through the packaging equipment, the devices that produce the container, and the molding tools that travel with each format.</li>
+              <li>Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</li>
+            </ul>
+            <div class="cs-tags">
+              <span class="cs-tag">Leadship</span>
+              <span class="cs-tag">Agile for Hardware</span>
+              <span class="cs-tag">IP</span>
+              <span class="cs-tag">GAMP</span>
+            </div>
           </div>
         </div>
       </div>
@@ -232,29 +286,36 @@
       <div class="work-body" hidden>
     <article class="case-study">
       <div class="cs-hero cs-hero--fit">
-        <img src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+        <img src="assets/bp700/ladder-to-model.png" alt="Conveyor ladder logic beside a model of the same control, with states above and a generated structure below.">
       </div>
-      <p class="cs-caption">Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.</p>
+      <p class="cs-caption">From archaic language to model-based software development.</p>
       <div class="cs-thumbs">
-        <button class="cs-thumb active" type="button" aria-label="Show the sterilization operator screen" data-fit="contain" data-caption="Sterilization in progress on the bottelpack HMI: the step, the probes, and the setpoint on one screen.">
-          <img class="fit" src="assets/bp700/bp730-hmi.jpg" alt="Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer">
+        <button class="cs-thumb active" type="button" aria-label="Show the move from ladder logic to a model" data-fit="contain" data-caption="From archaic language to model-based software development.">
+          <img class="fit" src="assets/bp700/ladder-to-model.png" alt="Conveyor ladder logic beside a model of the same control, with states above and a generated structure below.">
         </button>
-        <button class="cs-thumb" type="button" aria-label="Show the folder of software archives" data-fit="contain" data-caption="Software copies saved as zip archives, named FINAL, latest, and do not delete.">
-          <img class="fit" src="assets/bp700/software-archives.png" alt="Folder of zip archives named Software_FINAL, Software_latest_USE_THIS_ONE, and Software_backup_DO_NOT_DELETE">
+        <button class="cs-thumb" type="button" aria-label="Show semantic versioning and the Gitflow workflow" data-fit="contain" data-caption="Introducing semantic versioning and a modern workflow.">
+          <img class="fit" src="assets/bp700/gitflow.png" alt="Zip archives named FINAL and latest beside a Gitflow diagram with main, release, develop, feature, and hot-fix branches.">
         </button>
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <ul class="cs-highlights">
-            <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
-            <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
-            <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
-          </ul>
-          <div class="cs-tags">
-            <span class="cs-tag">Python</span>
-            <span class="cs-tag">Vue.js</span>
-            <span class="cs-tag">Docker</span>
-            <span class="cs-tag">Domain-driven design</span>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <p class="cs-hook">The operator walks a batch through sterilization and the other critical steps. The process parameters have to stay on the same screen, and the software and the machine have to describe one process.</p>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.</li>
+              <li>It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.</li>
+              <li>The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.</li>
+            </ul>
+            <div class="cs-tags">
+              <span class="cs-tag">Python</span>
+              <span class="cs-tag">Vue.js</span>
+              <span class="cs-tag">Docker</span>
+              <span class="cs-tag">Domain-driven design</span>
+            </div>
           </div>
         </div>
       </div>
@@ -274,9 +335,16 @@
       </h3>
       <div class="work-body" hidden>
         <div class="work-note">
-          <ul class="cs-highlights">
-            <li>I teach Model-Based Engineering in the Product Development Lifecycle at MIT, including the digital thread. The write-up of that teaching is not on the page yet.</li>
-          </ul>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <p class="cs-hook">Model-Based Engineering in the Product Development Lifecycle, including the digital thread.</p>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>I teach that class at MIT. The write-up of that teaching is not on the page yet.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </article>
@@ -291,12 +359,35 @@
         </button>
       </h3>
       <div class="work-body" hidden>
-        <div class="work-note">
-          <ul class="cs-highlights">
-            <li>The master’s thesis takes the adoption question into the team that has to live with the model: small organizations, and agile teams.</li>
-            <li>The useful model is the one a small team can keep running. The thesis is in progress.</li>
-          </ul>
-        </div>
+        <article class="case-study">
+          <div class="cs-hero cs-hero--fit">
+            <img src="assets/thesis/method-language-tool.png" alt="Triangle of method, language, and tool around AI assistance, inside a loop labeled Continues Integration and Human in the Loop.">
+          </div>
+          <p class="cs-caption">Method, language, and tool, with AI assistance in the middle.</p>
+          <div class="cs-thumbs">
+            <button class="cs-thumb active" type="button" aria-label="Show the method, language, and tool diagram" data-fit="contain" data-caption="Method, language, and tool, with AI assistance in the middle.">
+              <img class="fit" src="assets/thesis/method-language-tool.png" alt="Triangle of method, language, and tool around AI assistance, inside a loop labeled Continues Integration and Human in the Loop.">
+            </button>
+            <button class="cs-thumb" type="button" aria-label="Show the concept selection task map" data-fit="contain" data-caption="Concept selection by a Pugh matrix or a trade-space exploration.">
+              <img class="fit" src="assets/thesis/TaskMap_ConceptSelection_Example.png" alt="Task map of concept selection. Candidate concepts and requirements feed a Pugh matrix or a trade-space exploration, and both produce a selected concept and a decision rationale.">
+            </button>
+          </div>
+          <div class="cs-body">
+            <div class="cs-content">
+              <div class="cs-split">
+                <p class="cs-type">About the challenge</p>
+                <p class="cs-hook">Small organizations and agile teams have to live with the model. The question is how they adopt model-based systems engineering.</p>
+              </div>
+              <div class="cs-split">
+                <p class="cs-type">My contribution</p>
+                <ul class="cs-highlights">
+                  <li>The master’s thesis takes the adoption question into the team that has to live with the model: small organizations, and agile teams.</li>
+                  <li>The useful model is the one a small team can keep running. The thesis is in progress.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </article>
 
@@ -328,18 +419,23 @@
       </div>
       <div class="cs-body">
         <div class="cs-content">
-          <ul class="cs-highlights">
-            <li>A new product generation of a surgical robot for knee reconstruction. I worked the system architecture from stakeholder needs through to the concept that was selected: what each group required, how those needs decomposed into requirements, and the tradeoffs that decided the design.</li>
-            <li>The surgeon is the primary user. Patients, the operating room, hospitals, regulators, and insurers set the constraints around that user: a safe procedure, surgeon control, a smaller footprint, and less time to set up and clear the room.</li>
-            <li>Those needs became requirements. Cuts within 1 mm. End-to-end latency under 100 ms. Setup and cleanup under 45 minutes. Weight under 7 lb.</li>
-            <li>The tradespace compared how the robot is mounted, powered, and navigated, and how much of the cut it controls. Handheld concepts score higher on performance for the manufacturing cost.</li>
-            <li>The concept carried forward is a wireless handpiece: robotic control of position and the cutting plane, inertial navigation with an infrared camera as backup, the battery on the tool, and the computation off the device.</li>
-          </ul>
-          <div class="cs-tags">
-            <span class="cs-tag">Cuts within 1 mm</span>
-            <span class="cs-tag">Latency under 100 ms</span>
-            <span class="cs-tag">Setup under 45 min</span>
-            <span class="cs-tag">Under 7 lb</span>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <p class="cs-hook">The surgeon is the primary user. Patients, the operating room, hospitals, regulators, and insurers set the constraints: a safe procedure, surgeon control, a smaller footprint, and less time to set up and clear the room. Those needs became requirements. Cuts within 1 mm. End-to-end latency under 100 ms. Setup and cleanup under 45 minutes. Weight under 7 lb.</p>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>A new product generation of a surgical robot for knee reconstruction. I worked the system architecture from stakeholder needs through to the concept that was selected: what each group required, how those needs decomposed into requirements, and the tradeoffs that decided the design.</li>
+              <li>The tradespace compared how the robot is mounted, powered, and navigated, and how much of the cut it controls. Handheld concepts score higher on performance for the manufacturing cost.</li>
+              <li>The concept carried forward is a wireless handpiece: robotic control of position and the cutting plane, inertial navigation with an infrared camera as backup, the battery on the tool, and the computation off the device.</li>
+            </ul>
+            <div class="cs-tags">
+              <span class="cs-tag">Cuts within 1 mm</span>
+              <span class="cs-tag">Latency under 100 ms</span>
+              <span class="cs-tag">Setup under 45 min</span>
+              <span class="cs-tag">Under 7 lb</span>
+            </div>
           </div>
         </div>
       </div>
@@ -359,9 +455,16 @@
       </h3>
       <div class="work-body" hidden>
         <div class="work-note">
-          <ul class="cs-highlights">
-            <li>Two projects still to write up: a robotic platform and a quadrocopter.</li>
-          </ul>
+          <div class="cs-split">
+            <p class="cs-type">About the challenge</p>
+            <p class="cs-hook">A robotic platform and a quadrocopter.</p>
+          </div>
+          <div class="cs-split">
+            <p class="cs-type">My contribution</p>
+            <ul class="cs-highlights">
+              <li>Two projects still to write up: a robotic platform and a quadrocopter.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </article>
@@ -412,6 +515,7 @@
         </div>
         <div class="exp-role">
           <h3 class="exp-title">Master in System Design and Management</h3>
+          <p class="exp-desc">Relevant courses: AI and ML for Engineering Design, Medical Device Design, and Innovating in Health Care.</p>
         </div>
       </div>
     </article>
@@ -534,13 +638,15 @@
 skill,link
 Engineering Management,#exp-systems
 "Software (Python, Vue.js)",#work-software
+Agile / Scrum,#exp-systems
 "Firmware (C, Labview)",#exp-automation
+AI and ML for Engineering Design,#exp-teaching
 DevOps,#exp-hmi
-Docker,#work-software
+"Digital Thread",#exp-hypothermia
 "PLC · B&R, S7, CodeSys",#exp-automation
 "Fast Prototyping",#exp-hypothermia
-Agile / Scrum,#exp-systems
 ECAD (KiCad),#work-knee
+Robotics,#exp-automation
 "CAD (Fusion, Python CAD)",#work-machine
 "MBSE (CAMEO, SysMLv2)",#work-research
 "PLM (Windchil, 3DExperience)",#exp-teaching

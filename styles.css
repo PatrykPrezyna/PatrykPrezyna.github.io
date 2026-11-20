@@ -509,10 +509,29 @@ a.skill-tag:hover {
 .work-body .cs-body {
   grid-area: copy;
   grid-template-columns: 1fr;
-  align-content: start;
+  grid-template-rows: 1fr;
+  align-content: stretch;
+  height: 100%;
 }
 
-.work-body .cs-content { border-right: none; }
+.work-body .cs-content {
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+}
+
+.work-body .cs-content > .cs-split:last-child {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.work-body .cs-tags {
+  margin-top: auto;
+  padding-top: 1.4rem;
+}
 
 .work-body .cs-sidebar {
   background: transparent;
@@ -725,6 +744,39 @@ a.skill-tag:hover {
   color: var(--slate-muted);
   margin-bottom: 0.5rem;
 }
+
+.cs-split + .cs-split {
+  margin-top: 1.6rem;
+}
+
+.cs-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.cs-fact-num {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  color: var(--slate-deep);
+  display: block;
+  line-height: 1.1;
+}
+
+.cs-fact-label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--slate-light);
+}
+
+.cs-split .cs-hook,
+.cs-split .cs-highlights {
+  margin-bottom: 0;
+}
+
 
 .cs-title {
   font-family: var(--serif);
