@@ -644,6 +644,7 @@ a.skill-tag:hover {
   overflow: hidden;
   background: #0a0c0f;
   cursor: zoom-in;
+  touch-action: pan-y;
 }
 
 .cs-hero img {

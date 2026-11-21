@@ -878,6 +878,52 @@ Robotics,#exp-automation
       });
     });
 
+    // Swipe left/right on the main image to change pictures on touch screens.
+    document.querySelectorAll(".case-study").forEach(function (study) {
+      const hero = study.querySelector(".cs-hero");
+      const thumbs = Array.prototype.slice.call(study.querySelectorAll(".cs-thumb"));
+      if (!hero || thumbs.length < 2) return;
+      let startX = 0, startY = 0, tracking = false, swiped = false;
+
+      hero.addEventListener("touchstart", function (event) {
+        if (event.touches.length !== 1) { tracking = false; return; }
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        tracking = true;
+        swiped = false;
+      }, { passive: true });
+
+      hero.addEventListener("touchend", function (event) {
+        if (!tracking) return;
+        tracking = false;
+        const t = event.changedTouches[0];
+        const dx = t.clientX - startX;
+        const dy = t.clientY - startY;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        let index = thumbs.findIndex(function (item) { return item.classList.contains("active"); });
+        if (index < 0) index = 0;
+        const target = dx < 0 ? index + 1 : index - 1;
+        if (target < 0 || target >= thumbs.length) return;
+        swiped = true;
+        thumbs[target].click();
+        const strip = thumbs[target].parentNode;
+        const s = strip.getBoundingClientRect();
+        const r = thumbs[target].getBoundingClientRect();
+        strip.scrollBy({ left: (r.left + r.width / 2) - (s.left + s.width / 2), behavior: "smooth" });
+      }, { passive: true });
+
+      hero.addEventListener("touchcancel", function () { tracking = false; });
+
+      // A swipe must not also count as a tap that opens the lightbox.
+      hero.addEventListener("click", function (event) {
+        if (swiped) {
+          swiped = false;
+          event.stopImmediatePropagation();
+          event.preventDefault();
+        }
+      }, true);
+    });
+
     lightbox.addEventListener("click", function (event) {
       if (event.target === lightbox || event.target.classList.contains("lightbox-close")) {
         closeLightbox();
