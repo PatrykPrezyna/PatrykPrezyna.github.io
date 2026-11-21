@@ -261,7 +261,7 @@
               <li>Cleaning, recipes, and the guided operator interface are part of the same system, on GAMP category 4 software.</li>
             </ul>
             <div class="cs-tags">
-              <span class="cs-tag">Leadship</span>
+              <span class="cs-tag">Leadership</span>
               <span class="cs-tag">Agile for Hardware</span>
               <span class="cs-tag">IP</span>
               <span class="cs-tag">GAMP</span>
@@ -636,20 +636,27 @@
 
 <script id="skills-data" type="text/plain">
 skill,link
-Engineering Management,#exp-systems
-"Software (Python, Vue.js)",#work-software
-Agile / Scrum,#exp-systems
-"Firmware (C, Labview)",#exp-automation
-AI and ML for Engineering Design,#exp-teaching
-DevOps,#exp-hmi
-"Digital Thread",#exp-hypothermia
-"PLC · B&R, S7, CodeSys",#exp-automation
-"Fast Prototyping",#exp-hypothermia
-ECAD (KiCad),#work-knee
-Robotics,#exp-automation
-"CAD (Fusion, Python CAD)",#work-machine
-"MBSE (CAMEO, SysMLv2)",#work-research
-"PLM (Windchil, 3DExperience)",#exp-teaching
+Engineering Management,
+"Software (Python, Vue.js)",#work-hmi
+Agile / Scrum,#work-machine
+"Firmware (C, Labview)",
+AI and ML for Engineering Design,
+DevOps,
+"Digital Thread",
+"PLC · B&R, S7, CodeSys",
+"Fast Prototyping",#work-research
+ECAD (KiCad),
+Robotics,
+"CAD (Fusion, Python CAD)",
+"MBSE (CAMEO, SysMLv2)",
+"PLM (Windchil, 3DExperience)",
+ISO 13485,#work-research
+ISO 14971,#work-research
+Docker,#work-hmi
+Domain-driven design,#work-hmi
+Leadership,#work-machine
+IP,#work-machine
+GAMP,#work-machine
 </script>
 <script>
   (function () {
@@ -712,6 +719,10 @@ Robotics,#exp-automation
 
     function showSkills(rows) {
       skillsGrid.replaceChildren.apply(skillsGrid, rows.map(function (row) {
+        // Skill links may only point to a portfolio project; anything else renders as plain text.
+        let target = null;
+        try { target = row.link ? document.querySelector(row.link) : null; } catch (e) { target = null; }
+        if (!target || !target.matches("#portfolio .work-item")) row = { name: row.name, link: "" };
         const tag = document.createElement(row.link ? "a" : "span");
         tag.className = "skill-tag";
         tag.textContent = row.name;
