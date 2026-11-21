@@ -1219,8 +1219,8 @@ body.lightbox-open { overflow: hidden; }
   .work-body .cs-thumbs,
   .work-body .cs-caption { border-left: none; }
 
-  .stats-inner { grid-template-columns: 1fr 1fr; gap: 1.6rem 1rem; }
-  .stat-languages { grid-column: 1 / -1; }
+  .stats-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 1rem; }
+  .stat { min-width: 0; overflow-wrap: break-word; }
 
   nav { padding: 0 1.5rem; }
 
