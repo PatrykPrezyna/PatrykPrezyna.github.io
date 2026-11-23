@@ -33,11 +33,38 @@
   document.querySelectorAll("[data-name]").forEach(function (n) { n.textContent = fullName; });
   document.querySelectorAll("[data-email]").forEach(function (n) { n.href = "mailto:" + person.email; });
   document.querySelectorAll("[data-linkedin]").forEach(function (n) { n.href = person.linkedin; });
+  const cv = person.cv && typeof person.cv === "object" ? person.cv : {};
+  const invite = $("cv-invite");
+  const inviteEmail = $("cv-invite-email");
+  $("cv-invite-title").textContent = cv.title || "I would love to get to know you";
+  $("cv-invite-text").textContent = cv.text || "Let's schedule a call or grab a coffee.";
+  inviteEmail.textContent = cv.button || "Send me an email";
+  inviteEmail.href = "mailto:" + (person.email || "")
+    + "?subject=" + encodeURIComponent(cv.subject || "Let's schedule a call or grab a coffee")
+    + "&body=" + encodeURIComponent(cv.body || "Hi Patryk,\n\nI would like to schedule a call or grab a coffee.\n\n");
+  $("cv-invite-hint").textContent = person.email
+    ? "Opens your email app, addressed to " + person.email + "."
+    : "";
+
+  let inviteFocus = null;
+  function openInvite(from) {
+    inviteFocus = from || document.activeElement;
+    invite.hidden = false;
+    document.body.classList.add("invite-open");
+    invite.querySelector(".invite-close").focus();
+  }
+  function closeInvite() {
+    if (invite.hidden) return;
+    invite.hidden = true;
+    document.body.classList.remove("invite-open");
+    if (inviteFocus) inviteFocus.focus();
+  }
   document.querySelectorAll("[data-cv]").forEach(function (n) {
-    if (!person.cv) return n.remove();
-    n.href = person.cv;
-    n.setAttribute("download", "");
-    n.hidden = false;
+    n.addEventListener("click", function () { openInvite(n); });
+  });
+  invite.querySelector(".invite-close").addEventListener("click", closeInvite);
+  invite.addEventListener("click", function (event) {
+    if (event.target === invite) closeInvite();
   });
 
   const hero = S.hero || {};
@@ -194,9 +221,13 @@
 
   // ---------- publications ----------
   list(S.publications).forEach(function (pub) {
-    add($("pub-list"), add(el("article", "pub-item"),
-      el("span", "pub-badge", pub.type),
-      add(el("div"), el("p", "pub-title", pub.title), el("p", "pub-meta", pub.details))));
+    const title = pub.url
+      ? el("a", "pub-title", pub.title, { href: pub.url, target: "_blank", rel: "noopener noreferrer" })
+      : el("p", "pub-title", pub.title);
+    const body = add(el("div"), title);
+    if (pub.status) body.appendChild(el("p", "pub-status", pub.status));
+    body.appendChild(el("p", "pub-meta", pub.details));
+    add($("pub-list"), add(el("article", "pub-item"), el("span", "pub-badge", pub.type), body));
   });
 
   // ---------- interactions ----------
@@ -392,6 +423,8 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+    if (event.key !== "Escape") return;
+    if (!lightbox.hidden) closeLightbox();
+    else closeInvite();
   });
 })();

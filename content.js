@@ -37,11 +37,16 @@ window.SITE = {
     linkedin: "https://www.linkedin.com/in/patryk-prezyna",
     photo: "assets/patryk.jpg",
 
-    // CV to download. Upload the PDF to the "assets" folder and write its
-    // path here, for example "assets/Patryk-Prezyna-CV.pdf".
-    // A "Download CV" button then appears at the top and bottom of the page.
-    // Leave it as "" for no button.
-    cv: "",
+    // The "Download CV" buttons open this note instead of a file.
+    // "Send me an email" opens the visitor's own mail app, already addressed
+    // to the e-mail above. GitHub Pages cannot send the message itself.
+    cv: {
+      title: "I would love to get to know you",
+      text: "Let's schedule a call or grab a coffee.",
+      button: "Send me an email",
+      subject: "Let's schedule a call or grab a coffee",
+      body: "Hi Patryk,\n\nI would like to schedule a call or grab a coffee.\n\n",
+    },
   },
 
   // ====================================================================
@@ -161,14 +166,19 @@ window.SITE = {
       open: true,              // this project is open when the page loads
       images: [
         {
-          file: "assets/coolspine/console.png",
+          file: "assets/coolspine/spinal-hypothermia.png",
           caption: "Medical Device providing spinal cord hypothermia.",
-          description: "Cooling console on a rolling stand, with lines running to the spinal cord. The ports are labeled IN, OUT, and CSF.",
+          description: "Cooling console on a rolling stand, with lines from the IN, OUT, and CSF ports to the lower spinal cord. A close view of the spine labels the spinal cord and the thoracic aorta.",
         },
         {
           file: "assets/coolspine/p15-sense.png",
           caption: "Custom PCB with temperature, flowrate, and pressure sensing.",
           description: "P1.5 SENSE circuit board with connectors for a temperature sensor, pressure sensor, thermistor, and backup ADC input.",
+        },
+        {
+          file: "assets/coolspine/runtime-architecture.png",
+          caption: "Runtime architecture. Readings in from the sensors, commands out to the pump and the compressor.",
+          description: "Diagram of the spine cooling runtime. Temperature, flow, differential pressure, and digital interlocks feed a control core with a main thread, an I/O thread, and a stepper thread. The control core commands a peristaltic pump and a cooling compressor. Operating states are Init, Ready, Cooling, and Pumping, with Error and Shutdown beside them.",
         },
         {
           file: "assets/coolspine/traceability.png",
@@ -204,6 +214,12 @@ window.SITE = {
       featured: true,
       images: [
         {
+          file: "assets/bp700/hmi-data-diode.jpg",
+          caption: "Human Machine Interface modalities",
+          description: "Two operators in cleanroom clothing at Rommelag machines. One wears a headset and gestures at a display of real-time monitoring. The other uses the touchscreen. A data diode carries the data to a remote desk with a machine overview and a live camera feed.",
+          fill: true,
+        },
+        {
           file: "assets/bp700/bp730-hmi.jpg",
           caption: "Modern infrastructure with modern look.",
           description: "Operator screen showing a sterilization step in progress, with temperature probes and a stabilizing timer",
@@ -238,16 +254,21 @@ window.SITE = {
           fill: true,
         },
         {
-          file: "assets/bp700/bp730-bottles.jpg",
-          caption: "Bottles from 100 to 1,000 ml.",
-          description: "Blow-Fill-Seal infusion bottles in several sizes, from 100 to 1,000 ml",
-          fill: true,
+          file: "assets/bp700/line-systems.jpg",
+          caption: "The line as three systems: pneumatic, electrical, and motion.",
+          description: "Diagram of a packaging line labeled with air and liquid filters, temperature sensors, visual inspection, a PLC, an HMI, a robot, and the motor, belt, and linear rail. A legend groups the parts into pneumatic, electrical, and motion.",
         },
         {
-          file: "assets/bp700/state-transformation.png",
-          caption: "A process as states and transformations: coffee beans are ground into powder, then brewed into coffee in a mug. Below, the same pattern in general: state, transformation, state.",
-          description: "Diagram of coffee beans ground into powder and brewed into coffee, and the general pattern of state, transformation, state.",
+          file: "assets/bp700/sterile-robots.jpg",
+          caption: "Concepts for robotics in a sterile environment.",
+          description: "Two Stäubli robots handling containers on a stainless steel surface inside a sterile enclosure.",
         },
+        // Hidden. Uncomment this block to show it again.
+        // {
+        //   file: "assets/bp700/state-transformation.png",
+        //   caption: "A process as states and transformations: coffee beans are ground into powder, then brewed into coffee in a mug. Below, the same pattern in general: state, transformation, state.",
+        //   description: "Diagram of coffee beans ground into powder and brewed into coffee, and the general pattern of state, transformation, state.",
+        // },
         {
           file: "assets/bp700/process-model.png",
           caption: "Process model of the machine line, from material preparation through forming, filling, and sealing.",
@@ -381,28 +402,46 @@ window.SITE = {
 
   // ====================================================================
   // 7. PUBLICATIONS
-  // ADD ONE: copy a line and change it. "type" is the small label on the left.
+  // ADD ONE: copy a block and change it. "type" is the small label on the left.
+  // "url" makes the title a link. Leave it out when there is no page yet.
+  // "status" is an optional line under the title, such as "Work in progress".
   // ====================================================================
   publications: [
     {
       type: "Research",
       title: "MBSE Adoption Pathways for Small and Medium-Sized Organizations",
-      details: "MIT · model-based systems engineering and the digital thread · in progress",
+      details: "MIT · model-based systems engineering and the digital thread",
+      status: "Work in progress",
+    },
+    {
+      type: "Paper",
+      title: "Teaching the Digital Thread: Insights from the Pilot of a New Graduate-level Course Employing Model-Based Engineering",
+      details: "INCOSE International Symposium 2026 · with Eric Rebentisch",
+      url: "https://doi.org/10.1002/iis2.70251",
+    },
+    {
+      type: "Paper",
+      title: "Resilience Framework and Agentic AI-based Support for MBSE to Optimize Resilience in Product Development",
+      details: "Tag des Systems Engineering 2026 · with Benjamin Schneider, Zhenghan Zhang, Tina Vartziotis, and Rohit Gupta",
+      status: "In publication",
     },
     {
       type: "Patent",
       title: "Device for Producing Container Products",
-      details: "Rommelag · pharmaceutical packaging",
+      details: "Rommelag · DE 10 2022 118 938 · pharmaceutical packaging",
+      url: "https://patents.google.com/patent/DE102022118938A1/en",
     },
     {
       type: "Patent",
       title: "Method for Producing a Container Product and Device for Implementing the Method",
-      details: "Rommelag · pharmaceutical packaging",
+      details: "Rommelag · US 12,589,543 · pharmaceutical packaging",
+      url: "https://patents.google.com/patent/US12589543B2/en",
     },
     {
       type: "Patent",
       title: "Device with Associated Molding Tools and System Consisting of a Set of Molding Tools",
-      details: "Rommelag · pharmaceutical manufacturing equipment",
+      details: "Rommelag · DE 10 2023 001 403 · pharmaceutical manufacturing equipment",
+      url: "https://patents.google.com/patent/DE102023001403B3/en",
     },
   ],
 

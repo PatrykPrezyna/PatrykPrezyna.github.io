@@ -97,15 +97,9 @@ Delete its block, from its `{` to its `},`.
 
 Section 7 works the same way: copy a block and change it.
 
-### Add or replace the CV
+### The CV button
 
-Upload the PDF to `assets/`, then write its path in section 1:
-
-```js
-    cv: "assets/Patryk-Prezyna-CV.pdf",
-```
-
-A "Download CV" button appears at the top and bottom of the page. With `cv: ""` there is no button.
+"Download CV" (top and bottom of the page) opens a short note instead of a file. Edit the words in section 1, under `cv`. "Send me an email" opens the visitor's own mail app, already addressed to you. GitHub Pages cannot send the e-mail itself.
 
 ### Change the photo, e-mail, or LinkedIn
 
