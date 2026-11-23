@@ -11,9 +11,8 @@
     4. ABOUT                   the "About" paragraphs
     5. SKILLS                  the "Technical skills" badges
     6. PORTFOLIO               the projects
-    7. EXPERIENCE              jobs and education
-    8. PUBLICATIONS            patents and papers
-    9. CONTACT                 the closing section
+    7. PUBLICATIONS            patents and papers
+    8. CONTACT                 the closing section
 
   Rules of the file:
     - Text goes between "double quotes".
@@ -37,6 +36,12 @@ window.SITE = {
     email: "Patryk78@mit.edu",
     linkedin: "https://www.linkedin.com/in/patryk-prezyna",
     photo: "assets/patryk.jpg",
+
+    // CV to download. Upload the PDF to the "assets" folder and write its
+    // path here, for example "assets/Patryk-Prezyna-CV.pdf".
+    // A "Download CV" button then appears at the top and bottom of the page.
+    // Leave it as "" for no button.
+    cv: "",
   },
 
   // ====================================================================
@@ -375,88 +380,7 @@ window.SITE = {
   ],
 
   // ====================================================================
-  // 7. EXPERIENCE
-  // One block per organization, each with one or more roles.
-  // "dates", "text" and "points" are optional. Leave out what you do not need.
-  //
-  // ADD A ROLE: copy one of the { title: ... }, blocks inside "roles".
-  // ====================================================================
-  experience: [
-    {
-      organization: "Massachusetts Institute of Technology",
-      roles: [
-        {
-          title: "Research, Localized Spinal Cord Hypothermia",
-          points: [
-            "The device cools the cord and leaves the patient at normal body temperature.",
-            "Fast prototyping stays inside FDA design controls, ISO 13485, and ISO 14971.",
-          ],
-        },
-        {
-          title: "Teaching, Digital Thread",
-          points: [
-            "Teaching assistant for Model-Based Engineering in the Product Development Lifecycle, including the digital thread.",
-          ],
-        },
-        {
-          title: "Master in System Design and Management",
-          text: "Relevant courses: AI and ML for Engineering Design, Medical Device Design, and Innovating in Health Care.",
-        },
-      ],
-    },
-    {
-      organization: "Rommelag",
-      dates: "2015 — 2025",
-      roles: [
-        {
-          title: "Product Manager, Human-Machine Interface",
-          dates: "2022 — 2025",
-          points: [
-            "Defined and executed product strategy and roadmap for next-generation Human-Machine Interface (HMI) platforms used in primary pharmaceutical liquid packaging systems.",
-            "Developed a multi-device human-machine interaction ecosystem that reduced operator training time from months to days while improving usability and operational reliability.",
-            "Led the design and implementation of automated verification and validation solutions that reduced testing effort from two weeks to one day.",
-            "Collaborated with executive leadership to transform the company from project execution to a product-driven organization.",
-          ],
-        },
-        {
-          title: "Systems Engineering, Team Leader",
-          dates: "2018 — 2022",
-          points: [
-            "Established systems engineering practices, including requirements management, functional and logical architecture trade-space analysis, and technical decision frameworks. This new product development framework reduced time to market from 12 to 6 months.",
-            "Led 3 multidisciplinary engineering teams (4–6 members each) across software, electrical, and mechanical domains in the development of next-generation pharmaceutical packaging equipment.",
-            "Drove the development of innovative machine platforms, resulting in three patented inventions redefining how the process is executed and strengthening the company's market leadership position.",
-            "Championed organization-wide agile transformation, serving as a coach for senior management.",
-            "Implemented enterprise knowledge management and software lifecycle processes that improved onboarding efficiency by 30%.",
-          ],
-        },
-        {
-          title: "Automation Engineer",
-          dates: "2015 — 2018",
-          points: [
-            "Designed and implemented control systems for pharmaceutical manufacturing equipment using B&R, Siemens, and Beckhoff automation platforms.",
-            "Executed Factory Acceptance Testing (FAT) and Site Acceptance Testing (SAT) for manufacturing systems deployed to more than 10 leading global pharmaceutical manufacturers.",
-            "Worked closely with validation, quality, manufacturing, and regulatory stakeholders to support successful implementation in GMP environments.",
-          ],
-        },
-      ],
-    },
-    {
-      organization: "Silesian University of Technology",
-      dates: "2011 — 2015",
-      roles: [
-        {
-          title: "B.S. in Information Technologies in Automatic Control & Robotics",
-          text: "Politechnika Śląska.",
-        },
-      ],
-    },
-  ],
-
-  // The small line under the experience list.
-  experienceNote: "Also: Certificate, Architecture and Systems Engineering, MIT Professional Education, 2021 — 2022. Professional certificate, Automation Technology, B&R Engineering Camp, 2015 — 2016. Python object-oriented programming · Goethe-Zertifikat C1 · Autodesk Inventor Essentials.",
-
-  // ====================================================================
-  // 8. PUBLICATIONS
+  // 7. PUBLICATIONS
   // ADD ONE: copy a line and change it. "type" is the small label on the left.
   // ====================================================================
   publications: [
@@ -483,7 +407,7 @@ window.SITE = {
   ],
 
   // ====================================================================
-  // 9. CONTACT
+  // 8. CONTACT
   // The closing section. The buttons use the e-mail and LinkedIn from section 1.
   // ====================================================================
   contact: {

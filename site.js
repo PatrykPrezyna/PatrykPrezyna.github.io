@@ -33,6 +33,12 @@
   document.querySelectorAll("[data-name]").forEach(function (n) { n.textContent = fullName; });
   document.querySelectorAll("[data-email]").forEach(function (n) { n.href = "mailto:" + person.email; });
   document.querySelectorAll("[data-linkedin]").forEach(function (n) { n.href = person.linkedin; });
+  document.querySelectorAll("[data-cv]").forEach(function (n) {
+    if (!person.cv) return n.remove();
+    n.href = person.cv;
+    n.setAttribute("download", "");
+    n.hidden = false;
+  });
 
   const hero = S.hero || {};
   $("hero-eyebrow").textContent = hero.eyebrow || "";
@@ -185,23 +191,6 @@
     }
     $("skills-grid").appendChild(tag);
   });
-
-  // ---------- experience ----------
-  list(S.experience).forEach(function (org) {
-    const single = list(org.roles).length === 1;
-    const roles = el("div", single ? null : "exp-roles");
-    list(org.roles).forEach(function (role) {
-      add(single ? roles : roles.appendChild(el("div", "exp-role")),
-        el("h3", "exp-title", role.title),
-        role.dates ? el("p", "exp-dates", role.dates) : null,
-        role.text ? el("p", "exp-desc", role.text) : null,
-        list(role.points).length ? ul("exp-points", list(role.points)) : null);
-    });
-    add($("exp-list"), add(el("article", "exp-item"),
-      add(el("div"), el("p", "exp-company", org.organization), org.dates ? el("p", "exp-dates", org.dates) : null),
-      roles));
-  });
-  if (S.experienceNote) $("exp-note").textContent = S.experienceNote; else $("exp-note").remove();
 
   // ---------- publications ----------
   list(S.publications).forEach(function (pub) {

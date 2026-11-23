@@ -6,7 +6,7 @@ Live at [patrykprezyna.github.io](https://patrykprezyna.github.io).
 
 | File | What it is | Edit it? |
 | --- | --- | --- |
-| `content.js` | All text, skills, projects, experience, publications | **Yes. This is the one to edit.** |
+| `content.js` | All text, skills, projects, publications | **Yes. This is the one to edit.** |
 | `assets/` | Pictures, one folder per project | Add pictures here |
 | `index.html` | Frame of the page, plus the title and description shown by Google and link previews | Only the title and description |
 | `styles.css` | Colours, fonts, layout | Only for design changes |
@@ -15,7 +15,7 @@ Live at [patrykprezyna.github.io](https://patrykprezyna.github.io).
 ## How to edit
 
 1. Open `content.js` (on github.com: open the file and press the pencil icon).
-2. Find the section. They are numbered at the top of the file: `1. PERSON AND CONTACT`, `2. HERO`, `3. STATS`, `4. ABOUT`, `5. SKILLS`, `6. PORTFOLIO`, `7. EXPERIENCE`, `8. PUBLICATIONS`, `9. CONTACT`.
+2. Find the section. They are numbered at the top of the file: `1. PERSON AND CONTACT`, `2. HERO`, `3. STATS`, `4. ABOUT`, `5. SKILLS`, `6. PORTFOLIO`, `7. PUBLICATIONS`, `8. CONTACT`.
 3. Change the text between the quotes, or copy a block and change it.
 4. Commit. The site updates in a minute or two.
 
@@ -93,9 +93,19 @@ What the lines do:
 
 Delete its block, from its `{` to its `},`.
 
-### Add a job, a role, or a publication
+### Add a publication
 
-Sections 7 and 8 work the same way: copy a block and change it. In a role, `dates`, `text` and `points` are optional.
+Section 7 works the same way: copy a block and change it.
+
+### Add or replace the CV
+
+Upload the PDF to `assets/`, then write its path in section 1:
+
+```js
+    cv: "assets/Patryk-Prezyna-CV.pdf",
+```
+
+A "Download CV" button appears at the top and bottom of the page. With `cv: ""` there is no button.
 
 ### Change the photo, e-mail, or LinkedIn
 
