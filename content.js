@@ -176,14 +176,9 @@ window.SITE = {
           description: "P1.5 SENSE circuit board with connectors for a temperature sensor, pressure sensor, thermistor, and backup ADC input.",
         },
         {
-          file: "assets/coolspine/runtime-architecture.png",
-          caption: "Runtime architecture. Readings in from the sensors, commands out to the pump and the compressor.",
-          description: "Diagram of the spine cooling runtime. Temperature, flow, differential pressure, and digital interlocks feed a control core with a main thread, an I/O thread, and a stepper thread. The control core commands a peristaltic pump and a cooling compressor. Operating states are Init, Ready, Cooling, and Pumping, with Error and Shutdown beside them.",
-        },
-        {
-          file: "assets/coolspine/traceability.png",
-          caption: "Traceability between user needs, design inputs and outputs according to ISO 13485.",
-          description: "Requirements diagram tracing user needs for spinal cord cooling to system requirements and to the refrigeration unit, touch display, and fluid reservoir.",
+          file: "assets/coolspine/software-architecture.png",
+          caption: "Software architecture. Sensors, control, and actuators.",
+          description: "Software architecture of the cooling device. Sensors are a 12-channel temperature array, flow, differential pressure, and digital interlocks. They feed an I/O thread, a main thread for the interface, safety, and the flow loop, and a stepper thread for pump pulses. Control also holds a state machine from Idle to Active, a list of errors and warnings, and a session log. The actuators are a peristaltic pump and a cooling compressor.",
         },
         {
           file: "assets/coolspine/prototype.jpg",
@@ -191,10 +186,16 @@ window.SITE = {
           description: "MIT Cool Spine Version 1.5 prototype on a bench. The front panel has a touchscreen, catheter ports, and a label that reads Research Use Only, Not for Use on Humans.",
         },
         {
-          file: "assets/coolspine/ui.png",
-          caption: "Intuitive and simplistic user interface.",
-          description: "Temperature screen for the cooling device, with a trend chart, an error that the heat exchanger is too cold, and readings for the tip, cartridge, catheter, cool plate, and compressor.",
+          file: "assets/coolspine/traceability.png",
+          caption: "Traceability between user needs, design inputs and outputs according to ISO 13485.",
+          description: "Requirements diagram tracing user needs for spinal cord cooling to system requirements and to the refrigeration unit, touch display, and fluid reservoir.",
         },
+        // Hidden. Uncomment this block to show it again.
+        // {
+        //   file: "assets/coolspine/ui.png",
+        //   caption: "Intuitive and simplistic user interface.",
+        //   description: "Temperature screen for the cooling device, with a trend chart, an error that the heat exchanger is too cold, and readings for the tip, cartridge, catheter, cool plate, and compressor.",
+        // },
       ],
       facts: [
         { number: "15,000", label: "Deaths per year from thoracic aortic aneurysm rupture in the US" },
@@ -298,21 +299,33 @@ window.SITE = {
       featured: true,
       images: [
         {
-          file: "assets/bp700/ladder-to-model.png",
-          caption: "From archaic language to model-based software development.",
-          description: "Conveyor ladder logic beside a model of the same control, with states above and a generated structure below.",
+          file: "assets/bp700/plc-transformation.png",
+          caption: "PLC software, from mechanical control to industrial DevOps.",
+          description: "Six stages of PLC software transformation. Stage 1 is purely mechanical, with no programmable control. Stage 2 is relay-based control with hardwired logic. Stage 3 is individual PLC programs, machine-specific and lightly standardized. Stage 4 is standardized and reusable, with structured code, patterns, and shared libraries. Stage 5 is collaborative and tested: Git, code reviews, and automated builds. Stage 6 is industrial DevOps, with CI/CD pipelines and controlled releases. A bracket labeled My Contributions spans stages 3 through 6.",
         },
         {
-          file: "assets/bp700/gitflow.png",
-          caption: "Introducing semantic versioning and a modern workflow.",
-          description: "Zip archives named FINAL and latest beside a Gitflow diagram with main, release, develop, feature, and hot-fix branches.",
+          file: "assets/bp700/centralized-engineering.jpg",
+          caption: "From a machine-by-machine workflow to one shared software stack.",
+          description: "Split view. On the left, labeled Traditional machine-by-machine workflow, an engineer on the factory floor carries printed checklists and a laptop showing ladder logic. On the right, labeled Centralized software engineering, an engineer at a desk works across two monitors: a shared control diagram, and a release marked complete for several machines.",
+        },
+        // Hidden. Uncomment this block to show it again.
+        // {
+        //   file: "assets/bp700/ladder-to-model.png",
+        //   caption: "From archaic language to model-based software development.",
+        //   description: "Conveyor ladder logic beside a model of the same control, with states above and a generated structure below.",
+        // },
+        {
+          file: "assets/bp700/git-workflow.png",
+          caption: "From zip-file versions to a controlled Git workflow.",
+          description: "Two panels. The old way stores PLC software as zip copies with names such as Software_FINAL, Software_latest_USE_THIS_ONE, and Software_backup_DO_NOT_DELETE, marked no history, no review, and an unclear release. The new way is a Git workflow on main, feature, hotfix, and release branches, with versions v0.1, v0.5, and v1.0, marked traceable, reviewable, and repeatable.",
         },
       ],
-      challenge: "The operator walks a batch through sterilization and the other critical steps. The process parameters have to stay on the same screen, and the software and the machine have to describe one process.",
+      challenge: "Machine-specific PLC programs prevented improvements and bug fixes from being carried forward consistently. Every new machine required repeated development, integration, and testing because the software differed from one installation to another.",
       contribution: [
-        "On the Blow-Fill-Seal line I upgraded the software the operator runs. The part shown here is the human-machine interface, built in Python, Vue.js, and Docker.",
-        "It walks a batch through sterilization and the other critical steps, and it keeps the process parameters on the same screen.",
-        "The screen sits on a domain model shared with the mechatronic team, so the software and the machine describe one process.",
+        "Identified the limitations of the existing machine-specific PLC development process and built leadership support for a broader software transformation.",
+        "Evaluated established automation vendors, identified gaps in their solutions, and developed relationships with innovative technology partners.",
+        "Designed the transformation roadmap and created training materials and workshops to introduce new methods, tools, and engineering practices.",
+        "Led a small cross-functional team through the pilot project, establishing the foundation for rollout across the wider development organization.",
       ],
       badges: ["Python", "Vue.js", "Docker", "Domain-driven design"],
     },
